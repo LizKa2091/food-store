@@ -2,6 +2,8 @@ import '../layout/Header.scss';
 import logo from '../../images/logo.png';
 
 const Header = () => {
+    const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
+
     return (
         <header className="header">
             <div className="header__inner">
@@ -24,31 +26,18 @@ const Header = () => {
                         <button className="nav__button nav__button--location-right">Выберите способ получения Доставка или самовывоз</button>
                     </div>
                     <div className="nav__user">
-                        <button className="nav__user-action nav__user-action--like">понравившиеся</button>
-                        <button className="nav__user-action nav__user-action--profile">профиль</button>
+                        <button className="nav__user-action nav__user-action--like"></button>
+                        <button className="nav__user-action nav__user-action--profile"></button>
                         <button className="nav__user-action nav__user-action--cart">Корзина</button>
                     </div>
                 </div>
                 <div className="nav__bottom">
                     <ul className="nav__list">
-                        <li className="nav__item">
-                            <button className="nav__button nav__link">Супермаркет</button>
-                        </li>
-                        <li className="nav__item">
-                        <button className="nav__button nav__link">Кулинария</button>
-                        </li>
-                        <li className="nav__item">
-                            <button className="nav__link">Заморозка</button>
-                        </li>
-                        <li className="nav__item">
-                            <button className="nav__link">Другое</button>
-                        </li>
-                        <li className="nav__item">
-                            <button className="nav__link">Акции</button>
-                        </li>
-                        <li className="nav__item">
-                            <button className="nav__link">Магазины</button>
-                        </li>
+                        {navItems.map((item: string, id: number) => (
+                            <li className='nav__item' key={id}>
+                                <button className='nav__link' id={'nav__link-' + id}>{item}</button>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </nav>
