@@ -1,0 +1,144 @@
+$color-red: #FF0600;
+$color-orange-sale: #FFA900;
+$color-orange-location-left: #FFA900B3;
+$color-orange-location-right: #FFA900;
+$color-orange-profile-fill: #FFF8EB;
+$color-white: #fff;
+$color-gray: #E1E1E1;
+
+$header-p: 18px 0;
+
+$button-sale-w: 204px;
+$button-sale-h: 43px;
+
+.header__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../../images/header-bg.png') no-repeat center center, $color-red;
+    background-size: cover;
+    color: $color-white;
+    text-transform: uppercase;
+    padding: $header-p;
+}
+.header {
+    &__text {
+        font-size: 1.25rem;
+        font-weight: 900;
+        max-width: 355px;
+    }
+    &__important {
+        color: $color-red;
+        background-color: $color-orange-sale;
+        border: 1px solid $color-orange-sale;
+        border-radius: 8px;
+    }
+    &__button {
+        border: 1px solid $color-white;
+        border-radius: 31px;
+        background-color: inherit;
+        color: $color-white;
+        font-size: 1.25rem;
+        width: $button-sale-w;
+        height: $button-sale-h;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.nav {
+    &__top {
+        display: flex;
+    }
+    &__logo-img {
+        width: 200.09px;
+        height: 55px;
+    }
+    &__item {
+        display: inline-block;
+    }
+    &__button {
+        color: $color-white;
+        height: 48px;
+        &--catalog {
+            font-weight: 800;
+            border: 1px solid $color-red;
+            border-radius: 31px;
+            background-color: $color-red;
+            padding: 0 19px 0 40px;
+            position: relative;
+            width: 132px;
+
+            &::before {
+                content: '';
+                background-image: url('../../images/catalog-icon.png');
+                background-repeat: no-repeat;
+                background-size: 18px 12px;
+                width: 18px;
+                height: 12px;
+                position: absolute;
+                top: 50%;
+                left: 15%;
+                transform: translateY(-50%);
+            }
+        }
+        &--location-left {
+            border: 1px solid $color-orange-location-left;
+            border-radius: 16px 0 0 16px;
+            background-color: $color-orange-location-left;
+            width: 100%;
+            max-width: 65px;
+        }
+        &--location-right {
+            border: 1px solid $color-orange-location-right;
+            border-radius: 0 16px 16px 0;
+            background-color: $color-orange-location-right;
+            width: 100%;
+            max-width: 230px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    &__search {
+
+    }
+    &__input {
+        border: 1px solid $color-gray;
+        border-radius: 16px;
+        color: $color-gray;
+        width: 317px;
+        height: 48px;
+        position: relative;
+    }
+    &__locations {
+        display: flex;
+    }
+    &__user {
+        display: flex;
+        &-action {
+            border-radius: 16px;
+            height: 48px;
+
+            &--like {
+                border: 1px solid $color-gray;
+                background-color: inherit;
+                width: 50px;
+            }
+            &--profile {
+                border: 1px solid $color-orange-location-right;
+                background-color: $color-orange-profile-fill;
+                width: 50px;
+            }
+            &--cart {
+                border: 1px solid $color-red;
+                background-color: $color-red;
+                color: $color-white;
+            }
+        }
+    }
+}
