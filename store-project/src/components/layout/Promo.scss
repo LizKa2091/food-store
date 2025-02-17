@@ -1,0 +1,158 @@
+$color-white: #fff;
+$color-peach-fill: #FFF8EB;
+$color-peach-border: #FFF1D6;
+$color-green-bg: radial-gradient(148.93% 68.82% at 5% 0%, rgb(169, 210, 136), rgb(206, 238, 181) 100%);
+$color-red-bg: radial-gradient(221.46% 84.22% at 78% 32%, rgb(255, 0, 0), rgb(255, 49, 3) 100%);
+$color-dark-green: #3E5828;
+
+.promo {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 24px;
+
+    &__first {
+        width: 100%;
+        height: 460px;
+        max-width: 862px;
+        position: relative;
+        grid-column: span 2;
+        grid-row: span 2;
+        
+        &__plain {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            border: 1px solid $color-white;
+            border-radius: 26px;
+            background: url('../../images/home-slide1.png') no-repeat center center;
+            background-size: cover;
+            color: $color-white;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        &__title {
+            font-size: 3.125rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 120%;
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            top: 23.8%;
+            left: 6.048%;
+        }
+        &__link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid $color-white;
+            border-radius: 31px;
+            color: $color-white;
+            font-size: 1.375rem;
+            font-weight: 600;
+            text-decoration: none;
+            width: 272px;
+            height: 56px;
+            max-width: 100%;
+            position: relative;
+            top: 23.8%;
+            left: 6.048%;
+        }
+        &__controls {
+            width: 100%;
+            height: 48px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        &__button {
+            border: 1px solid $color-peach-border;
+            border-radius: 50%;
+            background-color: $color-peach-fill;
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            z-index: 1; 
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &::before {
+                content: '';
+                background: url('../../images/arrow-slide.png') no-repeat center center;
+                background-size: cover;
+                width: 6.96px;
+                height: 11.89px;
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+            }
+
+            &--arrow-left {
+                left: -24px;
+            }
+            &--arrow-right {
+                transform: rotateY(180deg);
+                right: -24px;
+            }
+        }
+    }
+    &__second {
+        border: 1px solid $color-green-bg;
+        border-radius: 26px;
+        background: url('../../images/home-slide2.png') no-repeat bottom right, $color-green-bg;
+        background-size: auto 100%;
+        grid-column: span 1;
+        grid-row: span 1;
+        position: relative; 
+        &__title {
+            color: $color-dark-green;
+            width: 100%;
+            max-width: 135px;
+            position: relative;
+            top: 39.91%;
+            bottom: 0;
+            left: 3.623%;
+            right: 0;
+        }
+    }
+    &__third {
+        border: 1px solid $color-red-bg;
+        border-radius: 26px;
+        background: url('../../images/home-slide3.png') no-repeat 95% center, $color-red-bg;
+        background-size: auto 50%;
+        grid-column: span 1;
+        position: relative;
+        &__title {
+            color: $color-white;
+            width: 100%;
+            max-width: 326px;
+            position: relative;
+            top: 46%;
+            bottom: 0;
+            left: 3.623%;
+            right: 0;
+        }
+        &__rating {
+            display: flex;
+            gap: 5px;
+            position: relative;
+            top: 35.78%;
+            bottom: 0;
+            left: 3.623%;
+            right: 0;
+        }
+        &__star {
+            width: 22px;
+            height: 22px;
+        }
+    }
+    &__extra__title {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+}

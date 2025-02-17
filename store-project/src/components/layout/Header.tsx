@@ -1,7 +1,7 @@
 import '../layout/Header.scss';
 import logo from '../../images/logo.png';
 
-const Header = () => {
+const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
 
     return (
