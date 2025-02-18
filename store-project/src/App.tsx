@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Header from './components/layout/Header';
 import Promo from './components/layout/Promo';
+import Categories from './components/UI/Categories';
 import Wrapper from './components/layout/Wrapper';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     <Wrapper>
       <Header />
       <Promo />
+      <Categories category="Супермаркет" />
     </Wrapper>
   );
 }

@@ -1,0 +1,156 @@
+$biege-supermarket-bg: #F7FFE6;
+$green-supermarket-border: #CCE0A0;
+$black-supermarket-text: #383C5C;
+$orange-category-button-text: #DA9000;
+$orange-category-button-bg: #FFF8EB;
+$orange-category-button-border: #FFE7B9;
+$orange-category-button-bg-hover: #FFA900;
+$white: #fff;
+
+.category {
+    &-section {
+        display: flex;
+        flex-direction: column;
+        gap: 43px;
+    }
+    &__info {
+        display: flex;
+        gap: 30px;
+    }
+    &__title {
+        font-size: 2rem;
+        font-family: 700;
+        text-transform: uppercase;
+    }
+    &__button {
+        display: flex;
+        align-items: center;
+        background-color: $orange-category-button-bg;
+        border: 1px solid $orange-category-button-border;
+        border-radius: 16px;
+        color: $orange-category-button-text;
+        font-size: 1.375rem;
+        font-weight: 500;
+        width: 100%;
+        max-width: 210px;
+        height: 46px;
+        padding: 0 23.04px 0 21px;
+        position: relative;
+        
+        &::after {
+            content: '';
+            background: url('../../images/products/arrow-right-button.png') no-repeat center center;
+            background-size: contain;
+            width: 6.96px;
+            height: 11.89px;
+            position: relative;
+            left: 15px;
+            display: block;
+        }
+
+        &:hover {
+            background-color: $orange-category-button-bg-hover;
+            border: 1px solid $orange-category-button-bg-hover;
+            color: $white;
+            cursor: pointer;
+
+            &::after {
+                background: url('../../images/products/arrow-right-button-hover.png') no-repeat center center;
+                background-size: contain;
+            }
+        }
+    }
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 22px;
+        column-gap: 24px;
+    }
+}
+
+.subcategory {
+    &__item {
+        display: inline-block;
+        width: 304px;
+        height: 304px;
+        position: relative;
+        cursor: pointer;
+
+        &.Супермаркет {
+            background-color: $biege-supermarket-bg;
+            border: 1px solid $green-supermarket-border;
+            border-radius: 58px;
+            color: $black-supermarket-text;
+        }
+
+        &.Вода {
+            background-image: url('../../images/products/supermarket-subcategory-1.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 0 92px;
+        }
+
+        &.Молоко {
+            background-image: url('../../images/products/supermarket-subcategory-2.png');
+            background-size: 325px 220px;
+            background-repeat: no-repeat;
+            background-position: 25px 100px;
+        }
+
+        &.Снэки {
+            background-image: url('../../images/products/supermarket-subcategory-3.png');
+            background-size: 207px 175px;
+            background-repeat: no-repeat;
+            background-position: 84px 129px;
+        }
+
+        &.Кофе {
+            background-image: url('../../images/products/supermarket-subcategory-4.png');
+            background-size: 268px 142px;
+            background-repeat: no-repeat;
+            background-position: 27px 146px;
+        }
+
+        &.Макароны {
+            background-image: url('../../images/products/supermarket-subcategory-5.png');
+            background-size: 393px 262px;
+            background-repeat: no-repeat;
+            background-position: 30px 100px;
+        }
+
+        &.Хлеб {
+            background-image: url('../../images/products/supermarket-subcategory-6.png');
+            background-size: 329px 248px;
+            background-repeat: no-repeat;
+            background-position: -19px 88px;
+        }
+        
+        &.Масло {
+            background-image: url('../../images/products/supermarket-subcategory-7.png');
+            background-size: 288px 193px;
+            background-repeat: no-repeat;
+            background-position: 16px 118px;
+        }
+
+        &.Консервы {
+            background-image: url('../../images/products/supermarket-subcategory-8.png');
+            background-size: 247px 176px;
+            background-repeat: no-repeat;
+            background-position: 48px 118px;
+        }
+    }
+    &__title {
+        font-size: 1.875rem;
+        font-weight: 600;
+        position: relative;
+        top: 47px;
+        right: 0;
+        bottom: 0;
+        left: 39px;
+        max-width: 224px;
+    }
+    &__image {
+        width: 100%;
+        height: 100%;  
+    }
+}
