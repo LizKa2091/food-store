@@ -11,6 +11,10 @@ function App() {
       <Header />
       <Promo />
       <Categories category="Супермаркет" />
+      <Categories category="Кулинария"/>
+      <Categories category="Заморозка"/>
+      <Categories category="Другое"/>
+      <Categories category="Акции"/>
     </Wrapper>
   );
 }
