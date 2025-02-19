@@ -26,8 +26,8 @@ const Header: React.FC = () => {
                         <button className="nav__button nav__button--location-right">Выберите способ получения Доставка или самовывоз</button>
                     </div>
                     <div className="nav__user">
-                        <button className="nav__user-action nav__user-action--like"></button>
-                        <button className="nav__user-action nav__user-action--profile"></button>
+                        <button className="nav__user-action nav__user-action--like" title="Избранное"></button>
+                        <button className="nav__user-action nav__user-action--profile" title="Войти"></button>
                         <button className="nav__user-action nav__user-action--cart">Корзина</button>
                     </div>
                 </div>
