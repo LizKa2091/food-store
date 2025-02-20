@@ -18,10 +18,12 @@ $yellow-cooking-border-hover: #FFA900;
 $blue-frozen-bg: #EBEDFF;
 $blue-frozen-border: #C0C5F2;
 $black-frozen-text: #383C5C;
+$blue-frozen-border-hover: #8A9BFF;
 
 $aqua-other-bg: #EBFDFF;
 $aqua-other-border: #A3D0D6;
 $black-other-text: #274447;
+$blue-other-border-hover: #6FB4B8;
 
 $pink-offer-bg: #CD5A7E;
 $red-offer-bg: #FF594D;
@@ -132,12 +134,20 @@ $yellow-offer-bg: #FFC425;
             border: 1px solid $blue-frozen-border;
             border-radius: 58px;
             color: $black-frozen-text; 
+
+            &:hover {
+                border: 1px solid $blue-frozen-border-hover;
+            }
         }
         &.Другое {
             background-color: $aqua-other-bg;
             border: 1px solid $aqua-other-border;
             border-radius: 58px;
-            color: $black-other-text; 
+            color: $black-other-text;
+
+            &:hover {
+                border: 1px solid $blue-other-border-hover;
+            }
         }
         &.Акции {
             font-size: 1.625rem;

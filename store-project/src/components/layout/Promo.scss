@@ -1,9 +1,11 @@
 $color-white: #fff;
 $color-peach-fill: #FFF8EB;
 $color-peach-border: #FFF1D6;
+$color-orange-border-hover: #FFA900;
 $color-green-bg: radial-gradient(148.93% 68.82% at 5% 0%, rgb(169, 210, 136), rgb(206, 238, 181) 100%);
 $color-red-bg: radial-gradient(221.46% 84.22% at 78% 32%, rgb(255, 0, 0), rgb(255, 49, 3) 100%);
 $color-dark-green: #3E5828;
+$color-orange-fill: #FFE8BC;
 
 .promo {
     display: grid;
@@ -77,6 +79,7 @@ $color-dark-green: #3E5828;
             z-index: 1; 
 
             &:hover {
+                background-color: $color-orange-fill;
                 cursor: pointer;
             }
 
