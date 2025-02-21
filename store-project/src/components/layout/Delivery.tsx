@@ -22,7 +22,12 @@ const Delivery: React.FC = () => {
                 </div>
                 <div className="delivery__right">
                     <p className="delivery__subtitle">Карта доставки</p>
-
+                    <div className='delivery__map-container' style={{position: 'relative', overflow: 'hidden'}}>
+                        <a className='delivery__map-link delivery__map-link--1' href="https://yandex.ru/maps/org/park_sokolniki/1607357284/?utm_medium=mapframe&utm_source=maps">Парк Сокольники</a>
+                        <a className='delivery__map-link delivery__map-link--2' href="https://yandex.ru/maps/213/moscow/category/park/184106346/?utm_medium=mapframe&utm_source=maps">Парк культуры и отдыха в Москве</a>
+                        <a className='delivery__map-link delivery__map-link--3' href="https://yandex.ru/maps/213/moscow/category/amusement_park/184106354/?utm_medium=mapframe&utm_source=maps">Парк аттракционов в Москве</a>
+                        <iframe className="delivery__map" src="https://yandex.ru/map-widget/v1/?ll=37.669556%2C55.807501&mode=poi&poi%5Bpoint%5D=37.670636%2C55.804555&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D1607357284&z=13.95"></iframe>
+                    </div>
                 </div>
             </div>
         </section>

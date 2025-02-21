@@ -1,3 +1,6 @@
+$white-map-border: #fff;
+$gray-map-link: #eee;
+
 .delivery {
     display: flex;
     flex-direction: column;
@@ -17,6 +20,9 @@
         min-width: 586px;
     }
     &__right {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         width: 50%;
     }
     &__subtitle {
@@ -29,5 +35,31 @@
         font-size: 1.25rem;
         font-weight: 400;
         margin-bottom: 34px;
+    }
+    &__map {
+        border: 1px solid $white-map-border;
+        border-radius: 23px;
+        width: 100%;
+        height: 480px;
+        position: relative;
+
+        &-container {
+            height: 100%;
+        }
+        &-link {
+            font-size: 0.75rem;
+            color: $gray-map-link;
+            position: absolute;
+
+            &--1 {
+                top: 0;
+            }
+            &--2 {
+                top: 14px;
+            }
+            &--3 {
+                top: 28px;
+            }
+        }
     }
 }

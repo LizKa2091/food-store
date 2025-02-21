@@ -5,12 +5,14 @@ import Promo from './components/layout/Promo';
 import Categories from './components/UI/Categories';
 import Wrapper from './components/layout/Wrapper';
 import Delivery from './components/layout/Delivery';
+import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
 
 function App() {
   return (
     <Wrapper>
       <Header />
       <Promo />
+      <SalesAndRecommendation type='Скидки'/>
       <Categories category="Супермаркет" />
       <Categories category="Кулинария"/>
       <Categories category="Заморозка"/>
