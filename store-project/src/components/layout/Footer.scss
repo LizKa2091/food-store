@@ -31,9 +31,57 @@ $white-list-item: #fff;
     &__item {
         list-style-type: none;
 
-        &__tel {
+        &--tel, &--address, &--inst, &--email {
+            position: relative;
+        }
+        &--tel {
             font-size: 1.25rem;
             font-weight: 600;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                background: url('../../images/footer/tel.png') no-repeat center center;
+                background-size: contain;
+                width: 22px;
+                height: 22px;
+                left: -32px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+        &--address::before {
+            content: '';
+            position: absolute;
+            background: url('../../images/footer/location.png') no-repeat center center;
+            background-size: contain;
+            width: 14px;
+            height: 14px;
+            left: -32px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        &--inst::before {
+            content: '';
+            position: absolute;
+            background: url('../../images/footer/instagram.png') no-repeat center center;
+            background-size: contain;
+            width: 13.27px;
+            height: 13.27px;
+            left: -32px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        &--email::before {
+            content: '';
+            position: absolute;
+            background: url('../../images/footer/email.png') no-repeat center center;
+            background-size: contain;
+            width: 15px;
+            height: 15px;
+            left: -32px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         &__extra {
             opacity: 0.4;
@@ -75,14 +123,15 @@ $white-list-item: #fff;
         &__input, &__button {
             border: 1px solid $white-list-item;
             border-radius: 16px;
+            font-size: 1.125rem;
             width: 100%;
             height: 46px;
         }
         &__input {
+            padding: 0 15px;
             max-width: 251px;
         }
         &__button {
-            font-size: 1.125rem;
             color: $white-list-item;
             background-color: inherit;
             max-width: 141px;

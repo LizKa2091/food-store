@@ -10,16 +10,16 @@ const Footer = () => {
                 <ul className="footer__list footer__list--upper">
                     <li className="footer__item footer__list__title">Ильинский онлайн</li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Кулинария</a>
+                        <a href="#" className="footer__link">Кулинария</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Супермаркет</a>
+                        <a href="#" className="footer__link">Супермаркет</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Заморозка</a>
+                        <a href="#" className="footer__link">Заморозка</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Другое</a>
+                        <a href="#" className="footer__link">Другое</a>
                     </li>
                 </ul>
                 <ul className="footer__list footer__list--upper">
@@ -42,19 +42,19 @@ const Footer = () => {
                 </ul>
                 <ul className="footer__list footer__list--upper">
                     <li className="footer__item">
-                        <a href="tel:+38000490999" className="footer__link footer__item__tel">+38 (000) 49-09-99</a>
+                        <a href="tel:+38000490999" className="footer__link footer__item--tel">+38 (000) 49-09-99</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link footer__item__extra">Ежедневно c 09:00 до 21:00</a>
+                        <a href="#" className="footer__link footer__item__extra">Ежедневно c 09:00 до 21:00</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Адреса магазинов</a>
+                        <a href="#" className="footer__link footer__item--address">Адреса магазинов</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Следите за нами</a>
+                        <a href="#" className="footer__link footer__item--inst">Следите за нами</a>
                     </li>
                     <li className="footer__item">
-                        <a href="" className="footer__link">Обратная связь</a>
+                        <a href="#" className="footer__link footer__item--email">Обратная связь</a>
                     </li>
                 </ul>
                 <div className="footer__news">
@@ -65,7 +65,7 @@ const Footer = () => {
                             <button className="footer__news__button">Подписаться</button>
                         </div>
                         <div className="footer__news__form--policy">
-                            <input type="checkbox" name="agree" id="agree" />
+                            <input type="checkbox" name="agree" id="agree"/>
                             <label htmlFor="agree">Согласен с политикой конфиденциальности</label>
                         </div>
                     </form>
@@ -73,7 +73,7 @@ const Footer = () => {
             </div>
             <div className="footer__rights">
                 <ul className="footer__list footer__list--lower">
-                    <li className="footer__item">© 2022 Ильинский онлайн — доставкатоваров и продуктов на дом</li>
+                    <li className="footer__item">© 2022 Ильинский онлайн — доставка товаров и продуктов на дом</li>
                     <li className="footer__item">Информация на сайте не является публичной офертой</li>
                     <li className="footer__item footer__item--icons">
                         <img src={visaIcon} alt="VISA" className="footer__item__icon footer__item__icon--visa" />
