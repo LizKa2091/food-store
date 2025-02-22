@@ -6,6 +6,7 @@ import Categories from './components/UI/Categories';
 import Wrapper from './components/layout/Wrapper';
 import Delivery from './components/layout/Delivery';
 import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
+import Footer from './components/layout/Footer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Categories category="Другое"/>
       <Categories category="Акции"/>
       <Delivery />
+      <Footer />
     </Wrapper>
   );
 }
