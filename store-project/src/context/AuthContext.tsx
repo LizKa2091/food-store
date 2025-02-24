@@ -9,7 +9,7 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [isAuthed, setIsAuthed] = useState<boolean>(false);
+    const [isAuthed, setIsAuthed] = useState<boolean>(true);
     const login = () => setIsAuthed(true);
     const logout = () => setIsAuthed(false);
 
