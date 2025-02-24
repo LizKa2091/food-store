@@ -1,6 +1,7 @@
 import '../layout/Header.scss';
 import logo from '../../images/logo.png';
 import { useState } from 'react';
+import NavProfile from '../UI/NavProfile';
 
 const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
@@ -8,6 +9,7 @@ const Header: React.FC = () => {
 
     const [isCatalogOpen, setIsCatalogOpen] = useState(false);
     const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const handleCatalogClick = () : void => {
         setIsCatalogOpen(prevVal => !prevVal);
@@ -41,7 +43,10 @@ const Header: React.FC = () => {
                     </div>
                     <div className="nav__user">
                         <button className="nav__user-action nav__user-action--like" title="Избранное"></button>
-                        <button className="nav__user-action nav__user-action--profile" title="Войти"></button>
+                        <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
+                        {isProfileOpen &&
+                            <NavProfile />
+                        }
                         <button className="nav__user-action nav__user-action--cart">Корзина</button>
                     </div>
                 </div>

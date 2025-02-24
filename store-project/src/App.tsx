@@ -7,21 +7,24 @@ import Wrapper from './components/layout/Wrapper';
 import Delivery from './components/layout/Delivery';
 import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
 import Footer from './components/layout/Footer';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Wrapper>
-      <Header />
-      <Promo />
-      <SalesAndRecommendation type='Скидки'/>
-      <Categories category="Супермаркет" />
-      <Categories category="Кулинария"/>
-      <Categories category="Заморозка"/>
-      <Categories category="Другое"/>
-      <Categories category="Акции"/>
-      <Delivery />
-      <Footer />
+    <AuthProvider>
+      <Wrapper>
+        <Header />
+        <Promo />
+        <SalesAndRecommendation type='Скидки'/>
+        <Categories category="Супермаркет" />
+        <Categories category="Кулинария"/>
+        <Categories category="Заморозка"/>
+        <Categories category="Другое"/>
+        <Categories category="Акции"/>
+        <Delivery />
+        <Footer />
     </Wrapper>
+    </AuthProvider>
   );
 }
 
