@@ -1,8 +1,22 @@
 import '../layout/Header.scss';
 import logo from '../../images/logo.png';
+import { useState } from 'react';
 
 const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
+    const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
+
+    const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+    const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
+
+    const handleCatalogClick = () : void => {
+        setIsCatalogOpen(prevVal => !prevVal);
+    };
+
+    const handleCategoryClick = (e: React.MouseEvent<HTMLLIElement>) : void => {
+        const target = e.target as HTMLLIElement;
+        setCurrCatalogItem(target.textContent || '');
+    };
 
     return (
         <header className="header">
@@ -17,7 +31,7 @@ const Header: React.FC = () => {
                             <img src={logo} alt="Ильинский" className="nav__logo-img" />
                         </a>
                     </div>
-                    <button className="nav__button nav__button--catalog">Каталог</button>
+                    <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick}>Каталог</button>
                     <div className="nav__search">
                         <input type="text" className="nav__input" />
                     </div>
@@ -31,6 +45,26 @@ const Header: React.FC = () => {
                         <button className="nav__user-action nav__user-action--cart">Корзина</button>
                     </div>
                 </div>
+                {isCatalogOpen &&
+                    <div className="nav__catalog">
+                        <div className="nav__catalog__left">
+                            <ul className="nav__catalog__list">
+                                {catalogItems.map(item =>
+                                    <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                                )}
+                            </ul>
+                        </div>
+                        <div className="nav__catalog__divider"></div>
+                        <div className="nav__catalog__right">
+                            <ul className="nav__catalog__list">
+                                <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
+                                {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
+                                    <li className="nav__catalog__subitem" key={subItem}>{subItem}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                }
                 <div className="nav__bottom">
                     <ul className="nav__list">
                         {navItems.map((item: string, id: number) => (

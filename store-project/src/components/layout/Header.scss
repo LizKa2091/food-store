@@ -5,9 +5,12 @@ $color-orange-location-right: #FFA900;
 $color-orange-profile-fill: #FFF8EB;
 $color-white: #fff;
 $color-gray: #E1E1E1;
+$color-red-catalog-item-hover: #FF0000;
 $color-gray-input: #6B6B6B;
 $color-black-nav-item: #0A0A0A;
 $color-orange-link-hover: #FFE8BC;
+
+$color-gray-catalog-divider: #E0E0E0;
 
 $header-p: 10.5px 0;
 
@@ -70,12 +73,11 @@ $button-sale-h: 43px;
     flex-direction: column;
     gap: 20px;
     padding: 35px 0 50px 0; 
+    position: relative;
+
     &__top {
         display: flex;
         justify-content: space-between;
-    }
-    &__bottom {
-
     }
     &__logo-img {
         width: 200.09px;
@@ -98,7 +100,7 @@ $button-sale-h: 43px;
 
             &::before {
                 content: '';
-                background-image: url('../../images/catalog-icon.png');
+                background: url('../../images/catalog-icon.png');
                 background-repeat: no-repeat;
                 background-size: 18px 12px;
                 width: 18px;
@@ -107,6 +109,14 @@ $button-sale-h: 43px;
                 top: 50%;
                 left: 15%;
                 transform: translateY(-50%);
+            }
+            &.active::before {
+                content: '';
+                background: url('../../images/catalog-close-icon.png') no-repeat center center;
+                background-size: 14.14px 14.14px;
+                width: 14.14px;
+                height: 14.14px;
+                left: 17.5%;
             }
         }
         &--location-left {
@@ -142,9 +152,6 @@ $button-sale-h: 43px;
         &:hover {
             cursor: pointer;
         }
-    }
-    &__search {
-
     }
     &__input {
         border: 1px solid $color-gray;
@@ -283,6 +290,82 @@ $button-sale-h: 43px;
             width: 26px;
             height: 26px;
             top: -2px; 
+        }
+    }
+
+    &__catalog {
+        display: flex;
+        border: 1px solid $color-white;
+        border-radius: 14px;
+        background-color: $color-white;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.25);
+        padding: 38px 0 28px 0;
+        width: 100%;
+        max-width: 688px;
+        max-height: 403px;
+        position: absolute;
+        top: 100px;
+        z-index: 1;
+
+        &__left, &__right {
+            width: 50%;
+        }
+        &__left {
+            padding-left: 37px;
+        }
+        &__right {
+            padding-left: 44px;
+            overflow-y: scroll;
+        }
+        &__list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        &__item {
+            font-size: 1.25rem;
+            font-weight: 600;
+            list-style-type: none;
+            position: relative;
+
+            &.nav__catalog__title {
+                margin-bottom: 13px;
+            }
+
+            &:not(.nav__catalog__title):hover {
+                color: $color-red-catalog-item-hover;
+                cursor: pointer;
+
+                &::after {
+                    background: url('../../images/arrow-slide-hover.png') no-repeat center center;
+                    background-size: cover;
+                    transform: translateY(-50%) rotateY(0deg);
+                }
+            }
+            &:not(.nav__catalog__title)::after {
+                content: '';
+                background: url('../../images/arrow-slide.png') no-repeat center center;
+                background-size: cover;
+                width: 6.96px;
+                height: 11.89px;
+                position: absolute;
+                top: 50%;
+                right: 24.04px;
+                transform: translateY(-50%) rotateY(180deg);
+            }
+        }
+        &__subitem {
+            list-style-type: none;
+
+            &:hover {
+                color: $color-red-catalog-item-hover;
+                cursor: pointer;
+            }
+        }
+        &__divider {
+            background-color: $color-gray-catalog-divider;
+            width: 4px;
+            height: 349px;
         }
     }
 }
