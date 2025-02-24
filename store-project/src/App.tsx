@@ -7,7 +7,7 @@ import Wrapper from './components/layout/Wrapper';
 import Delivery from './components/layout/Delivery';
 import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
 import Footer from './components/layout/Footer';
-import { AuthContext, AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (

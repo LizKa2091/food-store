@@ -1,0 +1,39 @@
+$color-white: #fff;
+$color-gray: #868686;
+$color-gray-border: #7E7C7C;
+
+.profile {
+    &--user {
+        background-color: $color-white;
+        border: 1px solid $color-gray-border;
+        border-radius: 12px;
+        width: 227px;
+        height: 220px;
+        padding: 25px;
+        position: absolute;
+        top: 45%;
+        z-index: 1;
+
+        &__title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+        }
+        &__list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        &__item {
+            font-size: 0.875rem;
+            font-weight: 500;
+            list-style-type: none;
+
+            &:last-of-type {
+                color: $color-gray;
+                margin-top: 4px;
+            }
+        }
+    }
+}
