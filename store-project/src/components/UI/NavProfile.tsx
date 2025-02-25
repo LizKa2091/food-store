@@ -82,11 +82,11 @@ const NavProfile: FC = () => {
                         {currStep === 3 && (
                             <div className='profile profile--guest guest__step3'>
                                 <div className="profile__inner">
-                                    <p className="profile--guest__title">Подтверждение</p>
+                                    <p className="profile--guest__title profile--guest__title--3">Подтверждение</p>
                                     <p className="profile--guest__text">Код подтверждения отправлен на номер  +{currTel}</p>
                                     <p className="profile--guest__extra">Введите код подтверждения</p>
                                     <input type="number" className='profile--guest__input--code' />
-                                    <button className="profile--guest__button">Подтвердить</button>
+                                    <button className="profile--guest__button profile--guest__button--3">Подтвердить</button>
                                 </div>
                             </div>
                         )}

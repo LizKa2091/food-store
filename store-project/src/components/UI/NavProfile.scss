@@ -6,6 +6,7 @@ $color-orange-bg: #FFF8EB;
 $color-red-button-bg: #FF0000;
 $color-gray-input-border: #C4C4C4;
 $color-gray-input-label: #6B6B6B;
+$color-gray-button-notallowed-bg: #F2F3F5;
 
 .profile {
     background-color: $color-white;
@@ -63,6 +64,9 @@ $color-gray-input-label: #6B6B6B;
             }
             &--2 {
                 margin-bottom: 11px;
+            }
+            &--3 {
+                margin-bottom: 38px;
             }
         }
         &__list {
@@ -123,6 +127,10 @@ $color-gray-input-label: #6B6B6B;
             position: absolute;
             bottom: 0;
 
+            &--3 {
+                left: 0;
+            }
+
             &:hover {
                 cursor: pointer;
             }
@@ -149,6 +157,14 @@ $color-gray-input-label: #6B6B6B;
             width: 100%;
             height: 62px;
             padding: 30px 15px 2px 15px;
+
+            &--code {
+                padding: 0 15px;
+                border: 1px solid $color-gray-input-border;
+                border-radius: 12px;
+                width: 100%;
+                height: 60px;
+            }
         }
         &__label {
             font-size: 0.875rem;
@@ -160,5 +176,13 @@ $color-gray-input-label: #6B6B6B;
                 left: 15px;
             }
         }
+        &__text {
+            font-size: 0.875rem;
+        }
+        &__extra {
+            font-size: 0.875rem;
+            color: $color-gray-input-label;
+            margin: 7px 0 15px 0;
+        }   
     }
 }
