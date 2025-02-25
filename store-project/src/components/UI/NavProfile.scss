@@ -1,19 +1,23 @@
 $color-white: #fff;
 $color-gray: #868686;
 $color-gray-border: #7E7C7C;
+$color-orange-border: rgba(255, 169, 0, 0.45);
+$color-orange-bg: #FFF8EB;
+$color-red-button-bg: #FF0000;
 
 .profile {
+    background-color: $color-white;
+    border: 1px solid $color-gray-border;
+    border-radius: 12px;
+    position: absolute;
+    top: 45%;
+    right: 0;
+    z-index: 1;
+
     &--user {
-        background-color: $color-white;
-        border: 1px solid $color-gray-border;
-        border-radius: 12px;
         width: 227px;
         height: 220px;
         padding: 25px;
-        position: absolute;
-        top: 45%;
-        right: 0;
-        z-index: 1;
 
         &__title {
             font-size: 0.875rem;
@@ -34,6 +38,79 @@ $color-gray-border: #7E7C7C;
             &:last-of-type {
                 color: $color-gray;
                 margin-top: 4px;
+            }
+        }
+    }
+
+    &--guest {
+        width: 310px;
+        height: 334px;
+        padding: 17px 23px;
+
+        &__title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+        &__list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        &__item {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            list-style-type: none;
+            position: relative;
+            padding-left: 66px;
+            min-height: 43.04px;
+            height: 100%;
+
+            &::before {
+                content: '';
+                width: 44.83px;
+                height: 43.03px;
+                position: absolute;
+                left: 0;
+                border: 1px solid $color-orange-border;
+                border-radius: 16px;
+                background: $color-orange-bg;
+            }
+
+            &--1::before {
+                background-image: url('../../images/profile-auth-1.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 29px 25px;
+            }
+            &--2::before {
+                background-image: url('../../images/profile-auth-2.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 29px 29px; 
+            }
+            &--3::before {
+                background-image: url('../../images/profile-auth-3.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 29px 29px;
+            }
+        }
+        &__button {
+            background-color: $color-red-button-bg;
+            border: 1px solid $color-red-button-bg;
+            border-radius: 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: $color-white;
+            width: 100%;
+            height: 46px;
+            text-align: center;
+            margin-top: 42px;
+
+            &:hover {
+                cursor: pointer;
             }
         }
     }
