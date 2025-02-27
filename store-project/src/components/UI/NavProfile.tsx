@@ -1,5 +1,5 @@
-import React, { FC, useContext, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import React, { FC, useContext, useState, useEffect } from 'react';
+import { AuthContext, postPhoneNum } from '../../context/AuthContext';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
@@ -7,11 +7,16 @@ const NavProfile: FC = () => {
     //const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed);
     const [isAuthed, setIsAuthed] = useState<boolean>(false);
     const [currStep, setCurrStep] = useState<number>(1);
-    const [currTel, setCurrTel] = useState(null);
+    const [currTel, setCurrTel] = useState(666);
+    const [currCode, setCurrCode] = useState(null);
+    
+    useEffect(() => {
+        getGeneratedCode();
+    }, [currTel]);
 
     const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
-    const handleStepButton = () => {
+    const handleStepButton = (): void => {
         if (currStep < 3) {
             setCurrStep(prevVal => prevVal+1);
         }
@@ -19,6 +24,11 @@ const NavProfile: FC = () => {
             setCurrStep(1);
             setIsAuthed(true);
         }
+    };
+
+    const getGeneratedCode = async () => {
+        let result = await postPhoneNum(currTel);
+        let resultCode = await result.verificationCode;
     };
 
     return (
