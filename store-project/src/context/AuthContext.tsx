@@ -6,7 +6,7 @@ interface IAuthContext {
     logout: () => void;
 };
 
-const postPhoneNum = async (phoneNumber: number) => {
+const postPhoneNum = async (phoneNumber: string) => {
     try {
         const response = await fetch(`http://localhost:5001/register`, {
             method: 'POST',

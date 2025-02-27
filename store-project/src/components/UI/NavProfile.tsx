@@ -7,18 +7,22 @@ const NavProfile: FC = () => {
     //const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed);
     const [isAuthed, setIsAuthed] = useState<boolean>(false);
     const [currStep, setCurrStep] = useState<number>(1);
-    const [currTel, setCurrTel] = useState(666);
-    const [currCode, setCurrCode] = useState(null);
+    const [currUserTel, setCurrUserTel] = useState<string>('');
+    const [currCode, setCurrCode] = useState<string>('');
+    const [currUserCode, setCurrUserCode] = useState<string>('');
+    const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null);
     
     useEffect(() => {
-        getGeneratedCode();
-    }, [currTel]);
+        if (currStep === 3) {
+            getGeneratedCode();
+        }
+    }, [currStep]);
 
     const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
     const handleStepButton = (): void => {
         if (currStep < 3) {
-            setCurrStep(prevVal => prevVal+1);
+            setCurrStep((prevVal: number) => prevVal+1);
         }
         else {
             setCurrStep(1);
@@ -26,10 +30,52 @@ const NavProfile: FC = () => {
         }
     };
 
-    const getGeneratedCode = async () => {
-        let result = await postPhoneNum(currTel);
-        let resultCode = await result.verificationCode;
+    const handleInputTelChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setCurrUserTel(e.target.value);
     };
+
+    const handleInputCodeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setCurrUserCode(e.target.value);
+    };
+
+    const handleCheckCodeButton = async (): Promise<void> => {
+        verifyCode();
+    };
+
+    const getGeneratedCode = async (): Promise<void> => {
+        let result = await postPhoneNum(currUserTel);
+        let resultCode = result.verificationCode;
+
+        setCurrCode(resultCode);
+    };
+
+    const verifyCode = async (): Promise<void> => {
+        try {
+            const response = await fetch(`http://localhost:5001/verify`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ phoneNumber: currUserTel, code: currUserCode })
+            });
+            
+            if (response.status === 400) {
+                setIsCodeCorrect(false);
+            }
+            else if (!response.ok) {
+                throw new Error(`http ошибка ${response.status}`)
+            }
+            else {
+                setIsCodeCorrect(true);
+            }
+
+            let result = await response.json();
+            return result;
+        }
+        catch (e) {
+            throw new Error(`ошибка запроса: ${e}`)
+        }
+    }
 
     return (
         <>
@@ -63,7 +109,7 @@ const NavProfile: FC = () => {
                                         Узнавайте первыми и участвуйте в акциях
                                     </li>
                                 </ul>
-                                <button className="profile--guest__button" onClick={handleStepButton}>Войти по номеру телефона</button>
+                                <button className="profile--guest__button" onClick={ handleStepButton }>Войти по номеру телефона</button>
                             </div>
                         </div>
                     )}
@@ -74,7 +120,7 @@ const NavProfile: FC = () => {
                             <form action="" className='profile--guest__form'>
                                 <div className="profile--guest__form--item profile--guest__inputdiv">
                                     <label htmlFor="tel" className='profile--guest__label profile--guest__label--phone'>Ваш телефон</label>
-                                    <input type="tel" name="tel" className='profile--guest__input'/>
+                                    <input onChange={ handleInputTelChange } type="tel" name="tel" className='profile--guest__input'/>
                                 </div>
                                 <div className="profile--guest__form--item">
                                     <input type="checkbox" name="confidence" className='profile--guest__checkbox'/>
@@ -85,7 +131,7 @@ const NavProfile: FC = () => {
                                     <label htmlFor="news" className="profile--guest__label">Соглашаюсь получать новости и специальные предложения</label>
                                 </div>
                             </form>
-                            <button className="profile--guest__button" onClick={handleStepButton}>Получить код по SMS</button>
+                            <button onClick={ handleStepButton } className="profile--guest__button">Получить код по SMS</button>
                             </div>
                         </div>
                         )}
@@ -93,10 +139,19 @@ const NavProfile: FC = () => {
                             <div className='profile profile--guest guest__step3'>
                                 <div className="profile__inner">
                                     <p className="profile--guest__title profile--guest__title--3">Подтверждение</p>
-                                    <p className="profile--guest__text">Код подтверждения отправлен на номер  +{currTel}</p>
+                                    <p className="profile--guest__text">Код подтверждения отправлен на номер  +{currUserTel}</p>
                                     <p className="profile--guest__extra">Введите код подтверждения</p>
-                                    <input type="number" className='profile--guest__input--code' />
-                                    <button className="profile--guest__button profile--guest__button--3">Подтвердить</button>
+                                    {currCode ? (
+                                        <span className="profile--guest__extra">Текущий код: {currCode}</span>
+                                    ) : (
+                                        <span className="profile--guest__extra">ожидается получение кода...</span>
+                                    )
+                                    }
+                                    <input onChange={ handleInputCodeChange } type="number" className={`profile--guest__input--code${isCodeCorrect === true ? ' correct' : isCodeCorrect === false ? ' incorrect' : ''}`} />
+                                    {isCodeCorrect &&
+                                        <span className="profile--guest__extra">Вход выполнен успешно</span>
+                                    }
+                                    <button onClick={ handleCheckCodeButton } className="profile--guest__button profile--guest__button--3">Подтвердить</button>
                                 </div>
                             </div>
                         )}

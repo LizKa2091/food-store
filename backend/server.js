@@ -14,6 +14,10 @@ let users = {};
 const generateVerificationCode = () => {
     return Math.floor(1000 + Math.random() * 9000).toString();
 };
+
+if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in the environment variables');
+}
 // Обработчик для корневого маршрута
 app.get('/', (req, res) => {
     res.send('Сервер работает!');
