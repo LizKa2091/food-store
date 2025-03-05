@@ -8,6 +8,8 @@ import Delivery from './components/layout/Delivery';
 import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
 import Footer from './components/layout/Footer';
 import { AuthProvider } from './context/AuthContext';
+import DeliveryBanner from './components/layout/banners/DeliveryBanner';
+import RateBanner from './components/layout/banners/RateBanner';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Categories category="Другое"/>
         <Categories category="Акции"/>
         <Delivery />
+        <DeliveryBanner />
+        <RateBanner />
         <Footer />
     </Wrapper>
     </AuthProvider>
