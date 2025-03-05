@@ -1,4 +1,4 @@
-import '../layout/Header.scss';
+import './Header.scss';
 import logo from '../../images/logo.png';
 import { useState } from 'react';
 import NavProfile from '../UI/NavProfile';
