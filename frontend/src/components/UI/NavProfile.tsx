@@ -1,5 +1,6 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
 import { AuthContext, postPhoneNum } from '../../context/AuthContext';
+import PinInput from './PinInput';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
@@ -32,10 +33,6 @@ const NavProfile: FC = () => {
 
     const handleInputTelChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setCurrUserTel(e.target.value);
-    };
-
-    const handleInputCodeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setCurrUserCode(e.target.value);
     };
 
     const handleCheckCodeButton = async (): Promise<void> => {
@@ -147,7 +144,7 @@ const NavProfile: FC = () => {
                                         <span className="profile--guest__extra">ожидается получение кода...</span>
                                     )
                                     }
-                                    <input onChange={ handleInputCodeChange } type="number" className={`profile--guest__input--code${isCodeCorrect === true ? ' correct' : isCodeCorrect === false ? ' incorrect' : ''}`} />
+                                    <PinInput onCodeChange={(code) => setCurrUserCode(code)} isCorrect={isCodeCorrect}/>
                                     {isCodeCorrect &&
                                         <span className="profile--guest__extra">Вход выполнен успешно</span>
                                     }

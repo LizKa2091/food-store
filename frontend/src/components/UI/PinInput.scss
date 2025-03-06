@@ -1,0 +1,25 @@
+$gray-input-border: #C4C4C4;
+$red-color: #ff0000;
+
+.pin-input {
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 60px;
+        max-width: 263px;
+        gap: 9px;
+    }
+    &__input {
+        border: 1px solid $gray-input-border;
+        border-radius: 12px;
+        font-size: 1.75rem;
+        width: 100%;
+        max-width: 59px;
+        text-align: center;
+
+        &.incorrect {
+            border: 1px solid $red-color;
+        }
+    }
+}

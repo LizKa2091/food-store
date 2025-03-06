@@ -1,0 +1,1 @@
+.pin-input__container{display:flex;justify-content:space-between;width:100%;height:60px;max-width:263px;gap:9px}.pin-input__input{border:1px solid #c4c4c4;border-radius:12px;font-size:1.75rem;width:100%;max-width:59px;text-align:center}.pin-input__input.incorrect{border:1px solid red}
