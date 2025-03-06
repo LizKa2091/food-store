@@ -4,7 +4,7 @@ interface CategoriesProps {
     category: CategoryType;
 }
 
-type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
+export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
 
 interface SubCategory {
     name: string;

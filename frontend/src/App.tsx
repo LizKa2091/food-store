@@ -1,33 +1,17 @@
 import React from 'react';
 import './App.css';
-import Header from './components/layout/Header';
-import Promo from './components/layout/Promo';
-import Categories from './components/UI/Categories';
-import Wrapper from './components/layout/Wrapper';
-import Delivery from './components/layout/Delivery';
-import SalesAndRecommendation from './components/UI/SalesAndRecommendation';
-import Footer from './components/layout/Footer';
 import { AuthProvider } from './context/AuthContext';
-import DeliveryBanner from './components/layout/banners/DeliveryBanner';
-import RateBanner from './components/layout/banners/RateBanner';
+import MainPage from './pages/MainPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <AuthProvider>
-      <Wrapper>
-        <Header />
-        <Promo />
-        <SalesAndRecommendation type='Скидки'/>
-        <Categories category="Супермаркет" />
-        <Categories category="Кулинария"/>
-        <Categories category="Заморозка"/>
-        <Categories category="Другое"/>
-        <Categories category="Акции"/>
-        <Delivery />
-        <DeliveryBanner />
-        <RateBanner />
-        <Footer />
-    </Wrapper>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }
