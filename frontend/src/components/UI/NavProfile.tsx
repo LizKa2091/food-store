@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { AuthContext, postPhoneNum, postCode } from '../../context/AuthContext';
+import { AuthContext, postPhoneNum, postCode, verifyUser } from '../../context/AuthContext';
 import PinInput from './PinInput';
 import './NavProfile.scss';
 
@@ -17,6 +17,10 @@ const NavProfile: FC = () => {
             getGeneratedCode();
         }
     }, [currStep]);
+
+    useEffect(() => {
+        isUserAuthed();
+    }, [])
 
     const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
@@ -38,6 +42,31 @@ const NavProfile: FC = () => {
         verifyCode();
     };
 
+    const handleStep2Submit = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+
+        const phoneNum = currUserTel.trim();
+        const phoneRegExp: RegExp = /^\d{11}$/;
+        const phoneInput = (e.target as HTMLFormElement).tel;
+
+        if (!phoneRegExp.test(phoneNum)) {
+            phoneInput.classList.add('wrong-phone');
+            return;
+        }
+        else {
+            phoneInput.classList.remove('wrong-phone');
+        }
+
+        const isCheckedConfidence = (e.target as HTMLFormElement).confidence.checked;
+        const isCheckedNews = (e.target as HTMLFormElement).news.checked;
+
+        if (!isCheckedConfidence || !isCheckedNews) {
+            return;
+        }
+
+        handleStepButton();
+    };
+
     const getGeneratedCode = async (): Promise<void> => {
         let result = await postPhoneNum(currUserTel);
         let resultCode = result.verificationCode;
@@ -56,7 +85,19 @@ const NavProfile: FC = () => {
             setIsAuthed(true);
             setIsCodeCorrect(true);
         }
-    }
+    };
+
+    const isUserAuthed = async (): Promise<void> => {
+        const userToken = localStorage.getItem('token');
+
+        if (userToken) {
+            const response = await verifyUser(userToken);
+            
+            if (response.isAuthenticated === true) {
+                setIsAuthed(true);
+            }
+        }
+    };
 
     return (
         <>
@@ -98,21 +139,21 @@ const NavProfile: FC = () => {
                         <div className='profile profile--guest guest__step2'>
                             <div className="profile__inner">
                             <p className="profile--guest__title profile--guest__title--2">Введите номер телефона</p>
-                            <form action="" className='profile--guest__form'>
+                            <form onSubmit={ handleStep2Submit } className='profile--guest__form'>
                                 <div className="profile--guest__form--item profile--guest__inputdiv">
                                     <label htmlFor="tel" className='profile--guest__label profile--guest__label--phone'>Ваш телефон</label>
                                     <input onChange={ handleInputTelChange } type="tel" name="tel" className='profile--guest__input'/>
                                 </div>
                                 <div className="profile--guest__form--item">
-                                    <input type="checkbox" name="confidence" className='profile--guest__checkbox'/>
+                                    <input type="checkbox" name="confidence" className='profile--guest__checkbox' required={true}/>
                                     <label htmlFor="confidence" className="profile--guest__label">Соглашаюсь с политикой конфиденциальности</label>
                                 </div>
                                 <div className="profile--guest__form--item">
-                                    <input type="checkbox" name="news" className='profile--guest__checkbox'/>
+                                    <input type="checkbox" name="news" className='profile--guest__checkbox' required={true}/>
                                     <label htmlFor="news" className="profile--guest__label">Соглашаюсь получать новости и специальные предложения</label>
                                 </div>
+                                <button className="profile--guest__button">Получить код по SMS</button>
                             </form>
-                            <button onClick={ handleStepButton } className="profile--guest__button">Получить код по SMS</button>
                             </div>
                         </div>
                         )}

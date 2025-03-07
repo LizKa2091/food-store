@@ -190,3 +190,7 @@ $color-gray-button-notallowed-bg: #F2F3F5;
         }   
     }
 }
+
+.wrong-phone {
+    border: 1px solid $color-red-button-bg;
+}

@@ -46,6 +46,28 @@ const postCode = async (phoneNumber: string, code: string) => {
     }
 };
 
+const verifyUser = async (token: string) => {
+    try {
+        const response = await fetch('http://localhost:5001/status', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`http ошибка: ${response.status}`);
+        }
+
+        let result = await response.json();
+        return result;
+    }
+    catch (e) {
+        throw new Error(`ошибка запроса: ${e}`);
+    }
+};
+
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -60,4 +82,4 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     );
 };
 
-export { AuthContext, AuthProvider, postPhoneNum, postCode };
+export { AuthContext, AuthProvider, postPhoneNum, postCode, verifyUser };
