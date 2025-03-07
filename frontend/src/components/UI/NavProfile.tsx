@@ -1,12 +1,11 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { AuthContext, postPhoneNum } from '../../context/AuthContext';
+import { AuthContext, postPhoneNum, postCode } from '../../context/AuthContext';
 import PinInput from './PinInput';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
     const currAuthContext = useContext(AuthContext) || { isAuthed: false };
-    //const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed);
-    const [isAuthed, setIsAuthed] = useState<boolean>(false);
+    const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed);
     const [currStep, setCurrStep] = useState<number>(1);
     const [currUserTel, setCurrUserTel] = useState<string>('');
     const [currCode, setCurrCode] = useState<string>('');
@@ -47,30 +46,15 @@ const NavProfile: FC = () => {
     };
 
     const verifyCode = async (): Promise<void> => {
-        try {
-            const response = await fetch(`http://localhost:5001/verify`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ phoneNumber: currUserTel, code: currUserCode })
-            });
-            
-            if (response.status === 400) {
-                setIsCodeCorrect(false);
-            }
-            else if (!response.ok) {
-                throw new Error(`http ошибка ${response.status}`)
-            }
-            else {
-                setIsCodeCorrect(true);
-            }
+        let response = await postCode(currUserTel, currUserCode);
 
-            let result = await response.json();
-            return result;
+        if (response.status === 400) {
+            setIsCodeCorrect(false);
         }
-        catch (e) {
-            throw new Error(`ошибка запроса: ${e}`)
+        else {
+            localStorage.setItem('token', response.token);
+            setIsAuthed(true);
+            setIsCodeCorrect(true);
         }
     }
 

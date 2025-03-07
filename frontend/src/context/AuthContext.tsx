@@ -8,7 +8,7 @@ interface IAuthContext {
 
 const postPhoneNum = async (phoneNumber: string) => {
     try {
-        const response = await fetch(`http://localhost:5001/register`, {
+        const response = await fetch('http://localhost:5001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,21 +17,39 @@ const postPhoneNum = async (phoneNumber: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка ${response.status}`)
+            throw new Error(`http ошибка ${response.status}`);
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`)
+        throw new Error(`ошибка запроса: ${e}`);
+    }
+};
+
+const postCode = async (phoneNumber: string, code: string) => {
+    try {
+        const response = await fetch('http://localhost:5001/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ phoneNumber, code })
+        });
+
+        let result = await response.json();
+        return result;
+    }
+    catch (e) {
+        throw new Error(`ошибка запроса: ${e}`);
     }
 };
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [isAuthed, setIsAuthed] = useState<boolean>(true);
+    const [isAuthed, setIsAuthed] = useState<boolean>(false);
     const login = () => setIsAuthed(true);
     const logout = () => setIsAuthed(false);
 
@@ -42,4 +60,4 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     );
 };
 
-export { AuthContext, AuthProvider, postPhoneNum };
+export { AuthContext, AuthProvider, postPhoneNum, postCode };
