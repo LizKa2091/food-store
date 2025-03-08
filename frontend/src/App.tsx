@@ -3,6 +3,7 @@ import './App.scss';
 import { AuthProvider } from './context/AuthContext';
 import MainPage from './pages/MainPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<MainPage />} />
+          <Route path='*' element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
