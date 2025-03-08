@@ -1,5 +1,6 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { AuthContext, postPhoneNum, postCode, verifyUser } from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
+import { postPhoneNum, postCode, verifyUser, logout } from '../../services/authService';
 import PinInput from './PinInput';
 import './NavProfile.scss';
 
@@ -75,15 +76,21 @@ const NavProfile: FC = () => {
     };
 
     const verifyCode = async (): Promise<void> => {
-        let response = await postCode(currUserTel, currUserCode);
+        try {
+            let response = await postCode(currUserTel, currUserCode);
+            
+            if (response.token) {
+                localStorage.setItem('token', response.token);
+                setIsAuthed(true);
+                setIsCodeCorrect(true);
+            }
+            else {
+                setIsCodeCorrect(false);
+            }
 
-        if (response.status === 400) {
-            setIsCodeCorrect(false);
         }
-        else {
-            localStorage.setItem('token', response.token);
-            setIsAuthed(true);
-            setIsCodeCorrect(true);
+        catch (e) {
+            setIsCodeCorrect(false);
         }
     };
 
@@ -99,6 +106,34 @@ const NavProfile: FC = () => {
         }
     };
 
+    const handleLogout = async (): Promise<void> => {
+        const userToken = localStorage.getItem('token');
+
+        if (userToken) {
+            const response = await logout(userToken);
+            
+            if (response.isSuccess) {
+                localStorage.removeItem('token');
+                setIsAuthed(false);
+                resetForm();
+            }
+            else {  
+                throw new Error(response.message);
+            }
+        }
+        else {
+            throw new Error('ошибка, неавторизованный пользователь не может выйти из профиля')
+        }
+    };
+
+    const resetForm = () => {
+        setCurrStep(1);
+        setCurrCode('');
+        setCurrUserCode('');
+        setCurrUserTel('');
+        setIsCodeCorrect(null);
+    };
+
     return (
         <>
             {isAuthed ? (
@@ -108,7 +143,13 @@ const NavProfile: FC = () => {
                         <ul className="profile--user__list">
                             {authedItems.map((item, index) =>
                                 <li className="profile--user__item" key={`${item}${index}`}>
-                                    {item}
+                                    {item === 'Выход' ? (
+                                        <button onClick={ handleLogout } className="profile--user__logout-button">
+                                            {item}
+                                        </button>
+                                    ) : (
+                                        item
+                                    )}
                                 </li>
                             )}
                         </ul>

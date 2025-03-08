@@ -43,7 +43,7 @@ app.post('/verify', (req, res) => {
         const token = jwt.sign({ phoneNumber }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ token });
     } else {
-        res.status(400).json({ message: 'Неверный код.' });
+        res.status(401).json({ message: 'Неверный код.' });
     }
 });
 // Проверка статуса пользователя
@@ -61,6 +61,26 @@ app.get('/status', (req, res) => {
             res.status(200).json({ isAuthenticated: user.isAuthenticated });
         } else {
             res.status(404).json({ message: 'Пользователь не найден.' });
+        }
+    });
+});
+// Логаут пользователя
+app.post('/logout', (req, res) => {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: 'Токен не предоставлен.', isSuccess: false });
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Неверный токен.', isSuccess: false });
+        }
+        const user = users[decoded.phoneNumber];
+        if (user) {
+            // Удаляем пользователя из хранилища
+            delete users[decoded.phoneNumber];
+            res.status(200).json({ message: 'Вы успешно вышли из системы.', isSuccess: true });
+        } else {
+            res.status(404).json({ message: 'Пользователь не найден.', isSuccess: false });
         }
     });
 });
