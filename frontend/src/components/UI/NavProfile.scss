@@ -48,6 +48,10 @@ $color-gray-button-notallowed-bg: #F2F3F5;
                 margin-top: 4px;
             }
         }
+        &__profile-button {
+            color: #000;
+            text-decoration: none;
+        }
     }
 
     &--guest {

@@ -1,0 +1,112 @@
+$color-red: #FF0000;
+$color-gray-border: #E0E0E0;
+$color-gray-label: #888888;
+$color-gray-input-bg: #F3F3F7;
+$color-gray-input-border: #E2E2E9;
+
+.main {
+    &__list {
+        display: flex;
+        border-bottom: 4px solid $color-gray-border;
+        gap: 28px;
+        padding: 0 9px;
+    }
+    &__item {
+        display: inline-block;
+        font-size: 1.375rem;
+        font-weight: 600;
+        padding-bottom: 6px;
+        opacity: 0.5;
+        cursor: pointer;
+        position: relative;
+
+        &--active {
+            opacity: 1;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                bottom: -4px;
+                width: 115%;
+                height: 4px;
+                background-color: $color-red;
+                z-index: 1;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 76px;
+        padding: 52px 0 114px 0;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+
+        &__item {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            &--birthday::after {
+                content: 'Дарим подарки в день рождения. К сожалению, дату нельзя изменить.';
+                font-size: 0.9rem;
+                max-width: 246px;
+                position: absolute;
+                top: 35%;
+                left: 329px;
+            }
+            &--mail::after {
+                content: 'Сообщим по почте о бонусах, акциях и новых продуктах';
+                font-size: 0.9rem;
+                max-width: 246px;
+                position: absolute;
+                top: 35%;
+                left: 329px;
+            }
+        }
+        &__label {
+            color: $color-gray-label
+        }
+        &__input {
+            border: 1px solid $color-gray-input-border;
+            border-radius: 10px;
+            background-color: $color-gray-input-bg;
+            font-size: 1.25rem;
+            height: 46px;
+            max-width: 309px;
+            padding: 0 24px;
+            position: relative;
+
+            &--protected {
+                cursor: not-allowed;
+                caret-color: transparent;
+
+                &:focus-within {
+                    outline: none;
+                }
+            }
+        }
+        &__button {
+            border: 1px solid $color-red;
+            border-radius: 16px;
+            background-color: inherit;
+            color: $color-red;
+            font-weight: 500;
+            max-width: 309px;
+            height: 48px;
+            cursor: pointer;
+        }
+    }
+    &__button {
+        border: 0;
+        background-color: inherit;
+        color: $color-gray-label;
+        max-width: min-content;
+        cursor: pointer;
+    }
+}

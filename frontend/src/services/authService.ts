@@ -42,6 +42,28 @@ const postCode = async (phoneNumber: string, code: string) => {
     }
 };
 
+const createBonusCard = async (phoneNumber: string) => {
+    try {
+        const response = await fetch('http://localhost:5001/create-bonus-card', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber: phoneNumber })
+        });
+
+        if (!response.ok) {
+            throw new Error(`http ошибка: ${response.status}`)
+        }
+
+        const result = await response.json();
+        return result;
+    }
+    catch (e) {
+        throw new Error(`ошибка запроса: ${e}`);
+    }
+};
+
 const verifyUser = async (token: string) => {
     try {
         const response = await fetch('http://localhost:5001/status', {
@@ -85,6 +107,6 @@ const logout = async (token: string) => {
     catch (e) {
         throw new Error(`ошибка запроса: ${e}`);
     }
-}
+};
 
-export { postPhoneNum, postCode, verifyUser, logout }
+export { postPhoneNum, postCode, createBonusCard, verifyUser, logout }

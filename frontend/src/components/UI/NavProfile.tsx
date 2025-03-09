@@ -1,6 +1,7 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { postPhoneNum, postCode, verifyUser, logout } from '../../services/authService';
+import { Link } from 'react-router-dom';
+import { postPhoneNum, postCode, verifyUser, logout, createBonusCard } from '../../services/authService';
 import PinInput from './PinInput';
 import './NavProfile.scss';
 
@@ -83,11 +84,11 @@ const NavProfile: FC = () => {
                 localStorage.setItem('token', response.token);
                 setIsAuthed(true);
                 setIsCodeCorrect(true);
+                createBonusCard(currUserTel);
             }
             else {
                 setIsCodeCorrect(false);
             }
-
         }
         catch (e) {
             setIsCodeCorrect(false);
@@ -148,7 +149,13 @@ const NavProfile: FC = () => {
                                             {item}
                                         </button>
                                     ) : (
-                                        item
+                                        item === 'Профиль' ? (
+                                            <Link to='/profile' className="profile--user__profile-button">
+                                                {item}
+                                            </Link>
+                                        ) : (
+                                            item
+                                        )
                                     )}
                                 </li>
                             )}
