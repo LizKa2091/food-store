@@ -13,6 +13,7 @@ interface UserInfo {
 
 interface UserBonuses {
     bonuses: string;
+    cardNumber: string;
 }
 
 const UserProfileInfo: FC = () => {
@@ -20,7 +21,7 @@ const UserProfileInfo: FC = () => {
     const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
     const [isCardLoading, setIsCardLoading] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<UserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
-    const [userBonusCard, setUserBonusCard] = useState<UserBonuses>({ bonuses: '' });
+    const [userBonusCard, setUserBonusCard] = useState<UserBonuses>({ bonuses: '', cardNumber: '' });
 
     useEffect(() => {
         loadUserInfo();
@@ -127,14 +128,16 @@ const UserProfileInfo: FC = () => {
                             {isCardLoading ? (
                                 <span className='loader'>Загрузка...</span>
                             ) : (
-                                <>
-                                    <p className="bonus__text">Получайте кэшбек до 5% с каждого заказа и оплачивайте покупки</p>
-                                    <p className="bonus__card-number">Карта №</p>
+                                <div className='bonus__inner'>
+                                    <div className="bonus__main">
+                                        <p className="bonus__text">Получайте кэшбек до 5% с каждого заказа и оплачивайте покупки</p>
+                                        <p className="bonus__text">Карта №{userBonusCard.cardNumber}</p>
+                                    </div>
                                     <div className="bonus__extra">
                                         <p className="bonus__extra__title">Бонусы</p>
                                         <p className="bonus__extra__amount">{userBonusCard.bonuses}</p>
                                     </div>
-                                </>
+                                </div>
                             )}
                         </div>
                     </>

@@ -4,7 +4,12 @@ $color-gray-label: #888888;
 $color-gray-input-bg: #F3F3F7;
 $color-gray-input-border: #E2E2E9;
 
+$color-gray-bonus-bg: #F3F3F7;
+$color-gray-bonus-border: #E2E2E9;
+
 .main {
+    position: relative;
+
     &__list {
         display: flex;
         border-bottom: 4px solid $color-gray-border;
@@ -108,5 +113,47 @@ $color-gray-input-border: #E2E2E9;
         color: $color-gray-label;
         max-width: min-content;
         cursor: pointer;
+    }
+}
+.bonus {
+    background-color: $color-gray-bonus-bg;
+    border: 1px solid $color-gray-bonus-border;
+    border-radius: 10px;
+    max-width: 395px;
+    position: absolute;
+    right: 0;
+
+    &__inner {
+        display: flex;
+        gap: 16px;
+        padding: 16px 10px 11px 22px;
+    }
+    &__main {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+    &__text {
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    &__extra {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+        background-color: $color-red;
+        border: 1px solid $color-red;
+        border-radius: 8px;
+        font-weight: 700;
+        color: #fff;
+        width: 100dvw;
+        height: 100dvh;
+        max-width: 121px;
+        max-height: 118px;
+
+        &__amount {
+            font-size: 2rem;
+        }
     }
 }
