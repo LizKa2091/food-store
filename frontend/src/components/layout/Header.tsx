@@ -2,6 +2,7 @@ import './Header.scss';
 import logo from '../../images/logo.png';
 import { useState } from 'react';
 import NavProfile from '../UI/NavProfile';
+import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
@@ -29,9 +30,9 @@ const Header: React.FC = () => {
             <nav className='nav'>
                 <div className='nav__top'>
                     <div className="nav__logo">
-                        <a href='#'>
+                        <Link to='/'>
                             <img src={logo} alt="Ильинский" className="nav__logo-img" />
-                        </a>
+                        </Link>
                     </div>
                     <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick}>Каталог</button>
                     <div className="nav__search">

@@ -20,11 +20,12 @@ const fetchUserInfo = async (token: string) => {
     }
 };
 
-const updateUserInfo = async (nameSurname: string, phoneNumber: string, dateOfBirth: string, email: string) => {
+const updateUserInfo = async (token: string, nameSurname: string, phoneNumber: string, dateOfBirth: string, email: string) => {
     try {
         const response = await fetch('http://localhost:5001/update-user-info', {
             method: 'POST',
             headers: {
+                'Authorization': token,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ nameSurname: nameSurname, phoneNumber: phoneNumber, dateOfBirth: dateOfBirth, email: email })

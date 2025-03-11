@@ -86,6 +86,7 @@ $color-gray-bonus-border: #E2E2E9;
             max-width: 309px;
             padding: 0 24px;
             position: relative;
+            outline: none;
 
             &--protected {
                 cursor: not-allowed;
@@ -156,4 +157,8 @@ $color-gray-bonus-border: #E2E2E9;
             font-size: 2rem;
         }
     }
+}
+
+.wrong-input {
+    border: 2px solid $color-red;
 }

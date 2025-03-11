@@ -1,8 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import './UserProfileInfo.scss';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/authService';
-import { fetchBonusCard, fetchUserInfo } from '../../../services/userService';
+import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
 
 interface UserInfo {
     nameSurname: string;
@@ -22,6 +22,9 @@ const UserProfileInfo: FC = () => {
     const [isCardLoading, setIsCardLoading] = useState<boolean>(false);
     const [userInfo, setUserInfo] = useState<UserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
     const [userBonusCard, setUserBonusCard] = useState<UserBonuses>({ bonuses: '', cardNumber: '' });
+    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
+    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
+    const [isDirty, setIsDirty] = useState<boolean>(false);
 
     useEffect(() => {
         loadUserInfo();
@@ -80,6 +83,72 @@ const UserProfileInfo: FC = () => {
         }
     };
 
+    const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        setUserInfo((prev) => ({
+            ...prev,
+            nameSurname: e.target.value
+        }));
+        setIsDirty(true);
+
+        const nameRegex = /^[A-ZА-Я][a-zа-яё]+ [A-ZА-Я][a-zа-яё]+$/;
+
+        if (!nameRegex.test(e.target.value)) {
+            e.target.classList.add('wrong-input');
+            setIsInputWrong(true);
+        }
+        else {
+            e.target.classList.remove('wrong-input');
+            setIsInputWrong(false);
+        }
+    };
+
+    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        setUserInfo((prev) => ({
+            ...prev,
+            email: e.target.value
+        }));
+        setIsDirty(true);
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(e.target.value)) {
+            e.target.classList.add('wrong-input');
+            setIsInputWrong(true);
+        }
+        else {
+            e.target.classList.remove('wrong-input');
+            setIsInputWrong(false);
+        }
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!isInputWrong && isDirty) {
+            const token = localStorage.getItem('token');
+
+            if (token) {
+                const { nameSurname, phoneNumber, dateOfBirth, email } = userInfo;
+
+                const response = await updateUserInfo(token, nameSurname, phoneNumber, dateOfBirth, email);
+
+                if (response.user) {
+                    setIsFormSaved(true);
+                    setIsDirty(false);
+                }
+            }
+            else {
+                throw new Error('ошибка, пользователь не авторизован');
+            }
+        }
+        else if (isDirty) {
+            setIsFormSaved(false);
+        }
+        else {
+            setIsFormSaved(!isInputWrong);
+        }
+    };
+
     return (
         <main className="main">
             <div className='main__selection'>
@@ -102,10 +171,10 @@ const UserProfileInfo: FC = () => {
                             <span className='loader'>Загрузка...</span>
                         ) : (
                             <>
-                                <form className='main__form'>
+                                <form onSubmit={ handleSubmit } className='main__form'>
                                     <div className="main__form__item">
                                         <label htmlFor="name" className="main__form__label">Имя Фамилия</label>
-                                        <input type="text" id='name' className="main__form__input" value={userInfo.nameSurname}/>
+                                        <input onChange={ handleNameChange } type="text" id='name' className="main__form__input" value={userInfo.nameSurname}/>
                                     </div>
                                     <div className="main__form__item">
                                         <label htmlFor="tel" className="main__form__label">Номер телефона</label>
@@ -117,9 +186,14 @@ const UserProfileInfo: FC = () => {
                                     </div>
                                     <div className="main__form__item main__form__item--mail">
                                         <label htmlFor="mail" className="main__form__label">Эл. почта</label>
-                                        <input type="email" id='mail' className="main__form__input main__form__input" value={userInfo.email}/>
+                                        <input onChange={ handleEmailChange } type="email" id='mail' className="main__form__input main__form__input" value={userInfo.email}/>
                                     </div>
                                     <button type='submit' className="main__form__button">Сохранить</button>
+                                    {isFormSaved === true ? (
+                                        <p>Данные успешно обновлены</p>
+                                    ) : isFormSaved === false ? (
+                                        <p>Исправьте все ошибки</p>
+                                    ) : ''}
                                 </form>
                                 <button onClick={ handleLogout } className='main__button'>Выйти</button>
                             </>
