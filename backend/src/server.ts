@@ -9,6 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 const port = process.env.PORT || 5001;
+dotenv.config();
 
 interface User {
     verificationCode: string;
