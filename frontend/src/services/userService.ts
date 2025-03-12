@@ -87,4 +87,26 @@ const fetchUserOrders = async (token: string) => {
     }
 };
 
-export { fetchUserInfo, updateUserInfo, fetchBonusCard, fetchUserOrders };
+const fetchUserFavorites = async (token: string) => {
+    try {
+        const response = await fetch('http://localhost:5001/favorites', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`http ошибка: ${response.status}`)
+        }
+
+        let result = await response.json();
+        return result;
+    }
+    catch (e) {
+        throw new Error(`http ошибка: ${e}`);
+    }
+};
+
+export { fetchUserInfo, updateUserInfo, fetchBonusCard, fetchUserOrders, fetchUserFavorites };
