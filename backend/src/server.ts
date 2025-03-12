@@ -210,6 +210,75 @@ app.post('/add-bonuses', async (req: Request, res: Response): Promise<any> => {
     }
 });
 
+interface Order {
+    orderId: number;
+    status: 'в работе' | 'выполнен';
+    orderType: 'Доставка' | 'Самовывоз';
+    orderDate: string;
+    deliveryAddress?: {
+        street: string;
+        apartment: string;
+        apartmentNumber: number;
+    };
+    orderCost: number;
+};
+
+// Хранилище заказов (в реальном приложении используйте базу данных)
+let userOrders: Record<string, Order[]> = {};
+
+// Функция для генерации случайного 9-значного номера заказа
+const generateOrderId = (): number => {
+    return Math.floor(100000000 + Math.random() * 900000000);
+};
+
+// Инициализация заказов для пользователей
+const initializeUserOrders = (phoneNumber: string) => {
+    if (!userOrders[phoneNumber]) {
+        userOrders[phoneNumber] = [
+            {
+                orderId: generateOrderId(),
+                status: 'в работе',
+                orderType: 'Доставка',
+                orderDate: new Date().toISOString(),
+                deliveryAddress: { street: 'улица Новая', apartment: '13', apartmentNumber: 33 },
+                orderCost: 586,
+            },
+            {
+                orderId: generateOrderId(),
+                status: 'выполнен',
+                orderType: 'Самовывоз',
+                orderDate: new Date().toISOString(),
+                deliveryAddress: { street: 'улица Новая', apartment: '13', apartmentNumber: 33 },
+                orderCost: 586,
+            },
+        ];
+    }
+};
+
+// Получение заказов пользователя
+app.get('/user-orders', async (req: Request, res: Response): Promise<any> => {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: 'Токен не предоставлен.' });
+    }
+    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Неверный токен.' });
+        }
+        const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+        const user = users[phoneNumberFromToken];
+        if (user) {
+            // Инициализация заказов для пользователя, если они еще не инициализированы
+            initializeUserOrders(phoneNumberFromToken);
+            // Возвращаем заказы пользователя
+            const orders = userOrders[phoneNumberFromToken];
+            res.status(200).json({ orders });
+        } else {
+            res.status(404).json({ message: 'Пользователь не найден.' });
+        }
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
