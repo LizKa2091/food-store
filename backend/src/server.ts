@@ -279,6 +279,66 @@ app.get('/user-orders', async (req: Request, res: Response): Promise<any> => {
     });
 });
 
+// Интерфейс для любимого товара
+interface FavoriteItem {
+    productId: string;
+    name: string;
+    price: number;
+    stockQuantity: number;
+    weight: string;
+    newPrice?: number;
+};
+
+// Хранилище любимых товаров (в реальном приложении используйте базу данных)
+let favoriteItems: Record<string, FavoriteItem[]> = {};
+
+// Инициализация любимых товаров для пользователей (пример)
+const initializeFavoriteItems = (phoneNumber: string) => {
+    if (!favoriteItems[phoneNumber]) {
+        favoriteItems[phoneNumber] = [
+            {
+                productId: '1',
+                name: 'Товар 1',
+                price: 129,
+                stockQuantity: 2,
+                weight: '400г',
+                newPrice: 99,
+            },
+            {
+                productId: '2',
+                name: 'Товар 2',
+                price: 70.90,
+                stockQuantity: 0,
+                weight: '1л'
+            },
+        ];
+    }
+};
+
+// Получение любимых товаров пользователя
+app.get('/favorites', async (req: Request, res: Response): Promise<any> => {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: 'Токен не предоставлен.' });
+    }
+    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Неверный токен.' });
+        }
+        const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+        const user = users[phoneNumberFromToken];
+        if (user) {
+            // Инициализация любимых товаров для пользователя, если они еще не инициализированы
+            initializeFavoriteItems(phoneNumberFromToken);
+            // Возвращаем любимые товары пользователя
+            const favorites = favoriteItems[phoneNumberFromToken];
+            res.status(200).json({ favorites });
+        } else {
+            res.status(404).json({ message: 'Пользователь не найден.' });
+        }
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
