@@ -211,7 +211,7 @@ app.post('/add-bonuses', async (req: Request, res: Response): Promise<any> => {
 });
 
 interface Order {
-    orderId: number;
+    orderId: string;
     status: 'в работе' | 'выполнен';
     orderType: 'Доставка' | 'Самовывоз';
     orderDate: string;
@@ -227,8 +227,8 @@ interface Order {
 let userOrders: Record<string, Order[]> = {};
 
 // Функция для генерации случайного 9-значного номера заказа
-const generateOrderId = (): number => {
-    return Math.floor(100000000 + Math.random() * 900000000);
+const generateOrderId = (): string => {
+    return Math.floor(100000000 + Math.random() * 900000000).toString();
 };
 
 // Инициализация заказов для пользователей
