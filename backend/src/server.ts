@@ -24,6 +24,35 @@ interface User {
     email: string;
 };
 
+const products = [
+    {
+        productId: '1',
+        name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
+        price: 129,
+        stockQuantity: 2,
+        weight: '400г',
+        newPrice: 99,
+        imagePath: 'images/product1.png',
+    },
+    {
+        productId: '2',
+        name: 'Сок Ideas тыквенно-апельсиновый',
+        price: 70.90,
+        stockQuantity: 33,
+        weight: '1л',
+        imagePath: 'images/product2.png',
+    },
+    {
+        productId: '3',
+        name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
+        price: 99,
+        stockQuantity: 0,
+        weight: '400г',
+        newPrice: 79,
+        imagePath: 'images/product3.png',
+    }
+];
+
 // Хранилище пользователей (в реальном приложении используйте базу данных)
 let users: Record<string, User> = {};
 
@@ -301,33 +330,7 @@ let favoriteItems: Record<string, FavoriteItem[]> = {};
 // Инициализация любимых товаров для пользователей (пример)
 const initializeFavoriteItems = (phoneNumber: string) => {
     if (!favoriteItems[phoneNumber]) {
-        favoriteItems[phoneNumber] = [
-            {
-                productId: '1',
-                name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
-                price: 129,
-                stockQuantity: 2,
-                weight: '400г',
-                newPrice: 99,
-                imagePath: 'images/product1.png'
-            },
-            {
-                productId: '2',
-                name: 'Сок Ideas тыквенно-апельсиновый',
-                price: 70.90,
-                stockQuantity: 33,
-                weight: '1л',
-                imagePath: 'images/product2.png'
-            },
-            {
-                productId: '3',
-                name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
-                price: 99,
-                stockQuantity: 0,
-                weight: '400г',
-                imagePath: 'images/product1.png'
-            },
-        ];
+        favoriteItems[phoneNumber] = [];
     }
 };
 
@@ -359,39 +362,33 @@ app.get('/favorites', async (req: Request, res: Response): Promise<any> => {
 app.post('/favorites/add', async (req: Request, res: Response): Promise<any> => {
     const token = req.headers['authorization'];
     const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
-    
     if (!token) {
         return res.status(401).json({ message: 'Токен не предоставлен.' });
     }
-    
     jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: 'Неверный токен.' });
         }
-        
         const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
         const user = users[phoneNumberFromToken];
-        
         if (user) {
             // Инициализация любимых товаров, если они еще не инициализированы
             initializeFavoriteItems(phoneNumberFromToken);
             
             // Проверка, существует ли товар
-            const product = favoriteItems[phoneNumberFromToken].find(item => item.productId === productId);
-            if (product) {
+            const product = products.find(item => item.productId === productId);
+            if (!product) {
+                return res.status(404).json({ message: 'Товар не найден.' });
+            }
+            
+            // Проверка, существует ли товар уже в избранном
+            const existingFavorite = favoriteItems[phoneNumberFromToken].find(item => item.productId === productId);
+            if (existingFavorite) {
                 return res.status(400).json({ message: 'Товар уже в избранном.' });
             }
+            
             // Добавляем товар в избранное
-            const favoriteItem = {
-                productId,
-                name: 'Пример товара', // Здесь вы можете добавить логику для получения названия и других данных товара
-                price: 100, // Укажите цену товара
-                stockQuantity: 10, // Укажите количество товара
-                weight: '500г', // Укажите вес товара
-                newPrice: 80, // Укажите новую цену товара, если есть
-                imagePath: 'images/example.png', // Укажите путь к изображению товара
-            };
-            favoriteItems[phoneNumberFromToken].push(favoriteItem);
+            favoriteItems[phoneNumberFromToken].push(product);
             res.status(200).json({ message: 'Товар добавлен в избранное.', favorites: favoriteItems[phoneNumberFromToken] });
         } else {
             res.status(404).json({ message: 'Пользователь не найден.' });
@@ -403,19 +400,15 @@ app.post('/favorites/add', async (req: Request, res: Response): Promise<any> => 
 app.delete('/favorites/remove', async (req: Request, res: Response): Promise<any> => {
     const token = req.headers['authorization'];
     const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
-    
     if (!token) {
         return res.status(401).json({ message: 'Токен не предоставлен.' });
     }
-    
     jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: 'Неверный токен.' });
         }
-        
         const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
         const user = users[phoneNumberFromToken];
-        
         if (user) {
             // Инициализация любимых товаров, если они еще не инициализированы
             initializeFavoriteItems(phoneNumberFromToken);
@@ -425,6 +418,7 @@ app.delete('/favorites/remove', async (req: Request, res: Response): Promise<any
             if (index === -1) {
                 return res.status(404).json({ message: 'Товар не найден в избранном.' });
             }
+            
             // Удаляем товар из избранного
             favoriteItems[phoneNumberFromToken].splice(index, 1);
             res.status(200).json({ message: 'Товар удален из избранного.', favorites: favoriteItems[phoneNumberFromToken] });
