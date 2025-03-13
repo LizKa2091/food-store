@@ -8,6 +8,7 @@ interface IItems {
     stockQuantity: number;
     weight: string;
     newPrice?: number;
+    imagePath: string;
 };
 
 const Favorites: FC = () => {
@@ -40,7 +41,10 @@ const Favorites: FC = () => {
                 userFavorites.length > 0 ? (
                     <ul className="favorites__list">
                         {userFavorites.map(item =>
-                            <li key={item.productId}>{item.name}</li>
+                            <li key={item.productId} className='favorites__item'>
+                                {item.name}
+                                <img src={`http://localhost:5001/${item.imagePath}`} alt={item.name} className='favorites__item__img'/>
+                            </li>
                         )}
                     </ul>
                 ) : (

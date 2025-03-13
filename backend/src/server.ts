@@ -3,13 +3,18 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import path from 'path';
+
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+}));
 app.use(bodyParser.json());
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 const port = process.env.PORT || 5001;
-dotenv.config();
 
 interface User {
     verificationCode: string;
@@ -287,6 +292,7 @@ interface FavoriteItem {
     stockQuantity: number;
     weight: string;
     newPrice?: number;
+    imagePath?: string;
 };
 
 // Хранилище любимых товаров (в реальном приложении используйте базу данных)
@@ -303,13 +309,15 @@ const initializeFavoriteItems = (phoneNumber: string) => {
                 stockQuantity: 2,
                 weight: '400г',
                 newPrice: 99,
+                imagePath: 'images/product1.png'
             },
             {
                 productId: '2',
                 name: 'Товар 2',
                 price: 70.90,
                 stockQuantity: 0,
-                weight: '1л'
+                weight: '1л',
+                imagePath: 'images/product2.png'
             },
         ];
     }
