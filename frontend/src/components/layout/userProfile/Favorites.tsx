@@ -42,9 +42,11 @@ const Favorites: FC = () => {
                     <ul className="favorites__list">
                         {userFavorites.map(item => (
                             <li key={item.productId} className='favorites__item'>
-                                <div className="favorites__item-sale">
-                                    %
-                                </div>
+                                {item?.newPrice &&
+                                    <div className="favorites__item-sale">
+                                        %
+                                    </div>
+                                }
                                 <button className="favorites__item-button favorites__item-button--favorite"></button>
                                 <img src={`http://localhost:5001/${item.imagePath}`} alt={item.name} className='favorites__item-img'/>
                                 <div className="favorites__item__inner">

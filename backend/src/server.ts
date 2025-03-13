@@ -355,6 +355,85 @@ app.get('/favorites', async (req: Request, res: Response): Promise<any> => {
     });
 });
 
+// Добавление товара в любимые
+app.post('/favorites/add', async (req: Request, res: Response): Promise<any> => {
+    const token = req.headers['authorization'];
+    const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Токен не предоставлен.' });
+    }
+    
+    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Неверный токен.' });
+        }
+        
+        const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+        const user = users[phoneNumberFromToken];
+        
+        if (user) {
+            // Инициализация любимых товаров, если они еще не инициализированы
+            initializeFavoriteItems(phoneNumberFromToken);
+            
+            // Проверка, существует ли товар
+            const product = favoriteItems[phoneNumberFromToken].find(item => item.productId === productId);
+            if (product) {
+                return res.status(400).json({ message: 'Товар уже в избранном.' });
+            }
+            // Добавляем товар в избранное
+            const favoriteItem = {
+                productId,
+                name: 'Пример товара', // Здесь вы можете добавить логику для получения названия и других данных товара
+                price: 100, // Укажите цену товара
+                stockQuantity: 10, // Укажите количество товара
+                weight: '500г', // Укажите вес товара
+                newPrice: 80, // Укажите новую цену товара, если есть
+                imagePath: 'images/example.png', // Укажите путь к изображению товара
+            };
+            favoriteItems[phoneNumberFromToken].push(favoriteItem);
+            res.status(200).json({ message: 'Товар добавлен в избранное.', favorites: favoriteItems[phoneNumberFromToken] });
+        } else {
+            res.status(404).json({ message: 'Пользователь не найден.' });
+        }
+    });
+});
+
+// Удаление товара из любимых
+app.delete('/favorites/remove', async (req: Request, res: Response): Promise<any> => {
+    const token = req.headers['authorization'];
+    const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Токен не предоставлен.' });
+    }
+    
+    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Неверный токен.' });
+        }
+        
+        const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+        const user = users[phoneNumberFromToken];
+        
+        if (user) {
+            // Инициализация любимых товаров, если они еще не инициализированы
+            initializeFavoriteItems(phoneNumberFromToken);
+            
+            // Находим индекс товара в избранном
+            const index = favoriteItems[phoneNumberFromToken].findIndex(item => item.productId === productId);
+            if (index === -1) {
+                return res.status(404).json({ message: 'Товар не найден в избранном.' });
+            }
+            // Удаляем товар из избранного
+            favoriteItems[phoneNumberFromToken].splice(index, 1);
+            res.status(200).json({ message: 'Товар удален из избранного.', favorites: favoriteItems[phoneNumberFromToken] });
+        } else {
+            res.status(404).json({ message: 'Пользователь не найден.' });
+        }
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
