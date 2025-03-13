@@ -13,6 +13,11 @@ $color-gray-completed-bg: #8E8E8E;
 
 $color-gray-date: #434343;
 
+$color-gray-fav-border: #DADADA;
+$color-brown-out-of-stock: #BF7373;
+$color-red-new-price: #CF0000;
+$color-gray-old-price: #434343;
+
 .main {
     position: relative;
 
@@ -271,6 +276,104 @@ $color-gray-date: #434343;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+    }
+}
+
+.favorites {
+    padding: 67px 0 188px 0;
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+    }
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        border: 1px solid $color-gray-fav-border;
+        border-radius: 20px;
+        max-width: 304px;
+        position: relative;
+
+        &__inner {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            padding: 0 18px 21px 18px;
+        }
+        &-sale {
+            border: 1px solid $color-red;
+            border-radius: 20px 0 20px 0;
+            background-color: $color-red;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            padding: 2px 13.67px 0 13.67px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        &-button {
+            cursor: pointer;
+
+            &--favorite {
+                background: url('../../../images/favorited-icon.png') no-repeat center center;
+                background-size: contain;
+                border: 0;
+                width: 22px;
+                height: 19.68px;
+                position: absolute;
+                top: 17px;
+                right: 21px;
+            }
+            &--buy {
+                border: 1px solid $color-red;
+                border-radius: 60px;
+                background-color: inherit;
+                font-weight: 600;
+                color: $color-red;
+                width: 100%;
+                max-width: 109px;
+                height: 42px;
+
+                &:hover {
+                    background-color: $color-red;
+                    color: #fff;
+                }
+            }
+        }
+        &-amount {
+            font-size: 0.875rem;
+            color: $color-gray-date;
+
+            &--empty {
+                color: $color-brown-out-of-stock;
+            }
+        }
+        &-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        &-price-cart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        &-new-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $color-red-new-price;
+        }
+        &-old-price {
+            font-size: 0.875rem;
+            color: $color-gray-old-price;
+            text-decoration: line-through;
+        }
+        &-price {
+            font-size: 1.5rem;
+            font-weight: 600;
         }
     }
 }

@@ -40,15 +40,47 @@ const Favorites: FC = () => {
             ) : (
                 userFavorites.length > 0 ? (
                     <ul className="favorites__list">
-                        {userFavorites.map(item =>
+                        {userFavorites.map(item => (
                             <li key={item.productId} className='favorites__item'>
-                                {item.name}
-                                <img src={`http://localhost:5001/${item.imagePath}`} alt={item.name} className='favorites__item__img'/>
+                                <div className="favorites__item-sale">
+                                    %
+                                </div>
+                                <button className="favorites__item-button favorites__item-button--favorite"></button>
+                                <img src={`http://localhost:5001/${item.imagePath}`} alt={item.name} className='favorites__item-img'/>
+                                <div className="favorites__item__inner">
+                                    <p className={"favorites__item-amount" + (item.stockQuantity > 0 ? '' : ' favorites__item-amount--empty')}>
+                                        {item.stockQuantity > 0 ? (
+                                            `В наличии ${item.stockQuantity} шт`
+                                        ) : (
+                                            `Появится завтра`
+                                        )}
+                                    </p>
+                                    <p className="favorites__item-title">{item.name}, {item.weight}</p>
+                                    <div className="favorites__item-price-cart">
+                                        <div className={"favorites__item-price" + (item?.newPrice ? 'favorites__item-price--onsale' : '')}>
+                                            {item?.newPrice ? (
+                                                <>
+                                                    <p className="favorites__item-new-price">{item.newPrice} руб</p>
+                                                    <p className="favorites__item-old-price">{item.price} руб</p>
+                                                </>
+                                            ) : (
+                                                <p className="favorites__item-price">{item.price} руб</p>
+                                            )}
+                                        </div>
+                                        <button className="favorites__item-button favorites__item-button--buy">
+                                            {item?.newPrice ? (
+                                                'В корзину'
+                                            ) : (
+                                                'На завтра'
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
                             </li>
-                        )}
+                        ))}
                     </ul>
                 ) : (
-                    <p>Любимых товаров пока нет</p>
+                    <p className='favorites__warning'>Любимых товаров пока нет</p>
                 )
             )}
         </div>

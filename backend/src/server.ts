@@ -304,7 +304,7 @@ const initializeFavoriteItems = (phoneNumber: string) => {
         favoriteItems[phoneNumber] = [
             {
                 productId: '1',
-                name: 'Товар 1',
+                name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
                 price: 129,
                 stockQuantity: 2,
                 weight: '400г',
@@ -313,11 +313,19 @@ const initializeFavoriteItems = (phoneNumber: string) => {
             },
             {
                 productId: '2',
-                name: 'Товар 2',
+                name: 'Сок Ideas тыквенно-апельсиновый',
                 price: 70.90,
-                stockQuantity: 0,
+                stockQuantity: 33,
                 weight: '1л',
                 imagePath: 'images/product2.png'
+            },
+            {
+                productId: '3',
+                name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
+                price: 99,
+                stockQuantity: 0,
+                weight: '400г',
+                imagePath: 'images/product1.png'
             },
         ];
     }
