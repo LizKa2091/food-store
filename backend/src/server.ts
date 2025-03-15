@@ -49,7 +49,7 @@ const products = [
         stockQuantity: 0,
         weight: '400г',
         newPrice: 79,
-        imagePath: 'images/product3.png',
+        imagePath: 'images/product1.png',
     }
 ];
 

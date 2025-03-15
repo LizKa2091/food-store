@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { fetchUserFavorites } from '../../../services/userService';
+import FavoriteButton from '../../UI/FavoriteButton';
 
 interface IItems {
     productId: string;
@@ -11,21 +12,33 @@ interface IItems {
     imagePath: string;
 };
 
+interface FavoriteItem {
+    productId: string;
+    name: string;
+    price: number;
+    stockQuantity: number;
+    weight: string;
+    newPrice?: number;
+    imagePath?: string;
+};
+
 const Favorites: FC = () => {
-    const [userFavorites, setUserFavorites] = useState<IItems[]>([]);
+    const [userFavoritesInfo, setUserFavoritesInfo] = useState<IItems[]>([]);
+    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        getUserFavoritesInfo();
         getUserFavorites();
     }, []);
 
-    const getUserFavorites = async () => {
+    const getUserFavoritesInfo = async () => {
         setIsLoading(true);
         const token = localStorage.getItem('token');
 
         if (token) {
             const response = await fetchUserFavorites(token);
-            setUserFavorites(response.favorites);
+            setUserFavoritesInfo(response.favorites);
             setIsLoading(false);
         }
         else {
@@ -33,21 +46,43 @@ const Favorites: FC = () => {
         }
     };
 
+    const getUserFavorites = async () => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            let response;
+
+            try {
+                response = await fetchUserFavorites(token);
+
+                const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
+                setUserFavorites(favorites);
+            }
+            catch(e) {
+                throw new Error(`ошибка: ${e}`);
+            }
+        }
+        else {
+            throw new Error('ошибка, пользователь не авторизован');
+        }
+
+    };
+
     return (
         <div className='favorites'>
             {isLoading ? (
                 <p className="loader">Загрузка...</p>
             ) : (
-                userFavorites.length > 0 ? (
+                userFavoritesInfo.length > 0 ? (
                     <ul className="favorites__list">
-                        {userFavorites.map(item => (
+                        {userFavoritesInfo.map(item => (
                             <li key={item.productId} className='favorites__item'>
                                 {item?.newPrice &&
                                     <div className="favorites__item-sale">
                                         %
                                     </div>
                                 }
-                                <button className="favorites__item-button favorites__item-button--favorite"></button>
+                                <FavoriteButton productId={item.productId} initialFavState={true}/>
                                 <img src={`http://localhost:5001/${item.imagePath}`} alt={item.name} className='favorites__item-img'/>
                                 <div className="favorites__item__inner">
                                     <p className={"favorites__item-amount" + (item.stockQuantity > 0 ? '' : ' favorites__item-amount--empty')}>

@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import item1Image from '../../images/products/sale-product-1.png';
 import item2Image from '../../images/products/sale-product-2.png';
+import FavoriteButton from "./FavoriteButton";
+import { fetchUserFavorites } from "../../services/userService";
 import './SalesAndRecommendation.scss';
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
 interface CategoryProps {
     type: CategoryType;
-}
+};
+
+interface FavoriteItem {
+    productId: string;
+    name: string;
+    price: number;
+    stockQuantity: number;
+    weight: string;
+    newPrice?: number;
+    imagePath?: string;
+};
+
 
 interface Item {
+    productId: string;
     image: string;
     amount: number;
     name: string;
@@ -18,12 +32,39 @@ interface Item {
 };
 
 const SalesAndRecommendation = ({ type } : CategoryProps) => {
+    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
+
+    useEffect(() => {
+        getUserFavorites();
+    }, []);
+
     const items: Record<string, Item> = {
-        item1: {image: item1Image, amount: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
-        item2: {image: item2Image, amount: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
-        item3: {image: item1Image, amount: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
-        item4: {image: item2Image, amount: 3, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90},
-    }
+        item1: { productId: '1', image: item1Image, amount: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+        item2: { productId: '2', image: item2Image, amount: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
+        item3: { productId: '3', image: item1Image, amount: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+    };
+
+    const getUserFavorites = async () => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            let response;
+
+            try {
+                response = await fetchUserFavorites(token);
+
+                const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
+                setUserFavorites(favorites);
+            }
+            catch(e) {
+                throw new Error(`ошибка: ${e}`);
+            }
+        }
+        else {
+            throw new Error('ошибка, пользователь не авторизован');
+        }
+
+    };
 
     return (
         <section className="sales-and-recommendation">
@@ -35,7 +76,8 @@ const SalesAndRecommendation = ({ type } : CategoryProps) => {
                 <ul className="sales-and-recommendation__list">
                     {Object.entries(items).map(([key, item]) => (
                         <li key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
-                            <img src={item.image} className="sales-and-recommendation__item__img" />
+                            <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} />
+                            <img src={item.image} className="sales-and-recommendation__item__img" alt={item.name}/>
                             <div className="sales-and-recommendation__item__left">
                                 {item.amount !== 0 ?
                                     <p className="sales-and-recommendation__item__amount">В наличии {item.amount}</p>
@@ -44,7 +86,7 @@ const SalesAndRecommendation = ({ type } : CategoryProps) => {
                                 <p className="sales-and-recommendation__item__title">{item.name}</p>
                                 <p className="sales-and-recommendation__item__price">{item.price} руб</p>
                                 {item.oldPrice ?
-                                    <p className="sales-and-recommendation__item__price--old">{item.oldPrice} руб</p>
+                                    <p className="sales-and-recomm  endation__item__price--old">{item.oldPrice} руб</p>
                                     : ''
                                 }
                             </div>

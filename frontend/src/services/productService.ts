@@ -24,7 +24,7 @@ const addToFavorites = async (token: string, productId: string) => {
 const removeFromFavorites = async (token: string, productId: string) => {
     try {
         const response = await fetch('http://localhost:5001/favorites/remove', {
-            method: 'DELETE ',
+            method: 'DELETE',
             headers: {
                 'Authorization': token,
                 'Content-Type': 'application/json'

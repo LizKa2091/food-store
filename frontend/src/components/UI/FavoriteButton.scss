@@ -1,0 +1,16 @@
+.favorite-button {
+    background: url('../../images/favorite-icon.png') no-repeat center center;
+    background-size: contain;
+    border: 0;
+    width: 22px;
+    height: 19.68px;
+    position: absolute;
+    top: 17px;
+    right: 21px;
+    cursor: pointer;
+
+    &--favorited {
+        background: url('../../images/favorited-icon.png') no-repeat center center;
+        background-size: contain;
+    }
+}

@@ -319,16 +319,6 @@ $color-gray-old-price: #434343;
         &-button {
             cursor: pointer;
 
-            &--favorite {
-                background: url('../../../images/favorited-icon.png') no-repeat center center;
-                background-size: contain;
-                border: 0;
-                width: 22px;
-                height: 19.68px;
-                position: absolute;
-                top: 17px;
-                right: 21px;
-            }
             &--buy {
                 border: 1px solid $color-red;
                 border-radius: 60px;
