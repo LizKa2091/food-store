@@ -73,6 +73,9 @@ $red: #FF0000;
         width: 100%;
         gap: 25px;
     }
+    &__link {
+        text-decoration: none;
+    }
     &__item {
         list-style-type: none;
         border: 1px solid $gray-item-border;
@@ -81,6 +84,7 @@ $red: #FF0000;
         max-width: 304px;
         height: 406px;
         position: relative;
+        cursor: pointer;
 
         &__img {
             width: 100%;
@@ -98,6 +102,7 @@ $red: #FF0000;
         &__title {
             font-size: 1.25rem;
             font-weight: 600;
+            color: #000;
         }
 
         &__price {

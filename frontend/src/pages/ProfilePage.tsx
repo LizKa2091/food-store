@@ -7,7 +7,7 @@ import './ProfilePage.scss';
 
 const ProfilePage: FC = () => {
   return (
-    <Wrapper>
+    <Wrapper modalState={false}>
         <Header />
         <h2 className='title'>Личный кабинет</h2>
         <UserProfileInfo />

@@ -1,0 +1,161 @@
+$color-red: #FF0000;
+$color-white: #fff;
+$color-gray-button-border: #DADADA;
+$color-orange-button-background: #FFF8EB;
+$color-orange-button-border: #FFE7B9;
+$color-orange-button-text: #DA9000;
+$orange-button-bg-hover: #FFA900;
+
+$color-gray-close-text: #AAAAAA;
+$color-gray-close-bg: #F2F3F5;
+
+.item-modal {
+    border: 1px solid $color-white;
+    border-radius: 20px;
+    background-color: $color-white;
+    width: 67.292dvw;
+    height: 76.019dvh;
+    max-width: 1290px;
+    max-height: 819px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    &__inner {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 100%;
+    }
+    &__right {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: 100%;
+        max-height: 705px;
+    }
+    &__img {
+        max-width: 490px;
+        max-height: 490px;
+    }
+    &__row {
+        display: flex;
+
+        &--numbers {
+            font-weight: 600;
+            gap: 15px;
+        }
+        &--main {
+            gap: 41px;
+        }
+        &--buttons {
+            display: flex;
+            gap: 11px;
+        }
+    }
+    &__category {
+        font-weight: 600;
+    }
+    &__title {
+        font-size: 2rem;
+        font-weight: 700;
+        max-width: 604px;
+    }
+    &__price {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    &__button {
+        cursor: pointer;
+
+        &--cart {
+            border: 1px solid $color-red;
+            border-radius: 60px;
+            background-color: $color-red;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: $color-white;
+            width: 10dvw;
+            height: 42px;
+            max-width: 146px;
+        }
+        &--like {
+            border: 1px solid $color-gray-button-border;
+            border-radius: 60px;
+            background: url('../../images/favorite-icon.png') no-repeat center center;
+            background-size: 22px 19.68px;
+            width: 44px;
+            height: 42px;
+        }
+        &--more {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid $color-orange-button-border;
+            border-radius: 11.5px;
+            background-color: $color-orange-button-background;
+            font-size: 1rem;
+            font-weight: 500;
+            color: $color-orange-button-text;
+            width: 100%;
+            height: 33px;
+            max-width: 132px;
+            position: relative;
+
+            &::after {
+                content: '';
+                background: url('../../images/products/arrow-right-button.png') no-repeat center center;
+                background-size: contain;
+                width: 8.55px;
+                height: 5.01px;
+                position: relative;
+                left: 5px;
+                display: block;
+            }
+
+            &:hover {
+                border: 1px solid $orange-button-bg-hover;
+                background-color: $orange-button-bg-hover;
+                color: $color-white;
+
+                &::after {
+                    background: url('../../images/products/arrow-right-button-hover.png') no-repeat center center;
+                    background-size: contain;
+                }
+            }
+
+        }
+        &--close {
+            border: 1px solid $color-gray-close-bg;
+            border-radius: 50%;
+            background-color: $color-gray-close-bg;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $color-gray-close-text;
+            width: 38px;
+            height: 38px;
+            padding-bottom: 5px;
+            cursor: pointer;
+        }
+    }
+    &__close {
+        text-align: center;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    &__extra {
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            font-size: 1.25rem;
+            height: 100%;
+            max-width: 617px;
+            max-height: 318px;
+        }
+    }
+}
