@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { postPhoneNum, postCode, verifyUser, logout, createBonusCard } from '../../services/authService';
 import PinInput from './PinInput';
+import { useMessage } from '../../context/MessageContext';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
@@ -13,6 +14,8 @@ const NavProfile: FC = () => {
     const [currCode, setCurrCode] = useState<string>('');
     const [currUserCode, setCurrUserCode] = useState<string>('');
     const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null);
+
+    const { setMessage } = useMessage();
     
     useEffect(() => {
         if (currStep === 3) {
@@ -77,8 +80,9 @@ const NavProfile: FC = () => {
     };
 
     const verifyCode = async (): Promise<void> => {
+        let response;
         try {
-            let response = await postCode(currUserTel, currUserCode);
+            response = await postCode(currUserTel, currUserCode);
             
             if (response.token) {
                 localStorage.setItem('token', response.token);
@@ -87,10 +91,12 @@ const NavProfile: FC = () => {
                 createBonusCard(currUserTel);
             }
             else {
+                setMessage(response.message);
                 setIsCodeCorrect(false);
             }
         }
         catch (e) {
+            setMessage(response.message);
             setIsCodeCorrect(false);
         }
     };

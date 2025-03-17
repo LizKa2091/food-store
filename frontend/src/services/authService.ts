@@ -21,8 +21,9 @@ const postPhoneNum = async (phoneNumber: string) => {
 };
 
 const postCode = async (phoneNumber: string, code: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/verify', {
+        response = await fetch('http://localhost:5001/verify', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,14 +32,17 @@ const postCode = async (phoneNumber: string, code: string) => {
         });
 
         if (!response.ok && response.status === 401) {
-            throw new Error(`http ошибка: ${response.status}`);
+            const errorData = await response.json();
+            return errorData || 'Неизвестная ошибка'
         }
         
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+        const errorData = await response?.json();
+
+        return errorData || 'Неизвестная ошибка';
     }
 };
 

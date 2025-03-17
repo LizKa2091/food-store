@@ -174,8 +174,8 @@ const PersonalData: FC = () => {
                             ) : isFormSaved === false ? (
                                 <p>Исправьте все ошибки</p>
                             ) : ''}
+                        <button onClick={ handleLogout } className='main__button'>Выйти</button>
                     </form>
-                    <button onClick={ handleLogout } className='main__button'>Выйти</button>
                 </>
             )}
             <div className='bonus'>
