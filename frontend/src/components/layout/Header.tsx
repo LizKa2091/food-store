@@ -1,9 +1,10 @@
-import './Header.scss';
 import logo from '../../images/logo.png';
 import { useState, useContext } from 'react';
 import NavProfile from '../UI/NavProfile';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import Notifications from '../UI/Notifications';
+import './Header.scss';
 
 const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
@@ -83,6 +84,7 @@ const Header: React.FC = () => {
                             </li>
                         ))}
                     </ul>
+                    <Notifications />
                 </div>
             </nav>
         </header>

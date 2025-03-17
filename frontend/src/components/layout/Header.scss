@@ -38,7 +38,7 @@ $button-sale-h: 43px;
             bottom: 0;
             background: url('../../images/header-bg.png') no-repeat center center, $color-red;
             background-size: contain;
-            width: 100%;
+            width: 100dvw;
             height: 97px;
             z-index: -1;
         }
@@ -78,6 +78,9 @@ $button-sale-h: 43px;
     &__top {
         display: flex;
         justify-content: space-between;
+    }
+    &__bottom {
+        position: relative;
     }
     &__logo-img {
         width: 200.09px;

@@ -1,0 +1,37 @@
+$color-gray-button-text: #AAAAAA;
+$color-orange-notif-bg:#FFF8EB;
+$color-orange-notif-border: #FFA900;
+
+.notifications {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-orange-notif-bg;
+    border: 1px solid $color-orange-notif-border;
+    border-radius: 16px;
+    width: 100%;
+    min-height: 48px;
+    max-width: 255px;
+    padding: 5px 12px;
+    position: fixed;
+    top: 7%;
+    right: 2%;
+    z-index: 2;
+    transition: opacity 0.7s ease;
+
+    &__text {
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+    &__button {
+        border: 0;
+        background-color: inherit;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $color-gray-button-text;
+        cursor: pointer;
+    }
+    &.hidden {
+        opacity: 0;
+    }
+}
