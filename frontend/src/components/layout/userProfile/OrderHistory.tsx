@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { fetchUserOrders } from '../../../services/userService';
+import { useMessage } from '../../../context/MessageContext';
 
 interface IDeliveryAddress {
     street: string;
@@ -21,6 +22,8 @@ type UserOrders = Record<string, IOrder>;
 const OrderHistory: FC = () => {
     const [userOrders, setUserOrders] = useState<UserOrders>({});
 
+    const { setMessage } = useMessage();
+
     useEffect(() => {
         getUserOrders();
     }, []);
@@ -29,11 +32,19 @@ const OrderHistory: FC = () => {
         const token = localStorage.getItem('token');
 
         if (token) {
-            const response = await fetchUserOrders(token);
-            setUserOrders(response.orders);
+            let response;
+
+            try {
+                response = await fetchUserOrders(token);
+                setUserOrders(response.orders);
+                setMessage('');
+            }
+            catch (e) {
+                setMessage(response.message);
+            }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+            setMessage('Пожалуйста, авторизуйтесь');
         }
     };
 

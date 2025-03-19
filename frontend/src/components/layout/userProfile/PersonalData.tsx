@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/authService';
 import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
+import { useMessage } from '../../../context/MessageContext';
 
 interface UserInfo {
     nameSurname: string;
@@ -24,6 +25,8 @@ const PersonalData: FC = () => {
     const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
     const [isDirty, setIsDirty] = useState<boolean>(false);
 
+    const { setMessage } = useMessage();
+
     useEffect(() => {
         loadUserInfo();
         loadUserCard();
@@ -35,47 +38,69 @@ const PersonalData: FC = () => {
         const userToken = localStorage.getItem('token');
 
         if (userToken) {
-            const response = await logout(userToken);
+            let response;
 
-            if (response.isSuccess) {
-                localStorage.removeItem('token');
-                navigate('/');
+            try {
+                response = await logout(userToken);
+
+                if (response.isSuccess) {
+                    localStorage.removeItem('token');
+                    navigate('/');
+                }
+                else {
+                    setMessage('Что-то пошло не так');
+                }
             }
+            catch (e) {
+                setMessage(response.message);
+            }    
         }
         else {
-            throw new Error('ошибка, токен пользователя не найден');
+            setMessage('Пользователь не авторизован');
         }
     };
 
     const loadUserInfo = async () => {
         setIsInfoLoading(true);
-
         const token = localStorage.getItem('token');
 
         if (token) {
-            const result = await fetchUserInfo(token);
+            let response;
 
-            setIsInfoLoading(false);
-            setUserInfo(result.user)
+            try {
+                response = await fetchUserInfo(token);
+
+                setIsInfoLoading(false);
+                setUserInfo(response.user)
+            }
+            catch (e) {
+                setMessage(response.message);
+            }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+            setMessage('Пользователь не авторизован');
         }
     };
 
     const loadUserCard = async () => {
         setIsCardLoading(true);
-
         const token = localStorage.getItem('token');
 
         if (token) {
-            const result = await fetchBonusCard(token);
+            let response;
 
-            setIsCardLoading(false);
-            setUserBonusCard(result.bonusCard)
+            try {
+                response = await fetchBonusCard(token);
+
+                setIsCardLoading(false);
+                setUserBonusCard(response.bonusCard);
+            }
+            catch (e) {
+                setMessage(response.message);
+            }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+            setMessage('Пользователь не авторизован');
         }
     };
 
@@ -125,16 +150,22 @@ const PersonalData: FC = () => {
 
             if (token) {
                 const { nameSurname, phoneNumber, dateOfBirth, email } = userInfo;
+                let response;
 
-                const response = await updateUserInfo(token, nameSurname, phoneNumber, dateOfBirth, email);
+                try {
+                    response = await updateUserInfo(token, nameSurname, phoneNumber, dateOfBirth, email);
 
-                if (response.user) {
-                    setIsFormSaved(true);
-                    setIsDirty(false);
+                    if (response.user) {
+                        setIsFormSaved(true);
+                        setIsDirty(false);
+                    }
+                }
+                catch (e) {
+                    setMessage(response.message);
                 }
             }
             else {
-                throw new Error('ошибка, пользователь не авторизован');
+                setMessage('Пользователь не авторизован');
             }
         }
         else if (isDirty) {

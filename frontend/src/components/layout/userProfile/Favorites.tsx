@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { fetchUserFavorites } from '../../../services/userService';
 import FavoriteButton from '../../UI/FavoriteButton';
+import { useMessage } from '../../../context/MessageContext';
 
 interface IItems {
     productId: string;
@@ -27,6 +28,8 @@ const Favorites: FC = () => {
     const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const { setMessage } = useMessage();
+
     useEffect(() => {
         getUserFavoritesInfo();
         getUserFavorites();
@@ -37,12 +40,20 @@ const Favorites: FC = () => {
         const token = localStorage.getItem('token');
 
         if (token) {
-            const response = await fetchUserFavorites(token);
-            setUserFavoritesInfo(response.favorites);
-            setIsLoading(false);
+            let response;
+
+            try {
+                response = await fetchUserFavorites(token);
+                setUserFavoritesInfo(response.favorites);
+                setIsLoading(false);
+                setMessage('');
+            }
+            catch (e) {
+                setMessage(response.message);
+            }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+            setMessage('Пожалуйста, авторизуйтесь');
         }
     };
 
@@ -57,15 +68,15 @@ const Favorites: FC = () => {
 
                 const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
                 setUserFavorites(favorites);
+                setMessage('');
             }
-            catch(e) {
-                throw new Error(`ошибка: ${e}`);
+            catch (e) {
+                setMessage(response.message);
             }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+            setMessage('Пожалуйста, авторизуйтесь');
         }
-
     };
 
     return (

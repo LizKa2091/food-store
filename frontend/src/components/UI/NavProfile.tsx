@@ -30,6 +30,8 @@ const NavProfile: FC = () => {
     const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
     const handleStepButton = (): void => {
+        setMessage('');
+
         if (currStep < 3) {
             setCurrStep((prevVal: number) => prevVal+1);
         }
@@ -56,6 +58,7 @@ const NavProfile: FC = () => {
 
         if (!phoneRegExp.test(phoneNum)) {
             phoneInput.classList.add('wrong-phone');
+            setMessage("Номер телефона должен содержать 11 цифр");
             return;
         }
         else {
@@ -73,10 +76,17 @@ const NavProfile: FC = () => {
     };
 
     const getGeneratedCode = async (): Promise<void> => {
-        let result = await postPhoneNum(currUserTel);
-        let resultCode = result.verificationCode;
+        let response;
 
-        setCurrCode(resultCode);
+        try {
+            response = await postPhoneNum(currUserTel);
+
+            let resultCode = response?.verificationCode;
+            setCurrCode(resultCode);
+        }
+        catch (e) {
+            setMessage(response.message)
+        }     
     };
 
     const verifyCode = async (): Promise<void> => {
@@ -103,33 +113,43 @@ const NavProfile: FC = () => {
 
     const isUserAuthed = async (): Promise<void> => {
         const userToken = localStorage.getItem('token');
+        let response;
 
         if (userToken) {
-            const response = await verifyUser(userToken);
+            response = await verifyUser(userToken);
             
-            if (response.isAuthenticated === true) {
+            if (response?.isAuthenticated === true) {
                 setIsAuthed(true);
             }
+            // else {
+            //     setMessage("Пожалуйста, авторизуйтесь");
+            // }
         }
+        // else {
+        //     setMessage("Пожалуйста, авторизуйтесь");
+        // }
     };
 
     const handleLogout = async (): Promise<void> => {
         const userToken = localStorage.getItem('token');
+        let response;
 
-        if (userToken) {
-            const response = await logout(userToken);
-            
-            if (response.isSuccess) {
-                localStorage.removeItem('token');
-                setIsAuthed(false);
-                resetForm();
-            }
-            else {  
-                throw new Error(response.message);
+        try {
+            if (userToken) {
+                response = await logout(userToken);
+                
+                if (response?.isSuccess) {
+                    localStorage.removeItem('token');
+                    setIsAuthed(false);
+                    resetForm();
+                }
+                else {  
+                    setMessage(response.message);
+                }
             }
         }
-        else {
-            throw new Error('ошибка, неавторизованный пользователь не может выйти из профиля')
+        catch (e) {
+            setMessage(response.message);
         }
     };
 

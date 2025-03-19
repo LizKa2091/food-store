@@ -4,6 +4,7 @@ import item2Image from '../../images/products/sale-product-2.png';
 import FavoriteButton from "./FavoriteButton";
 import { fetchUserFavorites } from "../../services/userService";
 import ItemCard from "./ItemCard";
+import { useMessage } from "../../context/MessageContext";
 import './SalesAndRecommendation.scss';
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
@@ -36,6 +37,8 @@ const SalesAndRecommendation = ({ type, onModalChange } : CategoryProps) => {
     const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
 
+    const { setMessage } = useMessage();
+
     useEffect(() => {
         getUserFavorites();
     }, []);
@@ -56,13 +59,11 @@ const SalesAndRecommendation = ({ type, onModalChange } : CategoryProps) => {
 
                 const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
                 setUserFavorites(favorites);
+                setMessage('');
             }
             catch(e) {
-                throw new Error(`ошибка: ${e}`);
+                setMessage(response?.message);
             }
-        }
-        else {
-            throw new Error('ошибка, пользователь не авторизован');
         }
     };
 

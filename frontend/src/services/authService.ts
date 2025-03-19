@@ -1,6 +1,7 @@
 const postPhoneNum = async (phoneNumber: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/register', {
+        response = await fetch('http://localhost:5001/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -9,14 +10,16 @@ const postPhoneNum = async (phoneNumber: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка ${response.status}`);
+            const errorData = await response.json();
+            return errorData || 'Неизвестная ошибка'
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+        const errorData = await response?.json();
+        return errorData || e;
     }
 };
 
@@ -41,14 +44,14 @@ const postCode = async (phoneNumber: string, code: string) => {
     }
     catch (e) {
         const errorData = await response?.json();
-
-        return errorData || 'Неизвестная ошибка';
+        return errorData || e;
     }
 };
 
 const createBonusCard = async (phoneNumber: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/create-bonus-card', {
+        response = await fetch('http://localhost:5001/create-bonus-card', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -57,20 +60,23 @@ const createBonusCard = async (phoneNumber: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка: ${response.status}`)
+            const errorData = await response.json();
+            return errorData || 'Неизвестная ошибка'
         }
 
         const result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+        const errorData = await response?.json();
+        return errorData || e;
     }
 };
 
 const verifyUser = async (token: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/status', {
+        response = await fetch('http://localhost:5001/status', {
             method: 'GET',
             headers: {
                 'Authorization': token,
@@ -79,20 +85,23 @@ const verifyUser = async (token: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка: ${response.status}`);
+            const errorData = await response.json();
+            return errorData || 'Неизвестная ошибка'
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+        const errorData = await response?.json();
+        return errorData || e;
     }
 };
 
 const logout = async (token: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/logout', {
+        response = await fetch('http://localhost:5001/logout', {
             method: 'POST',
             headers: {
                 'Authorization': token,
@@ -102,14 +111,16 @@ const logout = async (token: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка: ${response.status}`);
+            const errorData = await response.json();
+            return errorData || 'Неизвестная ошибка'
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+        const errorData = await response?.json();
+        return errorData || e;
     }
 };
 
