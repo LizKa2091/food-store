@@ -1,9 +1,9 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useMessage } from '../../context/MessageContext';
 import { Link } from 'react-router-dom';
 import { postPhoneNum, postCode, verifyUser, logout, createBonusCard } from '../../services/authService';
 import PinInput from './PinInput';
-import { useMessage } from '../../context/MessageContext';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
@@ -121,13 +121,7 @@ const NavProfile: FC = () => {
             if (response?.isAuthenticated === true) {
                 setIsAuthed(true);
             }
-            // else {
-            //     setMessage("Пожалуйста, авторизуйтесь");
-            // }
         }
-        // else {
-        //     setMessage("Пожалуйста, авторизуйтесь");
-        // }
     };
 
     const handleLogout = async (): Promise<void> => {
@@ -180,7 +174,19 @@ const NavProfile: FC = () => {
                                                 {item}
                                             </Link>
                                         ) : (
-                                            item
+                                            item === 'Заказы' ? (
+                                                <Link to='/profile' className="profile--user__profile-button">
+                                                    {item}
+                                                </Link>
+                                            ) : (
+                                                item === 'Избранное' ? (
+                                                    <Link to='/profile' className="profile--user__profile-button">
+                                                        {item}
+                                                    </Link>
+                                                ) : (
+                                                    item
+                                                )
+                                            )
                                         )
                                     )}
                                 </li>
@@ -257,4 +263,4 @@ const NavProfile: FC = () => {
     )
 }
 
-export default NavProfile
+export default NavProfile;
