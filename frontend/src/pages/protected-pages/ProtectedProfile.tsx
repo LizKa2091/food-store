@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState, useEffect, useDebugValue } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import ProfilePage from '../ProfilePage';
@@ -9,6 +9,7 @@ const ProtectedProfile = () => {
   const isAuthed = currAuthContext?.isAuthed || false;
   
   const { setMessage } = useMessage();
+  const { section } = useParams();
 
   useEffect(() => {
    if (!isAuthed) {
@@ -18,7 +19,7 @@ const ProtectedProfile = () => {
 
   return (
       isAuthed ? (
-         <ProfilePage />
+         <ProfilePage section={section || 'Личные данные'}/>
       ) : (
          <Navigate to='/' />
       )

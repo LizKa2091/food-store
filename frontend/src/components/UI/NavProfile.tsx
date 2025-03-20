@@ -174,16 +174,22 @@ const NavProfile: FC = () => {
                                             </Link>
                                         ) : (
                                             item === 'Заказы' ? (
-                                                <Link to='/profile' className="profile--user__profile-button">
+                                                <Link to='/profile/orders' className="profile--user__profile-button">
                                                     {item}
                                                 </Link>
                                             ) : (
-                                                item === 'Избранное' ? (
-                                                    <Link to='/profile' className="profile--user__profile-button">
-                                                        {item}
-                                                    </Link>
+                                                item === 'Бонусы' ? (
+                                                   <Link to='/profile' className="profile--user__profile-button">
+                                                      {item}
+                                                   </Link>
                                                 ) : (
-                                                    item
+                                                   item === 'Избранное' ? (
+                                                      <Link to='/profile/favorites' className="profile--user__profile-button">
+                                                         {item}
+                                                      </Link>
+                                                   ) : (
+                                                      item
+                                                   )
                                                 )
                                             )
                                         )

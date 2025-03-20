@@ -50,7 +50,7 @@ const Header: React.FC = () => {
                         <button className="nav__button nav__button--location-right">Выберите способ получения Доставка или самовывоз</button>
                     </div>
                     <div className="nav__user">
-                        <button onClick={ () => isAuthed ? navigate('/profile') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
+                        <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
                         <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
                         {isProfileOpen &&
                             <NavProfile />

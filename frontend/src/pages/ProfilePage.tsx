@@ -5,12 +5,16 @@ import UserProfileInfo from '../components/layout/userProfile/UserProfileInfo';
 import Footer from '../components/layout/Footer';
 import './ProfilePage.scss';
 
-const ProfilePage: FC = () => {
+interface IProfilePageProps {
+    section: string;
+};
+
+const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
   return (
     <Wrapper modalState={false}>
         <Header />
         <h2 className='title'>Личный кабинет</h2>
-        <UserProfileInfo />
+        <UserProfileInfo section={section}/>
         <Footer />
     </Wrapper>
   )

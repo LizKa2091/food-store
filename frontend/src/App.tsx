@@ -17,9 +17,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<MainPage />} />
-            <Route path='/profile' element={<ProtectedProfile />} />
             <Route path='/catalog' element={<CatalogPage />} />
-            <Route path='*' element={<ErrorPage />} />
+            <Route path='/profile' element={<ProtectedProfile />} />
+            <Route path='/profile/:section' element={<ProtectedProfile />} />
           </Routes>
         </BrowserRouter>
       </MessageProvider>

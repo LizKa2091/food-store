@@ -1,11 +1,32 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import './UserProfileInfo.scss';
 import PersonalData from './PersonalData';
 import OrderHistory from './OrderHistory';
 import Favorites from './Favorites';
 
-const UserProfileInfo: FC = () => {
-    const [activeNavItem, setActiveNavItem] = useState<string>('Личные данные');
+interface IUserProfileInfoProps {
+    section: string;
+};
+
+const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section }) => {
+    const [activeNavItem, setActiveNavItem] = useState<string>(section);
+
+    useEffect(() => {
+       switch (section) {
+          case 'personal':
+             setActiveNavItem('Личные данные');
+             break;
+          case 'orders':
+             setActiveNavItem('История заказов');
+             break;
+          case 'favorites':
+             setActiveNavItem('Избранное');
+             break;
+          default:
+             setActiveNavItem('Личные данные');
+             break;
+       }
+    }, [section]);
 
     const mainItems: string[] = ['Личные данные', 'История заказов', 'Избранное'];
 
