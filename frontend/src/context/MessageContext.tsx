@@ -1,11 +1,11 @@
 import React, { FC, ReactNode, createContext, useState, useContext } from 'react';
 
-interface MessageContextType {
+interface IMessageContextType {
     message: string;
     setMessage: (msg: string) => void;
 };
 
-const MessageContext = createContext<MessageContextType | undefined>(undefined);
+const MessageContext = createContext<IMessageContextType | undefined>(undefined);
 
 const MessageProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [message, setMessage] = useState<string>('');

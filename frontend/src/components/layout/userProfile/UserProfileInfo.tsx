@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
-import './UserProfileInfo.scss';
 import PersonalData from './PersonalData';
 import OrderHistory from './OrderHistory';
 import Favorites from './Favorites';
+import './UserProfileInfo.scss';
 
 interface IUserProfileInfoProps {
     section: string;

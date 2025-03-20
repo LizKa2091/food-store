@@ -3,13 +3,15 @@ import { addToFavorites, removeFromFavorites } from '../../services/productServi
 import { useMessage } from '../../context/MessageContext';
 import './FavoriteButton.scss';
 
-interface FavoriteButtonProps {
+interface IFavoriteButtonProps {
     productId: string;
     initialFavState: boolean;
 };
 
-const FavoriteButton: FC<FavoriteButtonProps> = ({ productId, initialFavState }) => {
+const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState }) => {
     const [isFavorited, setIsFavorited] = useState<boolean>(initialFavState);
+    const [isWebPSupported, setIsWebPSupported] = useState<boolean>(false);
+    const [imageSrc, setImageSrc] = useState<string>('');
 
     const { setMessage } = useMessage();
 

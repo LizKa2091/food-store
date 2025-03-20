@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import './Footer.scss';
-import visaIcon from '../../images/footer/visa.png';
-import mastercardIcon from '../../images/footer/mastercard.png';
+import visa from '../../images/webpImages/footer/visa.webp';
+import mastercard from '../../images/webpImages/footer/mastercard.webp';
 
-const Footer = () => {
+const Footer: FC = () => {
     return (
         <footer className="footer">
             <div className="footer__lists">
@@ -76,8 +76,8 @@ const Footer = () => {
                     <li className="footer__item">© 2022 Ильинский онлайн — доставка товаров и продуктов на дом</li>
                     <li className="footer__item">Информация на сайте не является публичной офертой</li>
                     <li className="footer__item footer__item--icons">
-                        <img src={visaIcon} alt="VISA" className="footer__item__icon footer__item__icon--visa" />
-                        <img src={mastercardIcon} alt="mastercard" className="footer__item__icon footer__item__icon--mastercard" />
+                        <img src={visa} alt="VISA" className="footer__item__icon footer__item__icon--visa" />
+                        <img src={mastercard} alt="mastercard" className="footer__item__icon footer__item__icon--mastercard" />
                     </li>
                 </ul>
             </div>

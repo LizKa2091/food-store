@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { MessageProvider } from './context/MessageContext';
 import MainPage from './pages/MainPage';
-import ProfilePage from './pages/ProfilePage';
 import CatalogPage from './pages/CatalogPage';
 import ProtectedProfile from './pages/protectedPages/ProtectedProfile';
 import Loading from './pages/Loading';

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, use } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useMessage } from '../../context/MessageContext';
 import './Notifications.scss';
 

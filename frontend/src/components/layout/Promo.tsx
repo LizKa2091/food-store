@@ -1,7 +1,8 @@
+import React, { FC } from 'react';
 import './Promo.scss';
-import star from '../../images/star.png';
+import star from '../../images/webpImages/star.webp';
 
-const Promo: React.FC = () => {
+const Promo: FC = () => {
     return (
         <section className="promo">
             <div className="promo__first">

@@ -1,11 +1,12 @@
+import React, { FC } from 'react';
 import './Wrapper.scss';
 
-interface WrapperProps {
+interface IWrapperProps {
     children: React.ReactNode;
     modalState: boolean;
 }
 
-const Wrapper: React.FC<WrapperProps> = ({ children, modalState }) => {
+const Wrapper: FC<IWrapperProps> = ({ children, modalState }) => {
     return (
         <div className={"wrapper" + (modalState ? " wrapper--darked" : "")}>{children}</div>
     )

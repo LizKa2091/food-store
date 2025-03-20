@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import './ItemCard.scss';
-import dickpic from '../../images/products/offers-subcategory-2.png'
+import product from '../../images/webpImages/products/offers-subcategory-2.webp';
 
 interface IItemCardProps {
     onModalAction: (newState: boolean) => void;
@@ -15,7 +15,7 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction }) => {
         <div className='item-modal'>
             <div className="item-modal__inner">
                 <div className="item-modal__left">
-                    <img className='item-modal__img' src={dickpic} alt='item'/>
+                    <img className='item-modal__img' src={product} alt='item'/>
                 </div>
                 <div className="item-modal__right">
                     <p className="item-modal__category">Сибирская коллекция</p>

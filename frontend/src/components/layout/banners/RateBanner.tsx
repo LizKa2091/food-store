@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import './RateBanner.scss';
-import star from '../../../images/star.png';
-import emptyStar from '../../../images/empty-star.png';
+import star from '../../../images/webpImages/star.webp';
+import starEmpty from '../../../images/webpImages/empty-star.webp';
 
-const RateBanner = () => {
+const RateBanner: FC = () => {
   return (
     <div className='rate-banner'>
       <div className="rate-banner__col">
@@ -16,7 +16,7 @@ const RateBanner = () => {
             <img src={star} className='star' alt="star" />
             <img src={star} className='star' alt="star" />
             <img src={star} className='star' alt="star" />
-            <img src={emptyStar} className='star' alt="empty star" />
+            <img src={starEmpty} className='star' alt="empty star" />
         </div>
         <button className="rate-banner__button">Оставить отзыв</button>
       </div>

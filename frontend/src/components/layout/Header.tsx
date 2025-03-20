@@ -4,7 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import Notifications from '../UI/Notifications';
 import './Header.scss';
-import logo from '../../images/logo.png';
+import logo from '../../images/webpImages/logo.webp';
 
 const NavProfile = lazy(() => import('../UI/NavProfile'));
 
@@ -17,6 +17,7 @@ const Header: React.FC = () => {
     const [isCatalogOpen, setIsCatalogOpen] = useState(false);
     const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+
     const navigate = useNavigate();
     const { setMessage } = useMessage();
 

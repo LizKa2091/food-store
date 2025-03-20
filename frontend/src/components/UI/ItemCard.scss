@@ -85,7 +85,7 @@ $color-gray-close-bg: #F2F3F5;
         &--like {
             border: 1px solid $color-gray-button-border;
             border-radius: 60px;
-            background: url('../../images/favorite-icon.png') no-repeat center center;
+            background: url('../../images/webpImages/favorite-icon.webp') no-repeat center center;
             background-size: 22px 19.68px;
             width: 44px;
             height: 42px;
@@ -107,7 +107,7 @@ $color-gray-close-bg: #F2F3F5;
 
             &::after {
                 content: '';
-                background: url('../../images/products/arrow-right-button.png') no-repeat center center;
+                background: url('../../images/webpImages/products/arrow-right-button.webp') no-repeat center center;
                 background-size: contain;
                 width: 8.55px;
                 height: 5.01px;
@@ -122,7 +122,7 @@ $color-gray-close-bg: #F2F3F5;
                 color: $color-white;
 
                 &::after {
-                    background: url('../../images/products/arrow-right-button-hover.png') no-repeat center center;
+                    background: url('../../images/webpImages/products/arrow-right-button-hover.webp') no-repeat center center;
                     background-size: contain;
                 }
             }

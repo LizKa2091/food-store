@@ -1,18 +1,18 @@
 import './Categories.scss';
 
-interface CategoriesProps {
+interface ICategoriesProps {
     category: CategoryType;
 }
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
 
-interface SubCategory {
+interface ISubCategory {
     name: string;
     extra?: string;
 };
 
-const Categories = ({ category }: CategoriesProps) => {
-    const subCategories: Record<CategoryType, SubCategory[]> = {
+const Categories = ({ category }: ICategoriesProps) => {
+    const subCategories: Record<CategoryType, ISubCategory[]> = {
         Супермаркет: [{ name: 'Вода и напитки' }, { name: 'Молоко, масло и яйца' }, { name: 'Снэки и сухофрукты' }, { name: 'Кофе, чай и сладости' }, { name: 'Макароны и крупы' }, { name: 'Хлеб и выпечка' }, { name: 'Масло, соусы и специи' }, { name: 'Консервы и соленья' }],
         Кулинария: [{ name: 'Выпечка' }, { name: 'Пиццы' }, { name: 'Гриль меню' }, { name: 'Свежее мясо' }, { name: 'Салаты' }, { name: 'Супы' }, { name: 'Горячие блюда' }, { name: 'Десерты' }],
         Заморозка: [{ name: 'Пельмени, вареники, равиоли' }, { name: 'Хинкали и манты' }, { name: 'Полу фабрикаты' }, { name: 'Замороженные овощи' }, { name: 'Рыба и морепродукты' }, { name: 'Мясо' }],

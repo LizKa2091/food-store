@@ -9,7 +9,7 @@ import './SalesAndRecommendation.scss';
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
-interface CategoryProps {
+interface ICategoryProps {
     type: CategoryType;
     onModalChange: (modalState: boolean) => void;
 };
@@ -33,7 +33,7 @@ interface Item {
     oldPrice?: number;
 };
 
-const SalesAndRecommendation = ({ type, onModalChange } : CategoryProps) => {
+const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
     const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
 

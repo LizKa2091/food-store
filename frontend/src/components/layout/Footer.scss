@@ -41,7 +41,7 @@ $white-list-item: #fff;
             &::before {
                 content: '';
                 position: absolute;
-                background: url('../../images/footer/tel.png') no-repeat center center;
+                background: url('../../images/webpImages/footer/tel.webp') no-repeat center center;
                 background-size: contain;
                 width: 22px;
                 height: 22px;
@@ -53,7 +53,7 @@ $white-list-item: #fff;
         &--address::before {
             content: '';
             position: absolute;
-            background: url('../../images/footer/location.png') no-repeat center center;
+            background: url('../../images/webpImages/footer/location.webp') no-repeat center center;
             background-size: contain;
             width: 14px;
             height: 14px;
@@ -64,7 +64,7 @@ $white-list-item: #fff;
         &--inst::before {
             content: '';
             position: absolute;
-            background: url('../../images/footer/instagram.png') no-repeat center center;
+            background: url('../../images/webpImages/footer/instagram.webp') no-repeat center center;
             background-size: contain;
             width: 13.27px;
             height: 13.27px;
@@ -75,7 +75,7 @@ $white-list-item: #fff;
         &--email::before {
             content: '';
             position: absolute;
-            background: url('../../images/footer/email.png') no-repeat center center;
+            background: url('../../images/webpImages/footer/email.webp') no-repeat center center;
             background-size: contain;
             width: 15px;
             height: 15px;

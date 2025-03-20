@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import './Delivery.scss';
 
-const Delivery: React.FC = () => {
+const Delivery: FC = () => {
     return (
         <section className="delivery">
             <h3 className="delivery__title">Доставка и оплата</h3>

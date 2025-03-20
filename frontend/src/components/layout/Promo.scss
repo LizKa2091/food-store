@@ -27,7 +27,7 @@ $color-orange-fill: #FFE8BC;
             gap: 24px;
             border: 1px solid $color-white;
             border-radius: 26px;
-            background: url('../../images/home-slide1.png') no-repeat center center;
+            background: url('../../images/webpImages/home-slide1.webp') no-repeat center center;
             background-size: cover;
             color: $color-white;
             width: 100%;
@@ -85,7 +85,7 @@ $color-orange-fill: #FFE8BC;
 
             &::before {
                 content: '';
-                background: url('../../images/arrow-slide.png') no-repeat center center;
+                background: url('../../images/webpImages/arrow-slide.webp') no-repeat center center;
                 background-size: cover;
                 width: 6.96px;
                 height: 11.89px;
@@ -107,7 +107,7 @@ $color-orange-fill: #FFE8BC;
     &__second {
         border: 1px solid $color-green-bg;
         border-radius: 26px;
-        background: url('../../images/home-slide2.png') no-repeat bottom right, $color-green-bg;
+        background: url('../../images/webpImages/home-slide2.webp') no-repeat bottom right, $color-green-bg;
         background-size: auto 100%;
         grid-column: span 1;
         grid-row: span 1;
@@ -126,7 +126,7 @@ $color-orange-fill: #FFE8BC;
     &__third {
         border: 1px solid $color-red-bg;
         border-radius: 26px;
-        background: url('../../images/home-slide3.png') no-repeat 95% center, $color-red-bg;
+        background: url('../../images/webpImages/home-slide3.webp') no-repeat 95% center, $color-red-bg;
         background-size: auto 50%;
         grid-column: span 1;
         position: relative;
