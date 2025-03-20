@@ -189,11 +189,11 @@ const PersonalData: FC = () => {
                         </div>
                         <div className="main__form__item">
                             <label htmlFor="tel" className="main__form__label">Номер телефона</label>
-                            <input type="tel" id='tel' className="main__form__input main__form__input--protected" value={userInfo.phoneNumber} />
+                            <input type="tel" id='tel' className="main__form__input main__form__input--protected" defaultValue={userInfo.phoneNumber} />
                         </div>
                         <div className="main__form__item main__form__item--birthday">
                             <label htmlFor="date" className="main__form__label">День рождения</label>
-                            <input type="date" id='date' className="main__form__input main__form__input--protected" value={userInfo.dateOfBirth}/>
+                            <input type="date" id='date' className="main__form__input main__form__input--protected" defaultValue={userInfo.dateOfBirth}/>
                         </div>
                         <div className="main__form__item main__form__item--mail">
                             <label htmlFor="mail" className="main__form__label">Эл. почта</label>

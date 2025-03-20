@@ -7,8 +7,7 @@ import PinInput from './PinInput';
 import './NavProfile.scss';
 
 const NavProfile: FC = () => {
-    const currAuthContext = useContext(AuthContext) || { isAuthed: false };
-    const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed);
+    const { isAuthed, loginUser, logoutUser } = useContext(AuthContext) || { isAuthed: false, loginUser: () => {}, logoutUser: () => {} };
     const [currStep, setCurrStep] = useState<number>(1);
     const [currUserTel, setCurrUserTel] = useState<string>('');
     const [currCode, setCurrCode] = useState<string>('');
@@ -37,7 +36,7 @@ const NavProfile: FC = () => {
         }
         else {
             setCurrStep(1);
-            setIsAuthed(true);
+            loginUser();
         }
     };
 
@@ -96,7 +95,7 @@ const NavProfile: FC = () => {
             
             if (response.token) {
                 localStorage.setItem('token', response.token);
-                setIsAuthed(true);
+                loginUser();
                 setIsCodeCorrect(true);
                 createBonusCard(currUserTel);
             }
@@ -119,7 +118,7 @@ const NavProfile: FC = () => {
             response = await verifyUser(userToken);
             
             if (response?.isAuthenticated === true) {
-                setIsAuthed(true);
+               loginUser();
             }
         }
     };
@@ -134,8 +133,8 @@ const NavProfile: FC = () => {
                 
                 if (response?.isSuccess) {
                     localStorage.removeItem('token');
-                    setIsAuthed(false);
                     resetForm();
+                    logoutUser();
                 }
                 else {  
                     setMessage(response.message);
