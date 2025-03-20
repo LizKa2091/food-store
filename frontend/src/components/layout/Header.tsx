@@ -43,7 +43,7 @@ const Header: React.FC = () => {
                     </div>
                     <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick}>Каталог</button>
                     <div className="nav__search">
-                        <input type="text" className="nav__input" />
+                        <input type="text" className="nav__input" id='nav-search' name='nav-search'/>
                     </div>
                     <div className="nav__locations">
                         <button className="nav__button nav__button--location-left">МСК</button>

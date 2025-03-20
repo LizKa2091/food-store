@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import { Link } from 'react-router-dom';
 import { postPhoneNum, postCode, verifyUser, logout, createBonusCard } from '../../services/authService';
+import { fetchBonusCard, fetchUserFavorites } from '../../services/userService';
 import PinInput from './PinInput';
 import './NavProfile.scss';
 
@@ -13,6 +14,8 @@ const NavProfile: FC = () => {
     const [currCode, setCurrCode] = useState<string>('');
     const [currUserCode, setCurrUserCode] = useState<string>('');
     const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null);
+    const [userCardBalance, setUserCardBalance] = useState<number>(0);
+    const [favoritesLen, setFavoritesLen] = useState<number>(0);
 
     const { setMessage } = useMessage();
     
@@ -113,15 +116,55 @@ const NavProfile: FC = () => {
     const isUserAuthed = async (): Promise<void> => {
         const userToken = localStorage.getItem('token');
         let response;
-
         if (userToken) {
             response = await verifyUser(userToken);
             
             if (response?.isAuthenticated === true) {
                loginUser();
+               loadUserCard();
+               loadUserFavorites();
             }
         }
     };
+
+    const loadUserCard = async () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+          let response;
+
+          try {
+              response = await fetchBonusCard(token);
+              setUserCardBalance(response.bonuses ?? 0)
+          }
+          catch (e) {
+              setMessage(response.message);
+          }
+      }
+      else {
+          setMessage('Пользователь не авторизован');
+      }
+  };
+
+  const loadUserFavorites = async () => {
+     const token = localStorage.getItem('token');
+
+     if (token) {
+        let response;
+
+        try {
+           response = await fetchUserFavorites(token);
+
+           setFavoritesLen(response.favorites.length);
+        }
+        catch (e) {
+           setMessage(response.message);
+        }
+     }
+     else {
+        setMessage('Пожалуйста, авторизуйтесь');
+     }
+  };
 
     const handleLogout = async (): Promise<void> => {
         const userToken = localStorage.getItem('token');
@@ -179,13 +222,15 @@ const NavProfile: FC = () => {
                                                 </Link>
                                             ) : (
                                                 item === 'Бонусы' ? (
-                                                   <Link to='/profile' className="profile--user__profile-button">
+                                                   <Link to='/profile' className="profile--user__profile-button profile--user__profile-button--bonus">
                                                       {item}
+                                                      <span className='profile--user__bonus-balance'>{userCardBalance}</span>
                                                    </Link>
                                                 ) : (
                                                    item === 'Избранное' ? (
-                                                      <Link to='/profile/favorites' className="profile--user__profile-button">
+                                                      <Link to='/profile/favorites' className="profile--user__profile-button profile--user__profile-button--favorites">
                                                          {item}
+                                                         <span className="profile--user__favorites-len">{favoritesLen} тов.</span>
                                                       </Link>
                                                    ) : (
                                                       item

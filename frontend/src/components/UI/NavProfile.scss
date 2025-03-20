@@ -51,12 +51,33 @@ $color-gray-button-notallowed-bg: #F2F3F5;
         &__profile-button {
             color: #000;
             text-decoration: none;
+
+            &--bonus {
+               display: flex;
+               align-items: center;
+               position: relative;
+            }
+            &--favorites {
+               display: flex;
+               align-items: center;
+               position: relative;
+            }
         }
         &__logout-button {
             border: 0;
             background-color: inherit;
             font-weight: 500;
             color: $color-gray;
+        }
+        &__bonus-balance {
+            color: $color-red-button-bg;
+            position: absolute;
+            right: 0;
+        }
+        &__favorites-len {
+            color: $color-gray;
+            position: absolute;
+            right: 0;
         }
     }
 

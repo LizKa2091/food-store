@@ -13,7 +13,7 @@ interface IItems {
     imagePath: string;
 };
 
-interface FavoriteItem {
+interface IFavoriteItem {
     productId: string;
     name: string;
     price: number;
@@ -66,7 +66,7 @@ const Favorites: FC = () => {
             try {
                 response = await fetchUserFavorites(token);
 
-                const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
+                const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
                 setUserFavorites(favorites);
                 setMessage('');
             }

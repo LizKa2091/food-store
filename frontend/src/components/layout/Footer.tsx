@@ -61,7 +61,7 @@ const Footer = () => {
                     <p className="footer__news__title">Подпишитесь на вкусные и полезые новости</p>
                     <form className="footer__news__form" action=''>
                         <div className="footer__news__form--actions">
-                            <input type="email" className="footer__news__input" />
+                            <input type="email" className="footer__news__input" name='email' id='email' autoComplete="true"/>
                             <button className="footer__news__button">Подписаться</button>
                         </div>
                         <div className="footer__news__form--policy">
