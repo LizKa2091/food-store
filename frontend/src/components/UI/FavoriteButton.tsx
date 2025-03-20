@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
-import './FavoriteButton.scss';
 import { addToFavorites, removeFromFavorites } from '../../services/productService';
+import { useMessage } from '../../context/MessageContext';
+import './FavoriteButton.scss';
 
 interface FavoriteButtonProps {
     productId: string;
@@ -9,6 +10,8 @@ interface FavoriteButtonProps {
 
 const FavoriteButton: FC<FavoriteButtonProps> = ({ productId, initialFavState }) => {
     const [isFavorited, setIsFavorited] = useState<boolean>(initialFavState);
+
+    const { setMessage } = useMessage();
 
     useEffect(() => {
         setIsFavorited(initialFavState);
@@ -32,11 +35,11 @@ const FavoriteButton: FC<FavoriteButtonProps> = ({ productId, initialFavState })
                 }
             }
             catch (e) {
-                throw new Error(`произошла ошибка: ${e}`);
+               setMessage(response.message);
             }
         }
         else {
-            throw new Error('ошибка, пользователь не авторизован');
+         setMessage('Пожалуйста, авторизуйтесь');
         }
     };
 

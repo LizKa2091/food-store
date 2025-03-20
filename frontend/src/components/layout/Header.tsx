@@ -4,6 +4,7 @@ import NavProfile from '../UI/NavProfile';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import Notifications from '../UI/Notifications';
+import { useMessage } from '../../context/MessageContext';
 import './Header.scss';
 
 const Header: React.FC = () => {
@@ -16,6 +17,7 @@ const Header: React.FC = () => {
     const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const navigate = useNavigate();
+    const { setMessage } = useMessage();
 
     const handleCatalogClick = () : void => {
         setIsCatalogOpen(prevVal => !prevVal);
@@ -48,7 +50,7 @@ const Header: React.FC = () => {
                         <button className="nav__button nav__button--location-right">Выберите способ получения Доставка или самовывоз</button>
                     </div>
                     <div className="nav__user">
-                        <button onClick={ () => isAuthed ? navigate('/profile') : '' } className="nav__user-action nav__user-action--like" title="Избранное"></button>
+                        <button onClick={ () => isAuthed ? navigate('/profile') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
                         <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
                         {isProfileOpen &&
                             <NavProfile />
