@@ -1,11 +1,12 @@
-import logo from '../../images/logo.png';
-import { useState, useContext } from 'react';
-import NavProfile from '../UI/NavProfile';
+import { useState, useContext, lazy } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import Notifications from '../UI/Notifications';
 import { useMessage } from '../../context/MessageContext';
+import Notifications from '../UI/Notifications';
 import './Header.scss';
+import logo from '../../images/logo.png';
+
+const NavProfile = lazy(() => import('../UI/NavProfile'));
 
 const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
