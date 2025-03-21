@@ -13,26 +13,14 @@ interface IItems {
     imagePath: string;
 };
 
-interface IFavoriteItem {
-    productId: string;
-    name: string;
-    price: number;
-    stockQuantity: number;
-    weight: string;
-    newPrice?: number;
-    imagePath?: string;
-};
-
 const Favorites: FC = () => {
     const [userFavoritesInfo, setUserFavoritesInfo] = useState<IItems[]>([]);
-    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { setMessage } = useMessage();
 
     useEffect(() => {
         getUserFavoritesInfo();
-        getUserFavorites();
     }, []);
 
     const getUserFavoritesInfo = async () => {
@@ -46,28 +34,6 @@ const Favorites: FC = () => {
                 response = await fetchUserFavorites(token);
                 setUserFavoritesInfo(response.favorites);
                 setIsLoading(false);
-                setMessage('');
-            }
-            catch (e) {
-                setMessage(response.message);
-            }
-        }
-        else {
-            setMessage('Пожалуйста, авторизуйтесь');
-        }
-    };
-
-    const getUserFavorites = async () => {
-        const token = localStorage.getItem('token');
-
-        if (token) {
-            let response;
-
-            try {
-                response = await fetchUserFavorites(token);
-
-                const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
-                setUserFavorites(favorites);
                 setMessage('');
             }
             catch (e) {

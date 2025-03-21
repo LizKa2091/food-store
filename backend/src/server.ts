@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import fs from 'fs';
 import path from 'path';
 
 dotenv.config();
@@ -24,34 +25,47 @@ interface User {
     email: string;
 };
 
-const products = [
-    {
-        productId: '1',
-        name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
-        price: 129,
-        stockQuantity: 2,
-        weight: '400г',
-        newPrice: 99,
-        imagePath: 'images/product1.png',
-    },
-    {
-        productId: '2',
-        name: 'Сок Ideas тыквенно-апельсиновый',
-        price: 70.90,
-        stockQuantity: 33,
-        weight: '1л',
-        imagePath: 'images/product2.png',
-    },
-    {
-        productId: '3',
-        name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие',
-        price: 99,
-        stockQuantity: 0,
-        weight: '400г',
-        newPrice: 79,
-        imagePath: 'images/product1.png',
-    }
-];
+app.get('/products', (req: Request, res: Response) => {
+   const filePath = path.join(__dirname, 'data', 'products.json');
+   
+   fs.readFile(filePath, 'utf8', (err, data) => {
+     if (err) {
+       console.error('Ошибка чтения файла с продуктами:', err);
+       return res.status(500).json({ message: 'Ошибка при чтении файла с продуктами.' });
+     }
+     
+     try {
+       const products = JSON.parse(data);
+       res.status(200).json({ products });
+     } catch (parseError) {
+       console.error('Ошибка парсинга JSON:', parseError);
+       res.status(500).json({ message: 'Ошибка при разборе файла с продуктами.' });
+     }
+   });
+ });
+
+ app.get('/products/:id', (req: Request, res: Response) => {
+   const filePath = path.join(__dirname, 'data', 'products.json');
+   fs.readFile(filePath, 'utf8', (err, data) => {
+     if (err) {
+       console.error('Ошибка чтения файла с продуктами:', err);
+       return res.status(500).json({ message: 'Ошибка при чтении файла с продуктами.' });
+     }
+     try {
+       const products = JSON.parse(data);
+       const requestedId = req.params.id;
+       // Поиск товара по productId
+       const product = products.find((item: any) => item.productId === requestedId);
+       if (!product) {
+         return res.status(404).json({ message: 'Товар не найден.' });
+       }
+       res.status(200).json({ product });
+     } catch (parseError) {
+       console.error('Ошибка парсинга JSON:', parseError);
+       res.status(500).json({ message: 'Ошибка при разборе файла с продуктами.' });
+     }
+   });
+ });
 
 // Хранилище пользователей (в реальном приложении используйте базу данных)
 let users: Record<string, User> = {};
@@ -360,40 +374,46 @@ app.get('/favorites', async (req: Request, res: Response): Promise<any> => {
 
 // Добавление товара в любимые
 app.post('/favorites/add', async (req: Request, res: Response): Promise<any> => {
-    const token = req.headers['authorization'];
-    const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
-    if (!token) {
-        return res.status(401).json({ message: 'Токен не предоставлен.' });
-    }
-    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Неверный токен.' });
-        }
-        const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
-        const user = users[phoneNumberFromToken];
-        if (user) {
-            // Инициализация любимых товаров, если они еще не инициализированы
-            initializeFavoriteItems(phoneNumberFromToken);
-            
-            // Проверка, существует ли товар
-            const product = products.find(item => item.productId === productId);
-            if (!product) {
-                return res.status(404).json({ message: 'Товар не найден.' });
-            }
-            
-            // Проверка, существует ли товар уже в избранном
-            const existingFavorite = favoriteItems[phoneNumberFromToken].find(item => item.productId === productId);
-            if (existingFavorite) {
-                return res.status(400).json({ message: 'Товар уже в избранном.' });
-            }
-            
-            // Добавляем товар в избранное
-            favoriteItems[phoneNumberFromToken].push(product);
-            res.status(200).json({ message: 'Товар добавлен в избранное.', favorites: favoriteItems[phoneNumberFromToken] });
-        } else {
-            res.status(404).json({ message: 'Пользователь не найден.' });
-        }
-    });
+   const token = req.headers['authorization'];
+   const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, async (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           // Инициализация любимых товаров, если они еще не инициализированы
+           initializeFavoriteItems(phoneNumberFromToken);
+           
+           try {
+               const filePath = path.join(__dirname, 'data', 'products.json');
+               const data = await fs.promises.readFile(filePath, 'utf8');
+               const products = JSON.parse(data);
+               // Проверка, существует ли товар
+               const product = products.find((item: any) => item.productId === productId);
+               if (!product) {
+                   return res.status(404).json({ message: 'Товар не найден.' });
+               }
+               // Проверка, существует ли товар уже в избранном
+               const existingFavorite = favoriteItems[phoneNumberFromToken].find(item => item.productId === productId);
+               if (existingFavorite) {
+                   return res.status(400).json({ message: 'Товар уже в избранном.', warning: 'Товар уже в избранном.' });
+               }
+               // Добавляем товар в избранное
+               favoriteItems[phoneNumberFromToken].push(product);
+               res.status(200).json({ message: 'Товар добавлен в избранное.', favorites: favoriteItems[phoneNumberFromToken] });
+           } catch (readErr) {
+               console.error('Ошибка чтения файла с продуктами:', readErr);
+               res.status(500).json({ message: 'Ошибка при чтении данных о продуктах.' });
+           }
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
 });
 
 // Удаление товара из любимых

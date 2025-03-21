@@ -29,6 +29,13 @@ const NavProfile: FC = () => {
         isUserAuthed();
     }, [])
 
+    useEffect(() => {
+      if (isAuthed) {
+         loadUserCard();
+         loadUserFavorites();
+      }
+    }, [isAuthed]);
+
     const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
     const handleStepButton = (): void => {

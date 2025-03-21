@@ -1,6 +1,7 @@
 const addToFavorites = async (token: string, productId: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/favorites/add', {
+        response = await fetch('http://localhost:5001/favorites/add', {
             method: 'POST',
             headers: {
                 'Authorization': token,
@@ -10,20 +11,23 @@ const addToFavorites = async (token: string, productId: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка: ${response.status}`)
+           const errorData = await response.json();
+           return errorData || 'Неизвестная ошибка'
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+      const errorData = await response?.json();
+      return errorData || e;
     }
 };
 
 const removeFromFavorites = async (token: string, productId: string) => {
+    let response;
     try {
-        const response = await fetch('http://localhost:5001/favorites/remove', {
+        response = await fetch('http://localhost:5001/favorites/remove', {
             method: 'DELETE',
             headers: {
                 'Authorization': token,
@@ -33,15 +37,41 @@ const removeFromFavorites = async (token: string, productId: string) => {
         });
 
         if (!response.ok) {
-            throw new Error(`http ошибка: ${response.status}`)
+           const errorData = await response.json();
+           return errorData || 'Неизвестная ошибка'
         }
 
         let result = await response.json();
         return result;
     }
     catch (e) {
-        throw new Error(`ошибка запроса: ${e}`);
+      const errorData = await response?.json();
+      return errorData || e;
     }
 };
 
-export { addToFavorites, removeFromFavorites };
+const getProduct = async (id: string) => {
+    let response;
+    try {
+       response = await fetch(`http://localhost:5001/products/${id}`, {
+           method: 'GET',
+           headers: {
+              'Content-Type': 'application/json'
+           }  
+       });
+
+       if (!response.ok) {
+           const errorData = await response.json();
+           return errorData || 'Неизвестная ошибка';
+       }
+
+       let result = await response.json();
+       return result;
+   }
+   catch (e) {
+       const errorData = await response?.json();
+       return errorData || 'Неизвестная ошибка'
+  }
+};
+
+export { addToFavorites, removeFromFavorites, getProduct };

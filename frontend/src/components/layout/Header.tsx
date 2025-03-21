@@ -12,8 +12,7 @@ const Header: React.FC = () => {
     const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
     const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
 
-    const currAuthContext = useContext(AuthContext) || { isAuthed: false };
-    const [isAuthed, setIsAuthed] = useState<boolean>(currAuthContext.isAuthed)
+    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
     const [isCatalogOpen, setIsCatalogOpen] = useState(false);
     const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
     const [isProfileOpen, setIsProfileOpen] = useState(false);

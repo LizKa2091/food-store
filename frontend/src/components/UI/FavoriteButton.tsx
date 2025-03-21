@@ -1,6 +1,7 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { addToFavorites, removeFromFavorites } from '../../services/productService';
 import { useMessage } from '../../context/MessageContext';
+import { AuthContext } from '../../context/AuthContext';
 import './FavoriteButton.scss';
 
 interface IFavoriteButtonProps {
@@ -10,14 +11,19 @@ interface IFavoriteButtonProps {
 
 const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState }) => {
     const [isFavorited, setIsFavorited] = useState<boolean>(initialFavState);
-    const [isWebPSupported, setIsWebPSupported] = useState<boolean>(false);
-    const [imageSrc, setImageSrc] = useState<string>('');
+    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
 
     const { setMessage } = useMessage();
 
     useEffect(() => {
         setIsFavorited(initialFavState);
     }, [initialFavState]);
+
+    useEffect(() => {
+      if (!isAuthed) {
+         setIsFavorited(false);
+      }
+    }, [isAuthed]);
 
     const handleClick = async (): Promise<void> => {
         const token = localStorage.getItem('token');
@@ -32,8 +38,14 @@ const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState }
                     response = await addToFavorites(token, productId);
                 }
 
-                if (response) {
+                if (response.hasOwnProperty('favorites')) {
                     setIsFavorited(prevVal => !prevVal);
+                }
+                else if (response.hasOwnProperty('warning')) {
+                  setMessage(response.warning);
+                }
+                else {
+                  setMessage(response.message);
                 }
             }
             catch (e) {

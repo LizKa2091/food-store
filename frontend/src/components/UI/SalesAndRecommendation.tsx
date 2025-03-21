@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import item1Image from '../../images/products/sale-product-1.png';
-import item2Image from '../../images/products/sale-product-2.png';
+import item1Image from '../../images/webpImages/products/sale-product-1.webp';
+import item2Image from '../../images/webpImages/products/sale-product-2.webp';
 import FavoriteButton from "./FavoriteButton";
 import { fetchUserFavorites } from "../../services/userService";
 import ItemCard from "./ItemCard";
@@ -36,6 +36,7 @@ interface Item {
 const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
     const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
     const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     const { setMessage } = useMessage();
 
@@ -67,7 +68,8 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
         }
     };
 
-    const handleItemClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    const handleItemClick = (productId: string) => {
+        setSelectedProductId(productId);
         setIsItemClicked(true);
         onModalChange(true)
     };  
@@ -87,7 +89,7 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
                 <div className="sales-and-recommendation__bottom">
                     <ul className="sales-and-recommendation__list">
                         {Object.entries(items).map(([key, item]) => (
-                            <li onClick={ handleItemClick } key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
+                            <li onClick={ () => handleItemClick(item.productId) } key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
                                 <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} />
                                 <img src={item.image} className="sales-and-recommendation__item__img" alt={item.name}/>
                                 <div className="sales-and-recommendation__item__left">
@@ -110,8 +112,8 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
                     </ul>
                 </div>
             </section>
-            {isItemClicked &&
-                <ItemCard onModalAction={ handleItemAction } />
+            {isItemClicked && selectedProductId &&
+                <ItemCard onModalAction={ handleItemAction } id={ selectedProductId }/>
             }
         </>
     );

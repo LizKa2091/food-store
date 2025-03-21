@@ -27,12 +27,12 @@ const MainPage: FC = () => {
         {categoriesList.map((category) => (
             <Categories key={category} category={category} />
         ))}
-        <Delivery />
+         <Delivery />
         <DeliveryBanner />
         <RateBanner />
         <Footer />
     </Wrapper>
   )
-}
+};
 
 export default MainPage;

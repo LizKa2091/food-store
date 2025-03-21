@@ -1,10 +1,10 @@
-import React, { FC, useContext, useState, useEffect, useDebugValue } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import ProfilePage from '../ProfilePage';
 
-const ProtectedProfile = () => {
+const ProtectedProfile: FC = () => {
   const currAuthContext = useContext(AuthContext);
   const isAuthed = currAuthContext?.isAuthed || false;
   
