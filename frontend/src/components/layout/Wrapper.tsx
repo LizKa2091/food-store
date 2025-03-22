@@ -3,7 +3,7 @@ import './Wrapper.scss';
 
 interface IWrapperProps {
     children: React.ReactNode;
-    modalState: boolean;
+    modalState?: boolean;
 }
 
 const Wrapper: FC<IWrapperProps> = ({ children, modalState }) => {

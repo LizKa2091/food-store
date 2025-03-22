@@ -11,7 +11,7 @@ type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
 interface ICategoryProps {
     type: CategoryType;
-    onModalChange: (modalState: boolean) => void;
+    onModalChange?: (modalState: boolean) => void;
 };
 
 interface FavoriteItem {
@@ -71,12 +71,12 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
     const handleItemClick = (productId: string) => {
         setSelectedProductId(productId);
         setIsItemClicked(true);
-        onModalChange(true)
+        onModalChange?.(true)
     };  
 
     const handleItemAction = (newState: boolean) => {
         setIsItemClicked(newState);
-        onModalChange(false)
+        onModalChange?.(false)
     };
 
     return (
