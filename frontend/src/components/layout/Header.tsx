@@ -82,9 +82,15 @@ const Header: React.FC = () => {
                 <div className="nav__bottom">
                     <ul className="nav__list">
                         {navItems.map((item: string, id: number) => (
+                           item === 'Акции' ? (
+                              <Link to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
+                                 {item}
+                              </Link>
+                           ) : (
                             <li className='nav__item' key={id}>
                                 <button className='nav__link' id={'nav__link-' + id}>{item}</button>
                             </li>
+                           )
                         ))}
                     </ul>
                     <Notifications />

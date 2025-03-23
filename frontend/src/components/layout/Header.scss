@@ -386,8 +386,13 @@ $button-sale-h: 43px;
     &3::before {
         background-image: url('../../images/webpImages/category-other.webp');
     }
-    &4::before {
-        background-image: url('../../images/webpImages/category-promotion.webp');
+    &4 {
+      font-size: 0.875rem;
+      text-decoration: none;
+
+      &::before {
+         background-image: url('../../images/webpImages/category-promotion.webp');
+     }
     }
     &5::before {
         background-image: url('../../images/webpImages/category-shops.webp');

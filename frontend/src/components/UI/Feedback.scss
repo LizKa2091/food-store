@@ -11,6 +11,7 @@ $color-gray-placeholder: #C4B4B4;
    background-color: $orange-color-bg;
    height: 164px;
    position: relative;
+   margin: 136px 0 120px 0;
 
    &__inner {
       display: flex;
@@ -44,6 +45,42 @@ $color-gray-placeholder: #C4B4B4;
          gap: 8px;
       }
       &__input {
+         &--radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            
+            width: 17px;
+            height: 17px;
+            border: 1px solid $orange-radio-bg;
+            border-radius: 50%;
+            background-color: $orange-radio-bg;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+
+            &::after {
+               content: "";
+               position: absolute;
+               top: 50%;
+               left: 50%;
+               width: 7px;
+               height: 7px;
+               background-color: $color-red;
+               border-radius: 50%;
+               transform: translate(-50%, -50%);
+               display: none;
+            }
+
+            &:checked {
+               &::after {
+                  display: block;
+               }
+            }
+            &:hover {
+               border-color: $color-red;
+            }
+         }
          &--link {
             border: 1px solid $orange-color-border;
             border-radius: 16px;
@@ -67,6 +104,7 @@ $color-gray-placeholder: #C4B4B4;
          width: 50dvw;
          max-width: 179px;
          height: 56px;
+         cursor: pointer;
       }
    }
 }
