@@ -1,0 +1,279 @@
+$color-black-button: #000;
+$color-white-input-bg: #fff;
+
+$color-yellow-bg: #FFFBEF;
+$color-yellow-border: #FFC425;
+
+$color-green-bg: #F2F9E9;
+$color-green-border: #C0DC9D;
+
+$color-blue-bg: #EDF5FF;
+$color-blue-border: #C2DEFF;
+
+$color-red-bg: #FFE9E8;
+$color-red-border: #FF594D;
+
+$color-orange-aside-bg: #FFECCA;
+$color-orange-aside-border: #FFE7B9;
+$color-black-aside-text: #2E0505;
+$color-red-aside-button: #FF0000;
+
+.vacancies {
+   padding-bottom: 136px;
+   
+   &__title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+   }
+   &__inner {
+      padding: 66px 0;
+   }
+   &__list {
+      display: flex;
+      justify-content: space-between;
+      row-gap: 24px;
+      flex-wrap: wrap;
+   }
+   &__item {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      width: 100%;
+      height: 255px;
+      max-width: 307px;
+      padding: 32px 32px 36px 32px;
+      list-style-type: none;
+      position: relative;
+
+      &__title {
+         font-size: 1.5rem;
+         font-weight: 700;
+      }
+      &__subtitle {
+         font-size: 1.25rem;
+      }
+      &__button {
+         border: 1px solid $color-black-button;
+         border-radius: 31px;
+         background-color: inherit;
+         font-size: 1.375rem;
+         font-weight: 600;
+         color: $color-black-button;
+         width: 100%;
+         height: 56px;
+         max-width: 200px;
+         cursor: pointer;
+      }
+
+      &--1 {
+         border: 1px solid $color-yellow-border;
+         border-radius: 30px;
+         background-color: $color-yellow-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy1.png');
+            background-size: contain;
+            width: 74px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: 8px;
+         }
+      }
+      &--2 {
+         border: 1px solid $color-green-border;
+         border-radius: 30px;
+         background-color: $color-green-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy2.png');
+            background-size: contain;
+            width: 76px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: 5px;
+         }
+      }
+      &--3 {
+         border: 1px solid $color-blue-border;
+         border-radius: 30px;
+         background-color: $color-blue-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy3.png');
+            background-size: contain;
+            width: 100px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: -11px;
+         }
+      }
+      &--4 {
+         border: 1px solid $color-red-border;
+         border-radius: 30px;
+         background-color: $color-red-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy4.png');
+            background-size: contain;
+            width: 100px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: -13px;
+         }
+      }
+      &--5 {
+         border: 1px solid $color-blue-border;
+         border-radius: 30px;
+         background-color: $color-blue-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy5.png');
+            background-size: contain;
+            width: 90px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: 0;
+         }
+      }
+      &--6 {
+         border: 1px solid $color-red-border;
+         border-radius: 30px;
+         background-color: $color-red-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy6.png');
+            background-size: contain;
+            width: 76px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: 5px;
+         }
+      }
+      &--7 {
+         border: 1px solid $color-yellow-border;
+         border-radius: 30px;
+         background-color: $color-yellow-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy7.png');
+            background-size: contain;
+            width: 99px;
+            height: 98px;
+            position: absolute;
+            top: 23.72%;
+            right: -14px;
+         }
+      }
+      &--8 {
+         border: 1px solid $color-green-border;
+         border-radius: 30px;
+         background-color: $color-green-bg;
+
+         &::after {
+            content: '';
+            background: url('../images/defaultImages/vacancies/vacancy8.png');
+            background-size: contain;
+            width: 98px;
+            height: 103px;
+            position: absolute;
+            top: 23.72%;
+            right: -11px;
+         }
+      }
+   }
+}
+.aside {
+   display: flex;
+   justify-content: space-between;
+   border: 1px solid $color-orange-aside-border;
+   border-radius: 16px;
+   background-color: $color-orange-aside-bg;
+   padding: 52px 42px 39px 52px;
+   height: 453px;
+   gap: 100px;
+
+   &__left {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      color: $color-black-aside-text;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+
+      &::after {
+         content: '';
+         background: url('../images/defaultImages/vacancies/vacancies-team.png');
+         background-size: contain;
+         width: 150px;
+         height: 150px;
+         position: absolute;
+         bottom: 56px;
+         right: 0;
+      }
+   }
+   &__title {
+      font-size: 2.375rem;
+      font-weight: 700;
+      text-transform: uppercase;
+   }
+   &__right {
+      width: 100%;
+   }
+   &__form {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100%;
+      gap: 43px;
+
+      &__inputs {
+         display: flex;
+         justify-content: space-between;
+         flex-direction: column;
+         height: 100%;
+      }
+      &__input {
+         border: 1px solid $color-white-input-bg;
+         border-radius: 10px;
+         font-size: 1.25rem;
+         height: 56px;
+         padding: 0 20px;
+      }
+      &__row {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+      &__agreement-container {
+         display: flex;
+         gap: 12px;
+      }
+      &__button {
+         border: 1px solid $color-red-aside-button;
+         border-radius: 31px;
+         background-color: $color-red-aside-button;
+         font-size: 1.375rem;
+         font-weight: 600;
+         color: $color-white-input-bg;
+         width: 100%;
+         height: 56px;
+         max-width: 185px;
+         cursor: pointer;
+      }
+   }
+}
