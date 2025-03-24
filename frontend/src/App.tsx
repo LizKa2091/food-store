@@ -8,6 +8,7 @@ import ProtectedProfile from './pages/protectedPages/ProtectedProfile';
 import Loading from './pages/Loading';
 import './App.scss';
 import SalesPage from './pages/SalesPage';
+import VacanciesPage from './pages/VacanciesPage';
 
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
@@ -22,6 +23,7 @@ function App() {
             <Route path='/profile' element={<ProtectedProfile />} />
             <Route path='/profile/:section' element={<ProtectedProfile />} />
             <Route path='/sales' element={<SalesPage />} />
+            <Route path='/vacancies' element={<VacanciesPage />} />
             <Route path='*' 
                element={ 
                   <Suspense fallback={<Loading />}>

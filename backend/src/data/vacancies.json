@@ -1,0 +1,58 @@
+[
+   {
+      "id": 1,
+      "title": "Кассир",
+      "subtite": "Стабильный доход",
+      "salary": "40000-45000 руб",
+      "imagePath": "vacancy1.png"
+   },
+   {
+      "id": 2,
+      "title": "Велокурьер",
+      "subtite": "Стабильный доход",
+      "salary": "~3000 руб/день",
+      "imagePath": "vacancy2.png"
+   },
+   {
+      "id": 3,
+      "title": "Продавец",
+      "subtite": "Стабильный доход",
+      "salary": "40000-45000 руб",
+      "imagePath": "vacancy3.png"
+   },
+   {
+      "id": 4,
+      "title": "Менеджер зала",
+      "subtite": "Стабильный доход",
+      "salary": "40000-45000 руб",
+      "imagePath": "vacancy4.png"
+   },
+   {
+      "id": 5,
+      "title": "Оператор коллцентра",
+      "subtite": "Стабильный доход",
+      "salary": "40000-45000 руб",
+      "imagePath": "vacancy5.png"
+   },
+   {
+      "id": 6,
+      "title": "Сотрудник офиса",
+      "subtite": "Стабильный доход",
+      "salary": "40000-45000 руб",
+      "imagePath": "vacancy6.png"
+   },
+   {
+      "id": 7,
+      "title": "Грузчик",
+      "subtite": "Стабильный доход",
+      "salary": "~2000 руб/день",
+      "imagePath": "vacancy7.png"
+   },
+   {
+      "id": 8,
+      "title": "Бухгалтер",
+      "subtite": "Стабильный доход",
+      "salary": "85000 руб",
+      "imagePath": "vacancy8.png"
+   }
+]

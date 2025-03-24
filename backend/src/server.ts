@@ -448,6 +448,24 @@ app.delete('/favorites/remove', async (req: Request, res: Response): Promise<any
     });
 });
 
+app.get('/vacancies', (req: Request, res: Response) => {
+    // Формируем путь к файлу vacancies.json, который находится в /src/data
+    const filePath = path.join(__dirname, 'data', 'vacancies.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Ошибка чтения файла с вакансиями:', err);
+            return res.status(500).json({ message: 'Ошибка при чтении файла с вакансиями.' });
+        }
+        try {
+            const vacancies = JSON.parse(data);
+            res.status(200).json({ vacancies });
+        } catch (parseError) {
+            console.error('Ошибка парсинга JSON:', parseError);
+            res.status(500).json({ message: 'Ошибка при разборе файла с вакансиями.' });
+        }
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
