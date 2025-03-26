@@ -18,6 +18,23 @@ $color-orange-aside-border: #FFE7B9;
 $color-black-aside-text: #2E0505;
 $color-red-aside-button: #FF0000;
 
+@mixin vacancy-modifier($border, $background, $img-url, $img-width, $img-height, $img-right) {
+   border: 1px solid $border;
+   border-radius: 30px;
+   background-color: $background;
+   
+   &::after {
+     content: '';
+     background: url(#{$img-url});
+     background-size: contain;
+     width: $img-width;
+     height: $img-height;
+     position: absolute;
+     top: 23.72%;
+     right: $img-right;
+   }
+ }
+
 .vacancies {
    padding-bottom: 136px;
    
@@ -67,132 +84,28 @@ $color-red-aside-button: #FF0000;
       }
 
       &--1 {
-         border: 1px solid $color-yellow-border;
-         border-radius: 30px;
-         background-color: $color-yellow-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy1.webp');
-            background-size: contain;
-            width: 74px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: 8px;
-         }
+         @include vacancy-modifier($color-yellow-border, $color-yellow-bg, '../images/webpImages/vacancies/vacancy1.webp', 74px, 103px, 8px);
       }
       &--2 {
-         border: 1px solid $color-green-border;
-         border-radius: 30px;
-         background-color: $color-green-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy2.webp');
-            background-size: contain;
-            width: 76px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: 5px;
-         }
+         @include vacancy-modifier($color-green-border, $color-green-bg, '../images/webpImages/vacancies/vacancy2.webp', 76px, 103px, 5px);
       }
       &--3 {
-         border: 1px solid $color-blue-border;
-         border-radius: 30px;
-         background-color: $color-blue-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy3.webp');
-            background-size: contain;
-            width: 100px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: -11px;
-         }
+         @include vacancy-modifier($color-blue-border, $color-blue-bg, '../images/webpImages/vacancies/vacancy3.webp', 100px, 103px, -11px);
       }
       &--4 {
-         border: 1px solid $color-red-border;
-         border-radius: 30px;
-         background-color: $color-red-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy4.webp');
-            background-size: contain;
-            width: 100px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: -13px;
-         }
+         @include vacancy-modifier($color-red-border, $color-red-bg, '../images/webpImages/vacancies/vacancy4.webp', 100px, 103px, -13px);
       }
       &--5 {
-         border: 1px solid $color-blue-border;
-         border-radius: 30px;
-         background-color: $color-blue-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy5.webp');
-            background-size: contain;
-            width: 90px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: 0;
-         }
+         @include vacancy-modifier($color-blue-border, $color-blue-bg, '../images/webpImages/vacancies/vacancy5.webp', 90px, 103px, 0);
       }
       &--6 {
-         border: 1px solid $color-red-border;
-         border-radius: 30px;
-         background-color: $color-red-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy6.webp');
-            background-size: contain;
-            width: 76px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: 5px;
-         }
+         @include vacancy-modifier($color-red-border, $color-red-bg, '../images/webpImages/vacancies/vacancy6.webp', 76px, 103px, 5px);
       }
       &--7 {
-         border: 1px solid $color-yellow-border;
-         border-radius: 30px;
-         background-color: $color-yellow-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy7.webp');
-            background-size: contain;
-            width: 99px;
-            height: 98px;
-            position: absolute;
-            top: 23.72%;
-            right: -14px;
-         }
+         @include vacancy-modifier($color-yellow-border, $color-yellow-bg, '../images/webpImages/vacancies/vacancy7.webp', 99px, 98px, -14px);
       }
       &--8 {
-         border: 1px solid $color-green-border;
-         border-radius: 30px;
-         background-color: $color-green-bg;
-
-         &::after {
-            content: '';
-            background: url('../images/webpImages/vacancies/vacancy8.webp');
-            background-size: contain;
-            width: 98px;
-            height: 103px;
-            position: absolute;
-            top: 23.72%;
-            right: -11px;
-         }
+         @include vacancy-modifier($color-green-border, $color-green-bg, '../images/webpImages/vacancies/vacancy8.webp', 98px, 103px, -11px);
       }
    }
 }

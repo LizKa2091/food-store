@@ -1,5 +1,5 @@
 import { useState, useContext, lazy } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import Notifications from '../UI/Notifications';
@@ -38,9 +38,9 @@ const Header: React.FC = () => {
             <nav className='nav'>
                 <div className='nav__top'>
                     <div className="nav__logo">
-                        <Link to='/'>
+                        <NavLink to='/'>
                             <img src={logo} alt="Ильинский" className="nav__logo-img" />
-                        </Link>
+                        </NavLink>
                     </div>
                     <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick}>Каталог</button>
                     <div className="nav__search">
@@ -83,9 +83,9 @@ const Header: React.FC = () => {
                     <ul className="nav__list">
                         {navItems.map((item: string, id: number) => (
                            item === 'Акции' ? (
-                              <Link to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
+                              <NavLink to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
                                  {item}
-                              </Link>
+                              </NavLink>
                            ) : (
                             <li className='nav__item' key={id}>
                                 <button className='nav__link' id={'nav__link-' + id}>{item}</button>
