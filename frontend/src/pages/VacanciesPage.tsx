@@ -1,8 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
-import './VacanciesPage.scss';
 import Wrapper from '../components/layout/Wrapper';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
+import './VacanciesPage.scss';
 
 interface IItem {
    id: number;
@@ -22,6 +22,7 @@ interface IFormData {
 const VacanciesPage: FC = () => {
    const [isLoading, setIsLoading] = useState<boolean>(false);
    const [items, setItems] = useState<IItem[] | null>(null);
+   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
    const [formData, setFormData] = useState<IFormData>({fio: '', tel: '', date: '', country: ''});
    const [error, setError] = useState<string>('');
 
@@ -59,8 +60,18 @@ const VacanciesPage: FC = () => {
       e.preventDefault();
    };
 
+   const handleItemClick = (e: number) => {
+      const filteredItems = items?.filter(item => item.id === e);
+
+      if (filteredItems) setSelectedItem(filteredItems[0]);
+   };
+
+   const handleCloseModal = () => {
+      if (selectedItem) setSelectedItem(null);
+   };
+
    return (
-      <Wrapper>
+      <Wrapper modalState={Boolean(selectedItem)}>
          <Header />
          <main className='vacancies'>
             <h2 className="vacancies__title">Вакансии</h2>
@@ -74,7 +85,7 @@ const VacanciesPage: FC = () => {
                            <p className="vacancies__item__title">{item.title}</p>
                            <p className="vacancies__item__subtitle">{item.subtite}</p>
                            <p className="vacancies__item__salary">{item.salary}</p>
-                           <button className="vacancies__item__button">Подробности</button>
+                           <button className="vacancies__item__button" onClick={ () => handleItemClick(item.id) }>Подробности</button>
                         </li>
                      ))}
                   </ul>
@@ -115,6 +126,64 @@ const VacanciesPage: FC = () => {
                   </form>
                </div>
             </aside>
+            {selectedItem &&
+               <div className="modal">
+                  <div className="modal__inner">
+                     <div className={`modal__icon-container modal__icon-container--${selectedItem.id}`}>
+                     </div>
+                     <div className="modal__main">
+                        <p className="modal__title">{selectedItem.title}</p>
+                        <p className="modal__extra">Стабильный доход <br />{selectedItem.salary}</p>
+                        <p className="modal__title">Чем предстоит заниматься?</p>
+                        <ul className="modal__list">
+                           <li className="modal__item">Консультировать и помогать покупателям</li>
+                           <li className="modal__item">Работать с кассой</li>
+                           <li className="modal__item">Оформлять витрины в прикассовой зоне</li>
+                           <li className="modal__item">Поддерживать чистоту в прикассовой зоне</li>
+                        </ul>
+                        <p className="modal__title">Вашим преимуществом будет</p>
+                        <ul className="modal__list">
+                           <li className="modal__item">Умение работать с людьми</li>
+                           <li className="modal__item">Грамотная речь</li>
+                        </ul>
+                        <p className="modal__title">Мы гарантируем</p>
+                        <ul className="modal__list">
+                           <li className="modal__item">Оформление по ТК России</li>
+                           <li className="modal__item">Компенсация питания</li>
+                           <li className="modal__item">Фирменная спецодежда</li>
+                        </ul>
+                     </div>
+                     <form onSubmit={ handleSubmit } className="modal__form">
+                        <div className="modal__form__inputs">
+                           <input 
+                              value={ formData.fio } onChange={ handleInputChange }
+                              type="text" name="fio" id="fio" className='modal__form__input' placeholder='ФИО' required 
+                           />
+                           <input 
+                              value={ formData.tel } onChange={ handleInputChange }
+                              type="tel" name="tel" id="tel" className='modal__form__input' placeholder='Телефон' required 
+                           />
+                           <input 
+                              value={ formData.date } onChange={ handleInputChange }
+                              type="date" name="date" id="date" className='modal__form__input' placeholder='Дата рождения' required 
+                           />
+                           <input 
+                              value={ formData.country } onChange={ handleInputChange }
+                              type="text" name="country" id="country" className='modal__form__input' placeholder='Страна' required 
+                           />
+                        </div>
+                        <div className="modal__form__extra">
+                           <div className="modal__form__agreement-container">
+                              <input type="checkbox" name="agreement" id="agremeent" className='modal__form__checkbox' required />
+                              <label htmlFor="agreement" className='modal__form__label'>согласие на обработку персональных данных</label>
+                           </div>
+                           <button type="submit" className='modal__form__button'>Откликнуться</button>
+                        </div>
+                     </form>
+                  </div>
+                  <button onClick={ handleCloseModal } className="modal__button--close">x</button>
+               </div>
+            }
          </main>
          <Footer />
       </Wrapper>

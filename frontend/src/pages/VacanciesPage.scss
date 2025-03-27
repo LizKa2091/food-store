@@ -18,6 +18,10 @@ $color-orange-aside-border: #FFE7B9;
 $color-black-aside-text: #2E0505;
 $color-red-aside-button: #FF0000;
 
+$color-black-shadow: #00000080;
+$color-gray-close-text: #AAAAAA;
+$color-gray-close-bg: #F2F3F5;
+
 @mixin vacancy-modifier($border, $background, $img-url, $img-width, $img-height, $img-right) {
    border: 1px solid $border;
    border-radius: 30px;
@@ -32,6 +36,17 @@ $color-red-aside-button: #FF0000;
      position: absolute;
      top: 23.72%;
      right: $img-right;
+   }
+}
+@mixin icon-modal($img-url, $width, $height) {
+   &::after {
+     content: '';
+     background: url(#{$img-url}) no-repeat center;
+     background-size: contain;
+     width: $width;
+     height: $height;
+     position: absolute;
+     top: 0;
    }
  }
 
@@ -187,6 +202,144 @@ $color-red-aside-button: #FF0000;
          height: 56px;
          max-width: 185px;
          cursor: pointer;
+      }
+   }
+}
+
+.modal {
+   background-color: $color-white-input-bg;
+   border: 1px solid $color-white-input-bg;
+   border-radius: 20px;
+   width: 100%;
+   height: 100%;
+   max-height: 840px;
+   max-width: 1290px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 2;
+
+   &__inner {
+      display: flex;
+      justify-content: space-between;
+      padding: 57px 56px 56px 59px;
+   }
+   &__form {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      border: 1px solid $color-orange-aside-border;
+      border-radius: 16px;
+      background-color: $color-orange-aside-bg;
+      height: 100dvh;
+      max-height: 464px;
+      padding: 31px 29px 36px 29px;
+      gap: 19px;
+
+      &__inputs {
+         display: flex;
+         justify-content: space-between;
+         flex-direction: column;
+         height: 100%;
+      }
+      &__input {
+         border: 1px solid #fff;
+         border-radius: 10px;
+         font-size: 1.25rem;
+         height: 56px;
+         padding: 0 20px;
+      }
+      &__agreement-container {
+         display: flex;
+         gap: 12px;
+      }
+      &__button {
+         border: 1px solid $color-red-aside-button;
+         border-radius: 31px;
+         background-color: $color-red-aside-button;
+         font-size: 1.375rem;
+         font-weight: 600;
+         color: #fff;
+         width: 100%;
+         height: 56px;
+         max-width: 224px;
+         cursor: pointer;
+      }
+      &__extra {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         flex-direction: column;
+         gap: 38px;
+      }
+   }
+   &__title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 38px 0 19px 0;
+   }
+   &__extra {
+      font-size: 1.25rem;
+   }
+   &__list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+   }
+   &__item {
+      list-style-type: none;
+   }
+   &__button--close {
+      border: 1px solid $color-gray-close-bg;
+      border-radius: 50%;
+      background-color: $color-gray-close-bg;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $color-gray-close-text;
+      width: 38px;
+      height: 38px;
+      padding-bottom: 5px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+   }
+   &__icon-container {
+      position: relative;
+
+      &::before {
+         content: '';
+         background-color: $color-yellow-bg;
+         border: 1px solid $color-yellow-border;
+         border-radius: 50%;
+         display: block;
+         width: 100px;
+         height: 100px;
+      }
+      &--1 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy1.webp', 74px, 103px); 
+      }
+      &--2 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy2.webp', 74px, 103px); 
+      }
+      &--3 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy3.webp', 100px, 103px); 
+      }
+      &--4 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy4.webp', 100px, 103px); 
+      }
+      &--5 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy5.webp', 90px, 103px); 
+      }
+      &--6 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy6.webp', 74px, 103px); 
+      }
+      &--7 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy7.webp', 99px, 98px); 
+      }
+      &--8 { 
+         @include icon-modal('../images/webpImages/vacancies/vacancy8.webp', 99px, 98px); 
       }
    }
 }
