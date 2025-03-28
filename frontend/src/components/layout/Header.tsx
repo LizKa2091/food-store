@@ -42,13 +42,13 @@ const Header: React.FC = () => {
                             <img src={logo} alt="Ильинский" className="nav__logo-img" />
                         </NavLink>
                     </div>
-                    <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick}>Каталог</button>
+                    <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
                     <div className="nav__search">
                         <input type="text" className="nav__input" id='nav-search' name='nav-search'/>
                     </div>
                     <div className="nav__locations">
                         <button className="nav__button nav__button--location-left">МСК</button>
-                        <button className="nav__button nav__button--location-right">Выберите способ получения Доставка или самовывоз</button>
+                        <button className="nav__button nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</button>
                     </div>
                     <div className="nav__user">
                         <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
@@ -56,7 +56,7 @@ const Header: React.FC = () => {
                         {isProfileOpen &&
                             <NavProfile />
                         }
-                        <button className="nav__user-action nav__user-action--cart">Корзина</button>
+                        <button className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</button>
                     </div>
                 </div>
                 {isCatalogOpen &&

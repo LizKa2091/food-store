@@ -1,1 +1,1 @@
-.wrapper{width:100%;max-width:1291px;margin:0 auto}.wrapper--darked::before{content:"";background-color:rgba(0,0,0,.5);width:100dvw;height:100%;position:fixed;top:0;left:0;z-index:1}
+.wrapper{width:100%;max-width:1291px;margin:0 auto;padding:0 15px}.wrapper--darked::before{content:"";background-color:rgba(0,0,0,.5);width:100dvw;height:100%;position:fixed;top:0;left:0;z-index:1}

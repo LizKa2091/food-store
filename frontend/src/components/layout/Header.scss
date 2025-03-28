@@ -47,6 +47,7 @@ $button-sale-h: 43px;
         font-size: 1.25rem;
         font-weight: 900;
         max-width: 355px;
+        background-color: $color-red;
     }
     &__important {
         color: $color-red;
@@ -57,7 +58,7 @@ $button-sale-h: 43px;
     &__button {
         border: 1px solid $color-white;
         border-radius: 31px;
-        background-color: inherit;
+        background-color: $color-red;
         color: $color-white;
         font-size: 1.25rem;
         width: $button-sale-w;
@@ -78,6 +79,7 @@ $button-sale-h: 43px;
     &__top {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
     &__bottom {
         position: relative;
@@ -92,6 +94,7 @@ $button-sale-h: 43px;
     &__button {
         color: $color-white;
         height: 48px;
+        
         &--catalog {
             font-weight: 800;
             border: 1px solid $color-red;
@@ -151,6 +154,9 @@ $button-sale-h: 43px;
             font-weight: 700;
             width: 100%;
             max-width: 230px;
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            display: inline-block;
         }
         &:hover {
             cursor: pointer;
@@ -160,7 +166,8 @@ $button-sale-h: 43px;
         border: 1px solid $color-gray;
         border-radius: 16px;
         color: $color-gray-input;
-        width: 317px;
+        width: 25vw;
+        max-width: 317px;
         height: 49px;
         background-image: url('../../images/webpImages/search-icon.webp');
         background-repeat: no-repeat;
@@ -397,4 +404,27 @@ $button-sale-h: 43px;
     &5::before {
         background-image: url('../../images/webpImages/category-shops.webp');
     }
+}
+
+@media (max-width: 1150px) {
+   .nav {
+      &__button {
+         &--catalog {
+            font-size: 0;
+            width: min-content;
+            &::before {
+               left: 50%;
+               transform: translate(-50%, -50%);
+            }
+         }
+         &--location-right {
+            max-width: 150px;
+            white-space: nowrap;
+         }
+      }
+      &__user-action--cart {
+         font-size: 0;
+         width: min-content;
+      }
+   }
 }

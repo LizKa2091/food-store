@@ -35,15 +35,18 @@ $red-offer-right-bg: #FFE9E8;
 $peach-offer-right-bg: #FFEDE8;
 $yellow-offer-right-bg: #FFFBEF;
 
+$category-section-padding: 7.5dvh 0 5dvh 0;
+$category-section-extended-padding: 2dvh 0 5dvh 0;
+
 .category {
     &-section {
         display: flex;
         flex-direction: column;
-        padding: 129px 0 94px 0;
+        padding: $category-section-padding;
         gap: 43px;
 
         &.extended {
-         padding: 27px 0 94px 0;
+         padding: $category-section-extended-padding;
         }
     }
     &__info {
@@ -95,6 +98,7 @@ $yellow-offer-right-bg: #FFFBEF;
     }
     &__list {
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         row-gap: 22px;
         column-gap: 24px;
