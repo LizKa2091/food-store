@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Link } from "react-router-dom";
 import './Footer.scss';
 import visa from '../../images/webpImages/footer/visa.webp';
 import mastercard from '../../images/webpImages/footer/mastercard.webp';
@@ -10,34 +11,34 @@ const Footer: FC = () => {
                 <ul className="footer__list footer__list--upper">
                     <li className="footer__item footer__list__title">Ильинский онлайн</li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Кулинария</a>
+                        <Link to='' className="footer__link">Кулинария</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Супермаркет</a>
+                        <Link to='' className="footer__link">Супермаркет</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Заморозка</a>
+                        <Link to='' className="footer__link">Заморозка</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Другое</a>
+                        <Link to='' className="footer__link">Другое</Link>
                     </li>
                 </ul>
                 <ul className="footer__list footer__list--upper">
                     <li className="footer__item footer__list__title">Ильинский клуб</li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Акции</a>
+                        <Link to='' className="footer__link">Акции</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Доствака и оплата</a>
+                        <Link to='' className="footer__link">Доствака и оплата</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Программа лояльности</a>
+                        <Link to='' className="footer__link">Программа лояльности</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Политика конфиденциальности</a>
+                        <Link to='' className="footer__link">Конфиденциальность</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link">Вакансии</a>
+                        <Link to='' className="footer__link">Вакансии</Link>
                     </li>
                 </ul>
                 <ul className="footer__list footer__list--upper">
@@ -45,16 +46,16 @@ const Footer: FC = () => {
                         <a href="tel:+38000490999" className="footer__link footer__item--tel">+38 (000) 49-09-99</a>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link footer__item__extra">Ежедневно c 09:00 до 21:00</a>
+                        <Link to='' className="footer__link footer__item__extra">Ежедневно c 09:00 до 21:00</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link footer__item--address">Адреса магазинов</a>
+                        <Link to='' className="footer__link footer__item--address">Адреса магазинов</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link footer__item--inst">Следите за нами</a>
+                        <Link to='' className="footer__link footer__item--inst">Следите за нами</Link>
                     </li>
                     <li className="footer__item">
-                        <a href="#" className="footer__link footer__item--email">Обратная связь</a>
+                        <Link to='' className="footer__link footer__item--email">Обратная связь</Link>
                     </li>
                 </ul>
                 <div className="footer__news">

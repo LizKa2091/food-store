@@ -22,6 +22,10 @@ $white-list-item: #fff;
 
         &--upper {
             flex-direction: column;
+            width: max-content;
+            &:nth-of-type(2) {
+               padding-right: 25px;
+            }
         }
         &__title {
             color: $white-list-item;
@@ -90,7 +94,9 @@ $white-list-item: #fff;
     }
     &__link {
         text-decoration: none;
-        color: $white-list-item; 
+        color: $white-list-item;
+        font-size: 0.875rem;
+        white-space: wrap;
     }
 
     &__news {
