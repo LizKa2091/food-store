@@ -36,16 +36,30 @@
 ## 📦 Запуск и установка проекта
 
 ### Backend
-`cd backend`
-`npm install`
-`cd src`
-`ts-node server.ts`
+```
+cd backend
+```
+```
+npm install
+```
+```
+cd src
+```
+```
+ts-node server.ts
+```
 Сервер запустится на http://localhost:5001
 
 ### Frontend
-`cd frontend`
-`npm install`
-`npm start`
+```
+cd frontend
+```
+```
+npm install
+```
+```
+npm start
+```
 Приложение будет доступно на http://localhost:3000
 
 ## 🛠 Основной функционал
