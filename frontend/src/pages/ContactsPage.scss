@@ -1,0 +1,114 @@
+$orange-map-border: #FFE7B9;
+$orange-right-contacts-div-bg: #FFECCA;
+
+.contacts {
+   display: flex;
+   justify-content: space-between;
+   flex-direction: column;
+   gap: 50px;
+
+   &__top {
+      display: flex;
+      justify-content: space-between;
+   }
+   &__left {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      max-width: 50%;
+   }
+   &__right {
+      border: 1px solid $orange-map-border;
+      border-radius: 16px;
+      background-color: #FFECCA;
+      font-size: 1.375rem;
+      max-width: 417px;
+      padding: 30px;
+      line-height: 2.5rem;
+   }
+   &__bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 54px;
+      padding-bottom: 195px;
+   }
+   &__title {
+      font-size: 2rem;
+      text-transform: uppercase;
+   }
+   &__text {
+      font-size: 1.5rem;
+   }
+   &-map {
+
+      position: relative;
+      overflow: hidden;
+
+      &__link {
+         color: #eee;
+         font-size: 12px;
+         position: absolute;
+         top: 0;
+
+         &:last-of-type {
+            top: 14px;
+         }
+      }
+      &__iframe {
+         border: 1px solid $orange-map-border;
+         border-radius: 16px;
+         width: 100%;
+         height: 450px;
+         position: relative;
+      }
+   }
+   &__list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 19px;
+      row-gap: 54px;
+      justify-items: center;
+   }
+   &__item {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      max-width: 417px;
+
+      &-title {
+         font-size: 1.375rem;
+         font-weight: 700;
+         position: relative;
+
+         &::before {
+            content: '';
+            background: url('../images/webpImages/geo-icon.webp') no-repeat center center;
+            background-size: contain;
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            margin-right: 15px;
+         }
+      }
+      &-text {
+         font-size: 1.25rem;
+         margin-left: 29px;
+      }
+      &-hours {
+         font-size: 1.25rem;
+         margin-top: 3.5%;
+      }
+      &-hours {
+
+         &::before {
+            content: '';
+            background: url('../images/webpImages/clock-icon.webp') no-repeat center center;
+            background-size: contain;
+            width: 17px;
+            height: 17px;
+            display: inline-block;
+            margin-right: 12px;
+         }
+      }
+   }
+}
