@@ -3,6 +3,7 @@ import Wrapper from '../components/layout/Wrapper';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import SalesAndRecommendation from '../components/UI/SalesAndRecommendation';
+import { useCategory } from '../context/CategoryContext';
 import './CatalogPage.scss';
 
 type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое';
@@ -15,7 +16,11 @@ interface ISubCategory {
 
 const CatalogPage: FC = () => {
    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-   const [selectedItem, setSelectedItem] = useState<string>('');
+   const { selectedCategory, setSelectedCategory  } = useCategory();
+
+   const handleCategorySelect = (category: string) => {
+      setSelectedCategory(category);
+  };
 
    const handleModalChange = (modalState: boolean) => {
       setIsModalOpened(modalState);
@@ -31,7 +36,7 @@ const CatalogPage: FC = () => {
    return (
       <Wrapper modalState={isModalOpened}>
          <Header />
-         <h2 className='catalog-title'>Хлеб и выпечка</h2>
+         <h2 className='catalog-title'>{selectedCategory}</h2>
          <div className="catalog">
             <aside className="catalog-aside">
                <p className="catalog-aside__title">Особенности</p>
@@ -55,7 +60,7 @@ const CatalogPage: FC = () => {
                      <p className="catalog-aside__list-title">{category}</p>
                      <ul key={index} className="catalog-aside__list catalog-aside__list--categories">
                         {subCategories[category as CategoryType].map((item: ISubCategory, ind) => (
-                           <li key={ind} onClick={() => setSelectedItem(item.name)} className="catalog-aside__item catalog-aside__item--category">
+                           <li key={ind} onClick={() => handleCategorySelect(item.name)} className="catalog-aside__item catalog-aside__item--category">
                               {item.name}
                            </li>
                         ))}
@@ -66,7 +71,7 @@ const CatalogPage: FC = () => {
             <section className='catalog-section'>
                <div className="catalog-section__filters">
                   <ul className="catalog-section__list catalog-section__list--filters">
-                     {selectedItem}
+                     
                   </ul>
                </div>
             </section>

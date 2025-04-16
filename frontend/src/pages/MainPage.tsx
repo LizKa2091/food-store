@@ -9,11 +9,18 @@ import DeliveryBanner from '../components/layout/banners/DeliveryBanner';
 import RateBanner from '../components/layout/banners/RateBanner';
 import Footer from '../components/layout/Footer';
 import { CategoryType } from '../components/UI/Categories';
+import { useCategory } from '../context/CategoryContext';
 
 const categoriesList: CategoryType[] = ["Супермаркет", "Кулинария", "Заморозка", "Другое", "Акции"];
 
 const MainPage: FC = () => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+  const { setSelectedCategory } = useCategory();
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+  };
 
   const handleModalChange = (modalState: boolean) => {
     setIsModalOpened(modalState);
@@ -25,7 +32,7 @@ const MainPage: FC = () => {
         <Promo />
         <SalesAndRecommendation onModalChange={ handleModalChange } type='Скидки'/>
         {categoriesList.map((category) => (
-            <Categories key={category} category={category} />
+            <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
         ))}
          <Delivery />
         <DeliveryBanner />

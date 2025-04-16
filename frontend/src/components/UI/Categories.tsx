@@ -1,9 +1,13 @@
 import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCategory } from '../../context/CategoryContext';
 import './Categories.scss';
 
 interface ICategoriesProps {
     category: CategoryType;
     type?: 'extended';
+    selectedSubcategory?: string;
+    setSelectedSubcategory?: (selectedSubcategory: string) => void;
 }
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
@@ -15,7 +19,10 @@ interface ISubCategory {
     extended2?: string;
 };
 
-const Categories: FC<ICategoriesProps> = ({ category, type }) => {
+const Categories: FC<ICategoriesProps> = ({ category, type, setSelectedSubcategory}) => {
+    const navigate = useNavigate();
+    const { setSelectedCategory } = useCategory();
+   
     const subCategories: Record<CategoryType, ISubCategory[]> = {
         Супермаркет: [{ name: 'Вода и напитки' }, { name: 'Молоко, масло и яйца' }, { name: 'Снэки и сухофрукты' }, { name: 'Кофе, чай и сладости' }, { name: 'Макароны и крупы' }, { name: 'Хлеб и выпечка' }, { name: 'Масло, соусы и специи' }, { name: 'Консервы и соленья' }],
         Кулинария: [{ name: 'Выпечка' }, { name: 'Пиццы' }, { name: 'Гриль меню' }, { name: 'Свежее мясо' }, { name: 'Салаты' }, { name: 'Супы' }, { name: 'Горячие блюда' }, { name: 'Десерты' }],
@@ -49,7 +56,7 @@ const Categories: FC<ICategoriesProps> = ({ category, type }) => {
                      </div>
                   </li>
                 ) : (
-                    <li className={`subcategory__item ${category} ${el.name.split(' ').length === 1 ? el.name : el.name.split(' ')[0].replace(',', '')}`} key={el.name}>
+                    <li onClick={() => { setSelectedCategory(el.name); navigate('/catalog') }} className={`subcategory__item ${category} ${el.name.split(' ').length === 1 ? el.name : el.name.split(' ')[0].replace(',', '')}`} key={el.name}>
                         <p className={`subcategory__title ${category}`}>{el.name}</p>
                         {el.extra &&
                             <span className='subcategory__extra'>{el.extra}</span>
