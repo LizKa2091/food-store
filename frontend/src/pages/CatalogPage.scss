@@ -1,0 +1,93 @@
+$catalog-item-bg-hover: #FFF5E0;
+$catalog-radio-button-bg: #FFA90059;
+$catalog-radio-button-checked: #FF0000;
+
+.catalog {
+   display: flex;
+   
+   &-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+   }
+   &-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      max-width: 314px;
+
+      &__title {
+         font-size: 1.25rem;
+         font-weight: 700;
+         text-transform: uppercase;
+         margin: 40px 0 8px;
+      }
+      &__list {
+         display: flex;
+         justify-content: center;
+         flex-direction: column;
+         gap: 10px;
+
+         &-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+         }
+      }
+      &__item {
+         list-style-type: none;
+         cursor: pointer;
+         
+         &--category {
+            font-size: 1.25rem;
+            padding-left: 25px;
+         }
+         &:hover {
+            background-color: $catalog-item-bg-hover;
+            border: 1px solid $catalog-item-bg-hover;
+            border-radius: 2px;
+         }
+         &-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding-left: 24px;
+            position: relative;
+            cursor: pointer;
+
+            &--radio::before {
+               content: '';
+               display: inline-block;
+               width: 20px;
+               height: 20px;
+               border-radius: 50%;
+               background-color: $catalog-radio-button-bg;
+               position: absolute;
+               left: 0;
+               top: 50%;
+               transform: translateY(-50%);
+           }
+           &--radio::after {
+               content: '';
+               display: none;
+               width: 7px;
+               height: 7px;
+               border-radius: 50%;
+               background-color: $catalog-radio-button-checked;
+               position: absolute;
+               left: 7px;
+               top: 50%;
+               transform: translateY(-50%);
+           }
+         }
+         &-radio {
+            display: none;
+         }
+         &-radio:checked + &-label--radio::after {
+            display: block;
+        }
+         &--radio {
+            display: flex;
+            gap: 8px;
+         }
+      }
+   }
+}
