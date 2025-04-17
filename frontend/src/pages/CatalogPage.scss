@@ -2,9 +2,19 @@ $catalog-item-bg-hover: #FFF5E0;
 $catalog-radio-button-bg: #FFA90059;
 $catalog-radio-button-checked: #FF0000;
 
+$catalog-filter-bg: #FFF8EB;
+$catalog-filter-border: #FFA90073;
+$catalog-filter-bg-active: #FFA900;
+$catalog-filter-border-active: #FFA90073;
+
+$catalog-filter-clear-border: #83838373;
+$catalog-filter-clear-text: #C3C3C3;
+
+$catalog-item-border: #DADADA;
+
 .catalog {
    display: flex;
-   
+
    &-title {
       font-size: 2rem;
       font-weight: 700;
@@ -14,6 +24,7 @@ $catalog-radio-button-checked: #FF0000;
       display: flex;
       flex-direction: column;
       gap: 7px;
+      width: 100%;
       max-width: 314px;
 
       &__title {
@@ -89,5 +100,69 @@ $catalog-radio-button-checked: #FF0000;
             gap: 8px;
          }
       }
+   }
+   &-section {
+      margin-top: 40px;
+      
+      &__list {
+         display: flex;
+         flex-wrap: wrap;
+
+         &--categories {
+            gap: 10px;
+         }
+         &--products {
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+         }
+      }
+      &__item {
+         list-style-type: none;
+
+         &-button {
+            border: 1px solid $catalog-filter-border;
+            border-radius: 16px;
+            background-color: $catalog-filter-bg;
+            font-weight: 700;
+            padding: 8px 24px;
+            cursor: pointer;
+
+            &--selected {
+               border: 1px solid $catalog-filter-border-active;
+               background-color: $catalog-filter-bg-active;
+               color: #fff;
+               position: relative;
+
+               &::after {
+                  content: ' x';
+               }
+            }
+            &--clear {
+               border: 1px solid $catalog-filter-clear-border;
+               border-radius: 16px;
+               background-color: inherit;
+               color: $catalog-filter-clear-text;
+               padding: 8px 17px;
+               cursor: pointer;
+               position: relative;
+
+               &::after {
+                  content: ' x';
+               }
+            }
+            &--product {
+               display: flex;
+               justify-content: center;
+               flex-direction: column;
+               border: 1px solid $catalog-item-border;
+               border-radius: 20px;
+               background-color: inherit;
+               width: 304px;
+            height: 406px;
+            }
+         }
+      }
+      
    }
 }
