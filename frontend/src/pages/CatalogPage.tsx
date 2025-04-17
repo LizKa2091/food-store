@@ -7,6 +7,22 @@ import { useCategory } from '../context/CategoryContext';
 import { getCatalogProducts } from '../services/productService';
 import './CatalogPage.scss';
 
+import bakeryImg1 from '../images/webpImages/catalogItems/catalog-item-1.webp';
+import bakeryImg2 from '../images/webpImages/catalogItems/catalog-item-2.webp';
+import bakeryImg3 from '../images/webpImages/catalogItems/catalog-item-3.webp';
+import bakeryImg4 from '../images/webpImages/catalogItems/catalog-item-4.webp';
+import bakeryImg5 from '../images/webpImages/catalogItems/catalog-item-5.webp';
+import bakeryImg6 from '../images/webpImages/catalogItems/catalog-item-6.webp';
+
+const images = {
+   bakeryImg1,
+   bakeryImg2,
+   bakeryImg3,
+   bakeryImg4,
+   bakeryImg5,
+   bakeryImg6,
+};
+
 type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое';
 
 interface ISubCategory {
@@ -15,10 +31,42 @@ interface ISubCategory {
    filters: string[];
 };
 
+type productResponse = {
+   products: responseItem[];
+};
+
+type ImageKeys = keyof typeof images;
+
+type responseItem = {
+   productId: string;
+   name: string;
+   price: number;
+   stockQuantity: number;
+   weight: string;
+   oldPrice?: number;
+   imagePath: ImageKeys;
+}
+
 const CatalogPage: FC = () => {
    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+   const [currProducts, setCurrProducts] = useState<productResponse>();
    const { selectedCategory, setSelectedCategory  } = useCategory();
+
+   useEffect(() => {
+      const getProducts = async () => {
+         if (selectedCategory) {
+            let result = await getCatalogProducts(selectedCategory);
+            
+            if (result.message) {
+               console.error(result.message)
+            }
+            else setCurrProducts(result);
+         }   
+      };
+
+      getProducts();
+   }, [selectedCategory])
 
    const handleCategorySelect = (category: string) => {
       setSelectedCategory(category);
@@ -45,7 +93,7 @@ const CatalogPage: FC = () => {
       Заморозка: [{ name: 'Пельмени, вареники, равиоли', filters: ['Пельмени', 'Вареники', 'Равиоли'] }, { name: 'Хинкали и манты', filters: ['Хинкали', 'Манты'] }, { name: 'Полу фабрикаты', filters: ['Фабрикаты'] }, { name: 'Замороженные овощи', filters: ['Овощи'] }, { name: 'Рыба и морепродукты', filters: ['Рыба', 'Морепродукты'] }, { name: 'Мясо', filters: ['Мясо'] }],
       Другое: [{ name: 'Красота и гигиена', filters: ['Красота', 'Гигиена'] }, { name: 'Стирка и уборка', filters: ['Стирка', 'Уборка'] }, { name: 'Полезные мелочи', filters: ['Мелочи'] }, { name: 'Бытовая техника', filters: ['Техника'] }],
    };
-
+   
    return (
       <Wrapper modalState={isModalOpened}>
          <Header />
@@ -100,7 +148,28 @@ const CatalogPage: FC = () => {
                </div>
                <div className="catalog-section__products">
                   <ul className="catalog-section__list catalog-section__list--products">
-                     
+                     {currProducts?.products.map((product: responseItem) => (
+                        <li key={product.productId} className="catalog-section__item catalog-section__item--product">
+                           {product.name}
+                           <img src={images[product.imagePath]} alt={product.name} className="catalog-section__item-img" />
+                           <div className="catalog-section__item-container"><p className="catalog-section__item-quantity">В наличии{product.stockQuantity}</p>
+                              <p className="catalog-section__item-name">{product.name}</p>
+                              <div className="catalog-section__item-bottom">
+                                 <div className="catalog-section__item-prices">
+                                    <p className="catalog-section__item-new-price">{product.price}</p>
+                                    {product.oldPrice &&
+                                       <p className="catalog-section__item-old-price">{product.oldPrice}</p>
+                                    }
+                                 </div>
+                                 {product.stockQuantity ? (
+                                    <button className='catalog-section__item-button'>В корзину</button>
+                                 ) : (
+                                    <button className='catalog-section__item-button'>На завтра</button>
+                                 )}
+                              </div>
+                           </div>
+                        </li>
+                     ))}
                   </ul>
                </div>
             </section>
