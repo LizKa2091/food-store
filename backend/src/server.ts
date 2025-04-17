@@ -466,6 +466,33 @@ app.get('/vacancies', (req: Request, res: Response) => {
     });
 });
 
+app.post('/products-by-category', async (req: Request, res: Response): Promise<any> => {
+    const { catalogCategory } = req.body;
+    // Проверка на наличие категории
+    if (!catalogCategory) {
+        return res.status(400).json({ message: 'Категория не указана.' });
+    }
+    const filePath = path.join(__dirname, 'data', 'catalogItems.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Ошибка чтения файла с товарами каталога:', err);
+            return res.status(500).json({ message: 'Ошибка при чтении файла с товарами каталога.' });
+        }
+        try {
+            const catalogItems = JSON.parse(data);
+            // Фильтрация товаров по категории
+            const filteredProducts = catalogItems.filter((item: any) => item.category === catalogCategory);
+            if (filteredProducts.length === 0) {
+                return res.status(404).json({ message: 'Товары не найдены для указанной категории.' });
+            }
+            res.status(200).json({ products: filteredProducts });
+        } catch (parseError) {
+            console.error('Ошибка парсинга JSON:', parseError);
+            res.status(500).json({ message: 'Ошибка при разборе файла с товарами каталога.' });
+        }
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
