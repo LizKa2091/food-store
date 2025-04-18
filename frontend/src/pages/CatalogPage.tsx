@@ -13,6 +13,7 @@ import bakeryImg3 from '../images/webpImages/catalogItems/catalog-item-3.webp';
 import bakeryImg4 from '../images/webpImages/catalogItems/catalog-item-4.webp';
 import bakeryImg5 from '../images/webpImages/catalogItems/catalog-item-5.webp';
 import bakeryImg6 from '../images/webpImages/catalogItems/catalog-item-6.webp';
+import FavoriteButton from '../components/UI/FavoriteButton';
 
 const images = {
    bakeryImg1,
@@ -43,14 +44,17 @@ type responseItem = {
    price: number;
    stockQuantity: number;
    weight: string;
-   oldPrice?: number;
+   newPrice?: number;
    imagePath: ImageKeys;
+   filterCategory: string;
 }
 
 const CatalogPage: FC = () => {
    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-   const [currProducts, setCurrProducts] = useState<productResponse>();
+   const [currProducts, setCurrProducts] = useState<productResponse | undefined>(undefined);
+   const [filtersResult, setFiltersResult] = useState<responseItem[]>([]);
+   const [displayProductsList, setDisplayProductsList] = useState<responseItem[] | undefined>(undefined);
    const { selectedCategory, setSelectedCategory  } = useCategory();
 
    useEffect(() => {
@@ -66,7 +70,18 @@ const CatalogPage: FC = () => {
       };
 
       getProducts();
-   }, [selectedCategory])
+   }, [selectedCategory]);
+
+   useEffect(() => {
+      if (selectedFilters && currProducts) {
+         setFiltersResult(currProducts.products.filter((product: responseItem) => selectedFilters.includes(product.filterCategory)))
+      }
+   }, [selectedFilters, currProducts]);
+
+   useEffect(() => {
+      if (selectedFilters.length > 0) setDisplayProductsList(filtersResult)
+      else if (currProducts) setDisplayProductsList(currProducts.products);
+   }, [selectedFilters, currProducts, filtersResult] )
 
    const handleCategorySelect = (category: string) => {
       setSelectedCategory(category);
@@ -148,27 +163,24 @@ const CatalogPage: FC = () => {
                </div>
                <div className="catalog-section__products">
                   <ul className="catalog-section__list catalog-section__list--products">
-                     {currProducts?.products.map((product: responseItem) => (
+                     {displayProductsList?.map((product: responseItem) => (
                         <li key={product.productId} className="catalog-section__item catalog-section__item--product">
-                           {product.name}
+                           <FavoriteButton productId={product.productId} initialFavState={false} />
                            <img src={images[product.imagePath]} alt={product.name} className="catalog-section__item-img" />
-                           <div className="catalog-section__item-container"><p className="catalog-section__item-quantity">В наличии{product.stockQuantity}</p>
+                           <div className="catalog-section__item-container">
+                              <p className="catalog-section__item-quantity">В наличии {product.stockQuantity}</p>
                               <p className="catalog-section__item-name">{product.name}</p>
                               <div className="catalog-section__item-bottom">
                                  <div className="catalog-section__item-prices">
-                                    <p className="catalog-section__item-new-price">{product.price}</p>
-                                    {product.oldPrice &&
-                                       <p className="catalog-section__item-old-price">{product.oldPrice}</p>
+                                    <p className={"catalog-section__item-new-price" + (product.newPrice ? ' catalog-section__item-new-price-red' : '')}>{product.price} руб</p>
+                                    {product.newPrice &&
+                                       <p className="catalog-section__item-old-price">{product.price} руб</p>
                                     }
                                  </div>
-                                 {product.stockQuantity ? (
-                                    <button className='catalog-section__item-button'>В корзину</button>
-                                 ) : (
-                                    <button className='catalog-section__item-button'>На завтра</button>
-                                 )}
+                                 <button className='catalog-section__item-button catalog-section__item-button--buy'>{product.stockQuantity > 0 ? 'В корзину' : 'На завтра'}</button>
                               </div>
                            </div>
-                        </li>
+                        </li> 
                      ))}
                   </ul>
                </div>

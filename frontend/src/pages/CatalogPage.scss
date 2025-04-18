@@ -11,9 +11,13 @@ $catalog-filter-clear-border: #83838373;
 $catalog-filter-clear-text: #C3C3C3;
 
 $catalog-item-border: #DADADA;
+$catalog-item-quantity: #434343;
+$catalog-item-new-price: #CF0000;
+$catalog-item-buy: #FF0000;
 
 .catalog {
    display: flex;
+   gap: 14px;
 
    &-title {
       font-size: 2rem;
@@ -110,15 +114,16 @@ $catalog-item-border: #DADADA;
 
          &--categories {
             gap: 10px;
+            margin-bottom: 28px;
          }
          &--products {
-            justify-content: center;
             align-items: center;
             gap: 25px;
          }
       }
       &__item {
          list-style-type: none;
+         position: relative;
 
          &-button {
             border: 1px solid $catalog-filter-border;
@@ -147,22 +152,76 @@ $catalog-item-border: #DADADA;
                cursor: pointer;
                position: relative;
 
+
                &::after {
                   content: ' x';
                }
             }
-            &--product {
-               display: flex;
-               justify-content: center;
-               flex-direction: column;
-               border: 1px solid $catalog-item-border;
-               border-radius: 20px;
-               background-color: inherit;
-               width: 304px;
-            height: 406px;
+         }
+         &--product {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            border: 1px solid $catalog-item-border;
+            border-radius: 20px;
+            background-color: inherit;
+            width: 294px;
+            max-height: 406px;
+         }
+         &-img {
+            height: 220px;
+         }
+         &-container {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            padding: 0 18px 25px 18.94px;
+         }
+         &-quantity {
+            font-size: 0.875rem;
+            color: $catalog-item-quantity;
+         }
+         &-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+         }
+         &-bottom {
+            display: flex;
+            justify-content: space-between;
+         }
+         &-prices {
+            position: relative;
+         }
+         &-new-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+
+            &-red {
+               color: $catalog-item-new-price;
+            }
+         }
+         &-old-price {
+            font-size: 0.875rem;
+            color: $catalog-item-quantity;
+            text-decoration: line-through;
+         }
+         &-button--buy {
+            border: 1px solid $catalog-item-buy;
+            border-radius: 60px;
+            background-color: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            color: $catalog-item-buy;
+            width: 130px;
+            height: 42px;
+
+            &:hover {
+               background-color: $catalog-item-buy;
+               color: #fff;
             }
          }
       }
-      
    }
 }

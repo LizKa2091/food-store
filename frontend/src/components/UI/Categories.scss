@@ -98,7 +98,6 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
     }
     &__list {
         display: flex;
-        justify-content: center;
         flex-wrap: wrap;
         row-gap: 22px;
         column-gap: 24px;
@@ -112,7 +111,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 .subcategory {
     &__item {
         display: inline-block;
-        width: 304px; 
+        width: 297px; 
         height: 304px;
         position: relative;
         cursor: pointer;
@@ -247,7 +246,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
             font-size: 1.625rem;
             border-radius: 30px;
             color: $white;
-            width: 310px;
+            width: 297px;
             height: 449px;
         }
 
