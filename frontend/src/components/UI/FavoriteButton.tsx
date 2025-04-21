@@ -7,9 +7,10 @@ import './FavoriteButton.scss';
 interface IFavoriteButtonProps {
     productId: string;
     initialFavState: boolean;
+    position?: string;
 };
 
-const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState }) => {
+const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState, position }) => {
     const [isFavorited, setIsFavorited] = useState<boolean>(initialFavState);
     const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
 
@@ -60,7 +61,7 @@ const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState }
     return (
         <>
             <button 
-                className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '')} 
+                className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '') + (position === 'relative' ? ' favorite-button--relative' : '')} 
                 onClick={ handleClick }
             >
             </button>
