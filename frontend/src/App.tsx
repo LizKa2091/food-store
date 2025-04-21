@@ -11,6 +11,7 @@ import VacanciesPage from './pages/VacanciesPage';
 import ContactsPage from './pages/ContactsPage';
 import { CategoryProvider } from './context/CategoryContext';
 import './App.scss';
+import CartPage from './pages/CartPage';
 
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
@@ -28,6 +29,7 @@ function App() {
                   <Route path='/sales' element={<SalesPage />} />
                   <Route path='/vacancies' element={<VacanciesPage />} />
                   <Route path='/contacts' element={<ContactsPage />} />
+                  <Route path='/cart' element={<CartPage />} />
                   <Route path='*' 
                      element={ 
                         <Suspense fallback={<Loading />}>
