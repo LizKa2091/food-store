@@ -10,13 +10,11 @@ $red-item-out-text: #BF7373;
 $red-item-sale-price: #CF0000;
 $red: #FF0000;
 
-$section-padding-top: 7.5dvh;
-
 .sales-and-recommendation {
     display: flex;
     flex-direction: column;
     gap: 34px;
-    padding-top: $section-padding-top;
+    padding: 65px 0 83px 0;
 
     &__top {
         display: flex;
