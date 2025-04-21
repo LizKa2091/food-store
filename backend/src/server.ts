@@ -493,6 +493,120 @@ app.post('/products-by-category', async (req: Request, res: Response): Promise<a
     });
 });
 
+// Хранилище корзин пользователей
+let userCarts: Record<string, { productId: string; quantity: number }[]> = {};
+
+app.post('/cart/add', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   const { productId, quantity } = req.body; // Предполагаем, что вы передаете ID товара и количество в теле запроса
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, async (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           // Инициализация корзины, если она еще не инициализирована
+           if (!userCarts[phoneNumberFromToken]) {
+               userCarts[phoneNumberFromToken] = [];
+           }
+           // Проверка, существует ли товар
+           const filePath = path.join(__dirname, 'data', 'products.json');
+           const data = await fs.promises.readFile(filePath, 'utf8');
+           const products = JSON.parse(data);
+           const product = products.find((item: any) => item.productId === productId);
+           if (!product) {
+               return res.status(404).json({ message: 'Товар не найден.' });
+           }
+           // Проверка, существует ли товар уже в корзине
+           const existingCartItem = userCarts[phoneNumberFromToken].find(item => item.productId === productId);
+           if (existingCartItem) {
+               existingCartItem.quantity += quantity; // Увеличиваем количество
+           } else {
+               userCarts[phoneNumberFromToken].push({ productId, quantity }); // Добавляем новый товар в корзину
+           }
+           res.status(200).json({ message: 'Товар добавлен в корзину.', cart: userCarts[phoneNumberFromToken] });
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
+});
+
+app.post('/cart/update', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   const { productId, quantity } = req.body; // Предполагаем, что вы передаете ID товара и новое количество в теле запроса
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           const cartItem = userCarts[phoneNumberFromToken]?.find(item => item.productId === productId);
+           if (cartItem) {
+               cartItem.quantity = quantity; // Обновляем количество
+               res.status(200).json({ message: 'Количество товара обновлено.', cart: userCarts[phoneNumberFromToken] });
+           } else {
+               res.status(404).json({ message: 'Товар не найден в корзине.' });
+           }
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
+});
+
+app.delete('/cart/remove', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   const { productId } = req.body; // Предполагаем, что вы передаете ID товара в теле запроса
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           const cartIndex = userCarts[phoneNumberFromToken]?.findIndex(item => item.productId === productId);
+           if (cartIndex !== undefined && cartIndex !== -1) {
+               userCarts[phoneNumberFromToken].splice(cartIndex, 1); // Удаляем товар из корзины
+               res.status(200).json({ message: 'Товар удален из корзины.', cart: userCarts[phoneNumberFromToken] });
+           } else {
+               res.status(404).json({ message: 'Товар не найден в корзине.' });
+           }
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
+});
+
+app.get('/cart', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           const cart = userCarts[phoneNumberFromToken] || [];
+           res.status(200).json({ cart });
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
+});
+
 // Запуск сервера
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
