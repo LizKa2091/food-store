@@ -124,6 +124,40 @@ $white-list-item: #fff;
                 gap: 7px;
                 margin-top: 10px;
                 opacity: 50%;
+                position: relative;
+
+                label {
+                  position: relative;
+                  padding-left: 25px;
+                  cursor: pointer;
+
+                  &::after {
+                     content: '';
+                     position: absolute;
+                     left: 4px;
+                     top: 50%;
+                     left: 1.75%;
+                     transform: translateY(-50%);
+                     width: 6px;
+                     height: 6px;
+                     border-radius: 50%;
+                     background-color: #D90000;
+                     opacity: 0;
+                     transition: opacity 0.2s;
+                  }
+                  &::before {
+                     content: '';
+                     position: absolute;
+                     left: 0;
+                     top: 50%;
+                     transform: translateY(-50%);
+                     width: 14px;
+                     height: 14px;
+                     border: 2px solid #D90000;
+                     border-radius: 50%;
+                     background-color: #FFFFFF80;
+                  }
+                }
             }
         }
         &__input, &__button {

@@ -9,3 +9,16 @@ body, button {
 body {
   overflow-x: hidden;
 }
+input:focus {
+   outline: none;
+}
+input[type="radio"] {
+   opacity: 0;
+   position: absolute;
+}
+input[type='radio']:checked + label::before {
+   background-color: #FFFFFF80;
+}
+input[type="radio"]:checked + label::after {
+   opacity: 1;
+}

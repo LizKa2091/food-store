@@ -66,7 +66,7 @@ const Footer: FC = () => {
                             <button className="footer__news__button">Подписаться</button>
                         </div>
                         <div className="footer__news__form--policy">
-                            <input type="checkbox" name="agree" id="agree"/>
+                            <input type="radio" name="agree" id="agree"/>
                             <label htmlFor="agree">Согласен с политикой конфиденциальности</label>
                         </div>
                     </form>
