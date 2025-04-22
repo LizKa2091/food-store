@@ -1,7 +1,9 @@
+const baseUrl = 'http://localhost:5001';
+
 const fetchUserInfo = async (token: string) => {
     let response;
     try {
-        response = await fetch('http://localhost:5001/user-info', {
+        response = await fetch(`${baseUrl}/user-info`, {
             method: 'GET',
             headers: {
                 'Authorization': token,
@@ -26,7 +28,7 @@ const fetchUserInfo = async (token: string) => {
 const updateUserInfo = async (token: string, nameSurname: string, phoneNumber: string, dateOfBirth: string, email: string) => {
     let response;
     try {
-        response = await fetch('http://localhost:5001/update-user-info', {
+        response = await fetch(`${baseUrl}/update-user-info`, {
             method: 'POST',
             headers: {
                 'Authorization': token,
@@ -52,7 +54,7 @@ const updateUserInfo = async (token: string, nameSurname: string, phoneNumber: s
 const fetchBonusCard = async (token: string) => {
     let response;
     try {
-        response = await fetch('http://localhost:5001/bonus-card', {
+        response = await fetch(`${baseUrl}/bonus-card`, {
             method: 'GET',
             headers: {
                 'Authorization': token,
@@ -77,7 +79,7 @@ const fetchBonusCard = async (token: string) => {
 const fetchUserOrders = async (token: string) => {
     let response;
     try {
-        response = await fetch('http://localhost:5001/user-orders', {
+        response = await fetch(`${baseUrl}/user-orders`, {
             method: 'GET',
             headers: {
                 'Authorization': token,
@@ -102,7 +104,7 @@ const fetchUserOrders = async (token: string) => {
 const fetchUserFavorites = async (token: string) => {
     let response;
     try {
-        response = await fetch('http://localhost:5001/favorites', {
+        response = await fetch(`${baseUrl}/favorites`, {
             method: 'GET',
             headers: {
                 'Authorization': token,
