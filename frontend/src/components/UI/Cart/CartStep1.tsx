@@ -1,9 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, FormEvent } from 'react';
 import FavoriteButton from '../FavoriteButton';
 import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 
-const CartStep1: FC = () => {
+interface ICartStep1Props {
+   handleStepChange: (step: number) => void;
+};
+
+const CartStep1: FC<ICartStep1Props> = ({ handleStepChange }) => {
+
+   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      handleStepChange(2);
+   };
+
    return (
       <main className="main">
          <div className="main__left">
@@ -42,7 +53,7 @@ const CartStep1: FC = () => {
             </div>
          </div>
          <div className="main__right main__panel">
-            <form className="main__panel-form">
+            <form onSubmit={handleFormSubmit} className="main__panel-form">
                <div className="main__panel-row">
                   <p className="main__panel-title">Доставка сегодня, 18:11</p>
                   <button className="main__panel-button">Изменить</button>
