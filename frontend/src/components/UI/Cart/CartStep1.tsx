@@ -61,7 +61,7 @@ const CartStep1: FC<ICartStep1Props> = ({ handleStepChange }) => {
                <p className="main__panel-info">ул. Новая, д. 13, посёлок Ильинское-Усово, городской округ Красногорск</p>
                <div className="main__panel-input-container">
                   <input type="text" className="main__panel-input" placeholder='Есть промокод?' />
-                  <button className="main__panel-input-button">Применить</button>
+                  <button className="main__panel-input-button" type='button'>Применить</button>
                </div>
                <div className="main__panel-row main__panel-row--withdraw">
                   <input type="radio" name="withdraw" id="withdraw" value='withdraw' className='main__panel-radio'/>
