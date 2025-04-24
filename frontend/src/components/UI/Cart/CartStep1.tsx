@@ -1,20 +1,13 @@
-import React, { FC, FormEvent } from 'react';
+import React, { FC, ReactNode } from 'react';
 import FavoriteButton from '../FavoriteButton';
 import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 
 interface ICartStep1Props {
-   handleStepChange: (step: number) => void;
+   children: ReactNode;
 };
 
-const CartStep1: FC<ICartStep1Props> = ({ handleStepChange }) => {
-
-   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      handleStepChange(2);
-   };
-
+const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    return (
       <main className="main">
          <div className="main__left">
@@ -49,52 +42,11 @@ const CartStep1: FC<ICartStep1Props> = ({ handleStepChange }) => {
                         <p className="main__item-amount">2 шт</p>
                      </div>
                   </li>
+                  
                </ul>
             </div>
          </div>
-         <div className="main__right main__panel">
-            <form onSubmit={handleFormSubmit} className="main__panel-form">
-               <div className="main__panel-row">
-                  <p className="main__panel-title">Доставка сегодня, 18:11</p>
-                  <button className="main__panel-button">Изменить</button>
-               </div>
-               <p className="main__panel-info">ул. Новая, д. 13, посёлок Ильинское-Усово, городской округ Красногорск</p>
-               <div className="main__panel-input-container">
-                  <input type="text" className="main__panel-input" placeholder='Есть промокод?' />
-                  <button className="main__panel-input-button" type='button'>Применить</button>
-               </div>
-               <div className="main__panel-row main__panel-row--withdraw">
-                  <input type="radio" name="withdraw" id="withdraw" value='withdraw' className='main__panel-radio'/>
-                  <label htmlFor="withdraw" className="main__panel-radio-label">Списать бонусы (всего 170 бонусов, доступно к списанию 17 бонусов)</label>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">Товары (5)</p>
-                  <p className="main__panel-total">2.443 кг</p>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">Скидки</p>
-                  <p className="main__panel-total main__panel-total--red">-104 руб</p>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">Бонусы</p>
-                  <p className="main__panel-total main__panel-total--red">-17 руб</p>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">Промокод</p>
-                  <p className="main__panel-total">0 руб</p>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">Доставка</p>
-                  <p className="main__panel-total">Бесплатно</p>
-               </div>
-               <div className="main__panel-total-row">
-                  <p className="main__panel-total">К оплате</p>
-                  <p className="main__panel-total main__panel-total--bold">586 руб</p>
-               </div>
-               <button className="main__panel-submit" type='submit'>Оформить заказ</button>
-               <p className="main__panel-extra">Будет начислено 25 бонусов</p>
-            </form>
-         </div>
+         {children}
       </main>
    )
 };

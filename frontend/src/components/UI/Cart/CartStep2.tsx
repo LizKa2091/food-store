@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import './CartStep2.scss';
 
 interface ICartStep2Props {
-   handleStepChange: (step: number) => void;
+   children: ReactNode;
 };
 
-const CartStep2: FC<ICartStep2Props> = ({ handleStepChange }) => {
+const CartStep2: FC<ICartStep2Props> = ({ children }) => {
    return (
       <div>
          step2
