@@ -6,10 +6,11 @@ $panel-button-color: #fff;
 
 .main__panel {
    border: 1px solid $panel-border;
-      border-radius: 16px;
-      background-color: $panel-bg;
-      padding: 24px 32px 27px;
-      max-width: 417px;
+   border-radius: 16px;
+   background-color: $panel-bg;
+   padding: 24px 32px 27px;
+   max-width: 417px;
+   max-height: 644px;
 
       &-form {
          display: flex;

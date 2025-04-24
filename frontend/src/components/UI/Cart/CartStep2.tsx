@@ -25,21 +25,36 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
                   <h3 className="main__subtitle">Способ оплаты</h3>
                   <div className="main__radios">
                      <div className="main__radio-row">
-                        <input type="radio" name="" id="" className='main__radio-input' />
-                        <label htmlFor="" className="main__radio-label"></label>
+                        <input type="radio" name="card-receipt" id="card-receipt" className='main__radio-input' />
+                        <label htmlFor="card-receipt" className="main__radio-label">Оплата картой при получении</label>
                      </div>
                      <div className="main__radio-row">
-                        <input type="radio" name="" id="" className='main__radio-input' />
-                        <label htmlFor="" className="main__radio-label"></label>
+                        <input type="radio" name="cash" id="cash" className='main__radio-input' />
+                        <label htmlFor="cash" className="main__radio-label">Оплата наличными при получении</label>
                      </div>
                      <div className="main__radio-row">
-                        <input type="radio" name="" id="" className='main__radio-input' />
-                        <label htmlFor="" className="main__radio-label"></label>
+                        <input type="radio" name="online" id="online" className='main__radio-input' />
+                        <label htmlFor="online" className="main__radio-label">Онлайн оплата</label>
                      </div>
                   </div>
+                  <div className="main__details-row">
+                     <h3 className="main__subtitle">Способ оплаты</h3>
+                     <button className="main__details-button main__details-button--receiver">Изменить получателя</button>
+                  </div>
+                  <p className="main__details-address">ул. Новая,Ильинское-Усово, городской округ Красногорск</p>
+                  <div className="main__details-form-els">
+                     <div className="main__form-details-row">
+                        <input type="number" name="room" id="room" className='main__details-input' placeholder='Квартира'/>
+                        <input type="number" name="floor" id="floor" className='main__details-input' placeholder='Этаж'/>
+                        <input name="intercom" id="intercom" className='main__details-input' placeholder='Домофон'/>
+                        <input type="number" name="entrance" id="entrance" className='main__details-input' placeholder='Подъезд'/>
+                     </div>
+                     <textarea name="comment" id="comment" className='main__details-textarea' rows={5} placeholder='Комментарий для курьера' />
+                  </div>   
                </div>
             </form>
          </div>
+         {children}
       </main>
    )
 };
