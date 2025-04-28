@@ -15,7 +15,7 @@ const CartLate: FC<ICartLateProps> = ({ step }) => {
    }
    else if (step === 2) {
       return (
-         <div className='late-warning--page2'></div>
+         <div className='late-warning--page2' title='Режим работы: 7:00-00:00'></div>
       )
    }
    return null;

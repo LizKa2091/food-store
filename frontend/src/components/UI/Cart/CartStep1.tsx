@@ -12,8 +12,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
 
    useEffect(() => {
-      //setCurrTime(getMoscowTime);
-      setCurrTime('05:59')
+      setCurrTime(getMoscowTime);
    }, [currTime]);
 
    const getMoscowTime = () => {
