@@ -12,6 +12,7 @@ import ContactsPage from './pages/ContactsPage';
 import { CategoryProvider } from './context/CategoryContext';
 import './App.scss';
 import CartPage from './pages/CartPage';
+import { CartProvider } from './context/CartContext';
 
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
@@ -20,25 +21,27 @@ function App() {
     <AuthProvider>
       <MessageProvider>
          <CategoryProvider>
-            <BrowserRouter>
-               <Routes>
-                  <Route path='/' element={<MainPage />} />
-                  <Route path='/catalog' element={<CatalogPage />} />
-                  <Route path='/profile' element={<ProtectedProfile />} />
-                  <Route path='/profile/:section' element={<ProtectedProfile />} />
-                  <Route path='/sales' element={<SalesPage />} />
-                  <Route path='/vacancies' element={<VacanciesPage />} />
-                  <Route path='/contacts' element={<ContactsPage />} />
-                  <Route path='/cart' element={<CartPage />} />
-                  <Route path='*' 
-                     element={ 
-                        <Suspense fallback={<Loading />}>
-                           <ErrorPage />
-                        </Suspense> 
-                     }
-                  />
-               </Routes>
-            </BrowserRouter>
+            <CartProvider>
+               <BrowserRouter>
+                  <Routes>
+                     <Route path='/' element={<MainPage />} />
+                     <Route path='/catalog' element={<CatalogPage />} />
+                     <Route path='/profile' element={<ProtectedProfile />} />
+                     <Route path='/profile/:section' element={<ProtectedProfile />} />
+                     <Route path='/sales' element={<SalesPage />} />
+                     <Route path='/vacancies' element={<VacanciesPage />} />
+                     <Route path='/contacts' element={<ContactsPage />} />
+                     <Route path='/cart' element={<CartPage />} />
+                     <Route path='*' 
+                        element={ 
+                           <Suspense fallback={<Loading />}>
+                              <ErrorPage />
+                           </Suspense> 
+                        }
+                     />
+                  </Routes>
+               </BrowserRouter>
+            </CartProvider>
         </CategoryProvider>
       </MessageProvider>
     </AuthProvider>

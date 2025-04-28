@@ -14,7 +14,8 @@ const addItemToCart = async (productId: string, quantity: number, token: string)
 
       if (!response.ok) {
          const errorData = await response.json();
-         return errorData || 'Неизвестная ошибка'
+         console.error(errorData || 'ошибка при добавлении товара в корзину');
+         return { error: errorData.message || 'ошибка при добавлении товара в корзину' };
      }
 
       let result = await response.json();
@@ -22,7 +23,8 @@ const addItemToCart = async (productId: string, quantity: number, token: string)
    }
    catch (e) {
       const errorData = await response?.json();
-      return errorData || 'Неизвестная ошибка'
+      console.error(errorData || 'ошибка при добавлении товара в корзину');
+      return { error: errorData.message || 'ошибка при добавлении товара в корзину' };
    }
 };
 
@@ -40,15 +42,17 @@ const updateItemInCart = async (productId: string, quantity: number, token: stri
 
       if (!response.ok) {
          const errorData = await response.json();
-         return errorData || 'Неизвестная ошибка'
-     }
+         console.error(errorData || 'ошибка при обновлении товара в корзине');
+         return { error: errorData.message || 'ошибка при обновлении товара в корзине' };
+      }
 
       let result = await response.json();
       return result;
    }
    catch (e) {
       const errorData = await response?.json();
-      return errorData || 'Неизвестная ошибка'
+      console.error(errorData || 'ошибка при обновлении товара в корзине');
+      return { error: errorData.message || 'ошибка при обновлении товара в корзине' };
    }
 };
 
@@ -66,7 +70,8 @@ const removeItemFromCart = async (productId: string, token: string) => {
 
       if (!response.ok) {
          const errorData = await response.json();
-         return errorData || 'Неизвестная ошибка'
+         console.error(errorData || 'ошибка при удалении товара из корзины');
+         return { error: errorData.message || 'ошибка при удалении товара из корзины' };
      }
 
       let result = await response.json();
@@ -74,7 +79,8 @@ const removeItemFromCart = async (productId: string, token: string) => {
    }
    catch (e) {
       const errorData = await response?.json();
-      return errorData || 'Неизвестная ошибка'
+      console.error(errorData || 'ошибка при удалении товара из корзины');
+      return { error: errorData.message || 'ошибка при удалении товара из корзины' };
    }
 };
 
@@ -84,22 +90,24 @@ const getCart = async (token: string) => {
       response = await fetch(`${baseUrl}/cart`, {
          method: 'GET',
          headers: {
-            'Authorization': token,
-            'Content-Type': 'application/json'
+         'Authorization': token,
+         'Content-Type': 'application/json'
          }      
       });
 
       if (!response.ok) {
          const errorData = await response.json();
-         return errorData || 'Неизвестная ошибка'
-     }
+         console.error(errorData || 'ошибка при инициализации корзины');
+         return { error: errorData.message || 'ошибка при инициализации корзины' };
+      }
 
-      let result = await response.json();
-      return result.cart;
-   }
+      const result = await response.json();
+      return result;
+   } 
    catch (e) {
       const errorData = await response?.json();
-      return errorData || 'Неизвестная ошибка'
+      console.error(errorData || 'ошибка при инициализации корзины');
+      return { error: errorData.message || 'ошибка при инициализации корзины' };
    }
 };
 

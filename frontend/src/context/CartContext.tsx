@@ -1,47 +1,24 @@
 import React, { useState, FC, ReactNode, createContext } from 'react';
 import { addItemToCart, updateItemInCart, removeItemFromCart, getCart } from '../services/cartService';
-
-import bakeryImg1 from '../images/webpImages/catalogItems/catalog-item-1.webp';
-import bakeryImg2 from '../images/webpImages/catalogItems/catalog-item-2.webp';
-import bakeryImg3 from '../images/webpImages/catalogItems/catalog-item-3.webp';
-import bakeryImg4 from '../images/webpImages/catalogItems/catalog-item-4.webp';
-import bakeryImg5 from '../images/webpImages/catalogItems/catalog-item-5.webp';
-import bakeryImg6 from '../images/webpImages/catalogItems/catalog-item-6.webp';
-
-const images = {
-   bakeryImg1,
-   bakeryImg2,
-   bakeryImg3,
-   bakeryImg4,
-   bakeryImg5,
-   bakeryImg6,
-};
+import { ICartItem } from '../components/types/cart.types';
 
 interface ICartContext {
-   cartItems: CartItem[];
-   addItem: (productId: string, quantity: number, token: string) => Promise<void | unknown>;
-   updateItem: (productId: string, quantity: number, token: string) => Promise<void | unknown>;
-   removeItem: (productId: string, token: string) => Promise<void | unknown>;
-   initCart: (token: string) => Promise<void | unknown>;
+   cartItems: ICartItem[];
+   addItem: (productId: string, quantity: number, token: string) => Promise<CartResponse>;
+   updateItem: (productId: string, quantity: number, token: string) => Promise<CartResponse | unknown>;
+   removeItem: (productId: string, token: string) => Promise<CartResponse | unknown>;
+   initCart: (token: string) => Promise<CartResponse>;
 };
 
-type ImageKeys = keyof typeof images;
-
-type CartItem = {
-   productId: string;
-   name: string;
-   price: number;
-   stockQuantity: number;
-   weight: string;
-   newPrice?: number;
-   imagePath: ImageKeys;
-   filterCategory: string;
-};
+type CartResponse = {
+   cart?: ICartItem[];
+   error?: string;
+}; 
 
 const CartContext = createContext<ICartContext | undefined>(undefined);
 
 const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
-   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
 
    const addItem = async (productId: string, quantity: number, token: string) => {
       try {
@@ -50,6 +27,7 @@ const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
          if (result.cart) {
             setCartItems(result.cart);
          }
+         return result;
       }
       catch (e) {
          console.error(e);
@@ -85,17 +63,19 @@ const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }
    };
 
-   const initCart = async (token: string) => {
+   const initCart = async (token: string): Promise<{cart?: ICartItem[], error?: string}> => {
       try {
          let result = await getCart(token);
-
-         if (result.cart) {
+         if (result && Array.isArray(result.cart)) {
             setCartItems(result.cart);
+            return { cart: result.cart };
          }
-      }
-      catch (e) {
-         console.error(e);
-         return e;
+         return { error: result?.error || 'ошибка инициализации корзины' };
+      } 
+      catch (error) {
+         return { 
+            error: error instanceof Error ? error.message : 'Неизвестная ошибка' 
+         };
       }
    };
    
