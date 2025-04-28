@@ -7,6 +7,10 @@ $cart-input-border: #FFA90073;
 $warning-bg: #FFEDED;
 $warning-border: #FF0000;
 
+$yellow-list-item-bg: #FFF8EB;
+$selected-list-item-border: #FFA90073;
+$selected-list-item-marker: #FF0000;
+
 .main {
    &__form {
       &-details-row {
@@ -30,6 +34,48 @@ $warning-border: #FF0000;
       flex-direction: column;
       gap: 35px;
    }
+   &__radio-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+      opacity: 100%;
+      position: relative;
+
+      label {
+         font-size: 1.25rem;
+         position: relative;
+         padding-left: 30px;
+         cursor: pointer;
+
+         &::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            left: 1.75%;
+            transform: translateY(-50%);
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background-color: $selected-list-item-marker;
+            opacity: 0;
+            transition: opacity 0.2s;
+         }
+         &::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 19px;
+            height: 19px;
+            border: 2px solid $selected-list-item-border;
+            border-radius: 50%;
+            background-color: $yellow-list-item-bg;
+         }
+      }
+   }
    &__details {
       display: flex;
       flex-direction: column;
@@ -39,7 +85,7 @@ $warning-border: #FF0000;
          background-color: $cart-input-bg;
          border: 1px solid $cart-input-border;
          border-radius: 16px;
-         font-size: 1.25rem;
+         font-size: 1.125rem;
          width: 150px;
          height: 75px;
          padding: 0 26px;
@@ -60,6 +106,7 @@ $warning-border: #FF0000;
          background-color: inherit;
          border: 0;
          color: $button-change-text;
+         cursor: pointer;
       }
       &-card {
          font-size: 1.125rem;

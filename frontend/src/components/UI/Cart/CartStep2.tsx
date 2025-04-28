@@ -25,15 +25,15 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
                   <h3 className="main__subtitle">Способ оплаты</h3>
                   <div className="main__radios">
                      <div className="main__radio-row">
-                        <input type="radio" name="card-receipt" id="card-receipt" className='main__radio-input' />
+                        <input type="radio" name="receipt-type" id="card-receipt" value="card-receipt" className='main__radio-input' />
                         <label htmlFor="card-receipt" className="main__radio-label">Оплата картой при получении</label>
                      </div>
                      <div className="main__radio-row">
-                        <input type="radio" name="cash" id="cash" className='main__radio-input' />
+                        <input type="radio" name="receipt-type" id="cash" value="cash" className='main__radio-input' />
                         <label htmlFor="cash" className="main__radio-label">Оплата наличными при получении</label>
                      </div>
                      <div className="main__radio-row">
-                        <input type="radio" name="online" id="online" className='main__radio-input' />
+                        <input type="radio" name="receipt-type" id="online" value='online' className='main__radio-input' />
                         <label htmlFor="online" className="main__radio-label">Онлайн оплата</label>
                      </div>
                   </div>
