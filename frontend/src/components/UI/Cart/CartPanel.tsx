@@ -2,6 +2,7 @@ import React, { FC, FormEvent } from 'react';
 import './CartPanel.scss';
 
 interface ICartPanelProps {
+   step: number;
    handleStepChange: (step: number) => void;
 };
 

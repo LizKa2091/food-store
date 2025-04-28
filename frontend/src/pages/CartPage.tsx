@@ -19,13 +19,13 @@ const CartPage: FC = () => {
          case 1: 
             return (
                <CartStep1>
-                  <CartPanel handleStepChange={handleStepChange} />
+                  <CartPanel handleStepChange={handleStepChange} step={currStep} />
                </CartStep1>
             )
          case 2:
             return (
                <CartStep2>
-                  <CartPanel handleStepChange={handleStepChange} />
+                  <CartPanel handleStepChange={handleStepChange} step={currStep} />
                </CartStep2>
             )
       }
