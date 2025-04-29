@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import Wrapper from '../components/layout/Wrapper';
 import Header from '../components/layout/Header';
-import Categories from '../components/UI/Categories';
-import SalesAndRecommendation from '../components/UI/SalesAndRecommendation';
+import Categories from '../components/UI/Categories/Categories';
+import SalesAndRecommendation from '../components/UI/SalesAndRecommendation/SalesAndRecommendation';
 import Footer from '../components/layout/Footer';
-import Feedback from '../components/UI/Feedback';
+import Feedback from '../components/UI/Feedback/Feedback';
 
 const SalesPage: FC = () => {
    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);

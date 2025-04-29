@@ -1,8 +1,10 @@
-import React, { FC, ReactNode, useEffect, useState } from 'react';
-import FavoriteButton from '../FavoriteButton';
+import React, { FC, ReactNode, useContext, useEffect, useState } from 'react';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 import CartLate from './CartLate';
+import { CartContext } from '../../../context/CartContext';
+import { ICartItem, CartValues } from '../../types/cart.types';
 
 interface ICartStep1Props {
    children: ReactNode;
@@ -10,10 +12,19 @@ interface ICartStep1Props {
 
 const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
+   const [currCart, setCurrCart] = useState<ICartItem[] | null>(null);
+   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+
+   const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
+
+   const { cartItems, addItem, updateItem, removeItem, initCart } = cartContext;
 
    useEffect(() => {
-      setCurrTime(getMoscowTime);
-   }, [currTime]);
+      const time = getMoscowTime();
+      setCurrTime(time);
+
+      initCartState();
+   }, []);
 
    const getMoscowTime = () => {
       const options: Intl.DateTimeFormatOptions = {
@@ -24,6 +35,34 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       };
       const moscowTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
       return moscowTime;
+   };
+
+   const initCartState = async () => {
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await initCart(token);
+         
+         if (result && 'error' in result) {
+           console.error(result.error);
+           return;
+         }
+         
+         if (result?.cart) {
+           setCurrCart(result.cart);
+         }
+      } 
+      catch (error) {
+         console.error('ошибка при инициализации корзины:', error);
+       }
+   };
+
+   const handleIncreaseItem = async (id: string) => {
+      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      
+      await addItem(id, 1, token);
+      
+      console.log('after:', cartItems)
    };
 
    return (
@@ -53,7 +92,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                      <div className="main__item-quantity-control">
                         <button className="main__item-quantity-button main__item-quantity-button--minus">-</button>
                            2
-                        <button className="main__item-quantity-button main__item-quantity-button--plus">+</button>
+                        <button onClick={() => handleIncreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
                      </div>
                      <div className="main__item-fav-control">
                         <FavoriteButton productId='500' initialFavState={false} position='relative'/>

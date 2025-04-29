@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
-import Wrapper from '../components/layout/Wrapper';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
-import SalesAndRecommendation from '../components/UI/SalesAndRecommendation';
-import { useCategory } from '../context/CategoryContext';
-import { getCatalogProducts } from '../services/productService';
+import Wrapper from '../../components/layout/Wrapper';
+import Header from '../../components/layout/Header';
+import Footer from '../../components/layout/Footer';
+import SalesAndRecommendation from '../../components/UI/SalesAndRecommendation/SalesAndRecommendation';
+import { useCategory } from '../../context/CategoryContext';
+import { getCatalogProducts } from '../../services/productService';
 import './CatalogPage.scss';
 
 import bakeryImg1 from '../images/webpImages/catalogItems/catalog-item-1.webp';
@@ -13,7 +13,7 @@ import bakeryImg3 from '../images/webpImages/catalogItems/catalog-item-3.webp';
 import bakeryImg4 from '../images/webpImages/catalogItems/catalog-item-4.webp';
 import bakeryImg5 from '../images/webpImages/catalogItems/catalog-item-5.webp';
 import bakeryImg6 from '../images/webpImages/catalogItems/catalog-item-6.webp';
-import FavoriteButton from '../components/UI/FavoriteButton';
+import FavoriteButton from '../../components/UI/FavoriteButton/FavoriteButton';
 
 const images = {
    bakeryImg1,

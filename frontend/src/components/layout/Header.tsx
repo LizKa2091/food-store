@@ -3,11 +3,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import { useCategory } from '../../context/CategoryContext';
-import Notifications from '../UI/Notifications';
+import Notifications from '../UI/Notifications/Notifications';
 import './Header.scss';
 import logo from '../../images/webpImages/logo.webp';
 
-const NavProfile = lazy(() => import('../UI/NavProfile'));
+const NavProfile = lazy(() => import('../UI/NavProfile/NavProfile'));
 
 const Header: React.FC = () => {
    const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];

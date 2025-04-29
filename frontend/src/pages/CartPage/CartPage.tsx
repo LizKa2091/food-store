@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react';
-import Wrapper from '../components/layout/Wrapper';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
-import SalesAndRecommendation from '../components/UI/SalesAndRecommendation';
-import CartStep1 from '../components/UI/Cart/CartStep1';
-import CartStep2 from '../components/UI/Cart/CartStep2';
-import CartPanel from '../components/UI/Cart/CartPanel';
+import Wrapper from '../../components/layout/Wrapper';
+import Header from '../../components/layout/Header';
+import Footer from '../../components/layout/Footer';
+import SalesAndRecommendation from '../../components/UI/SalesAndRecommendation/SalesAndRecommendation';
+import CartStep1 from '../../components/UI/Cart/CartStep1';
+import CartStep2 from '../../components/UI/Cart/CartStep2';
+import CartPanel from '../../components/UI/Cart/CartPanel';
 
 const CartPage: FC = () => {
    const [currStep, setCurrStep] = useState<number>(1);

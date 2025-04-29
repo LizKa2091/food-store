@@ -3,18 +3,18 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { MessageProvider } from './context/MessageContext';
 import MainPage from './pages/MainPage';
-import CatalogPage from './pages/CatalogPage';
+import CatalogPage from './pages/CatalogPage/CatalogPage';
 import ProtectedProfile from './pages/protectedPages/ProtectedProfile';
 import Loading from './pages/Loading';
 import SalesPage from './pages/SalesPage';
-import VacanciesPage from './pages/VacanciesPage';
-import ContactsPage from './pages/ContactsPage';
+import VacanciesPage from './pages/VacanciesPage/VacanciesPage';
+import ContactsPage from './pages/ContactsPage/ContactsPage';
 import { CategoryProvider } from './context/CategoryContext';
 import './App.scss';
-import CartPage from './pages/CartPage';
+import CartPage from './pages/CartPage/CartPage';
 import { CartProvider } from './context/CartContext';
 
-const ErrorPage = lazy(() => import('./pages/ErrorPage'));
+const ErrorPage = lazy(() => import('./pages/ErrorPage/ErrorPage'));
 
 function App() {
   return (

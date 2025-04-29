@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { addToFavorites, removeFromFavorites } from '../../services/productService';
-import { useMessage } from '../../context/MessageContext';
-import { AuthContext } from '../../context/AuthContext';
+import { addToFavorites, removeFromFavorites } from '../../../services/productService';
+import { useMessage } from '../../../context/MessageContext';
+import { AuthContext } from '../../../context/AuthContext';
 import './FavoriteButton.scss';
 
 interface IFavoriteButtonProps {

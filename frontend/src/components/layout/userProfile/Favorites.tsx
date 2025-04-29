@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { fetchUserFavorites } from '../../../services/userService';
-import FavoriteButton from '../../UI/FavoriteButton';
+import FavoriteButton from '../../UI/FavoriteButton/FavoriteButton';
 import { useMessage } from '../../../context/MessageContext';
 
 interface IItems {

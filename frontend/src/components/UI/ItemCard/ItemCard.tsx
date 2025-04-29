@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useMessage } from '../../context/MessageContext';
-import { getProduct } from '../../services/productService';
+import { useMessage } from '../../../context/MessageContext';
+import { getProduct } from '../../../services/productService';
 import './ItemCard.scss';
 
 interface IItemCardProps {

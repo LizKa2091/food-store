@@ -2,7 +2,7 @@ import React, { FC, useContext, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
-import ProfilePage from '../ProfilePage';
+import ProfilePage from '../ProfilePage/ProfilePage';
 
 const ProtectedProfile: FC = () => {
   const currAuthContext = useContext(AuthContext);

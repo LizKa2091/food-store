@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
-import Wrapper from '../components/layout/Wrapper';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
+import Wrapper from '../../components/layout/Wrapper';
+import Header from '../../components/layout/Header';
+import Footer from '../../components/layout/Footer';
 import './VacanciesPage.scss';
 
 interface IItem {

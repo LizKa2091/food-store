@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { useMessage } from '../../context/MessageContext';
+import { useMessage } from '../../../context/MessageContext';
 import './Notifications.scss';
 
 const Notifications: FC = () => {

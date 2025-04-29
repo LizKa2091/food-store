@@ -11,8 +11,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
 
    useEffect(() => {
-      // setCurrTime(getMoscowTime);
-      setCurrTime('00:59');
+      setCurrTime(getMoscowTime);
    }, [currTime]);
 
    const getMoscowTime = () => {

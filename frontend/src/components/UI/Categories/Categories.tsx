@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCategory } from '../../context/CategoryContext';
+import { useCategory } from '../../../context/CategoryContext';
 import './Categories.scss';
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';

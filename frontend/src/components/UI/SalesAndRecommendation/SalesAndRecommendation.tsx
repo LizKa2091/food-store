@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import item1Image from '../../images/webpImages/products/sale-product-1.webp';
 import item2Image from '../../images/webpImages/products/sale-product-2.webp';
-import FavoriteButton from "./FavoriteButton";
-import { fetchUserFavorites } from "../../services/userService";
-import ItemCard from "./ItemCard";
-import { useMessage } from "../../context/MessageContext";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import { fetchUserFavorites } from "../../../services/userService";
+import ItemCard from "../ItemCard/ItemCard";
+import { useMessage } from "../../../context/MessageContext";
 import './SalesAndRecommendation.scss';
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
