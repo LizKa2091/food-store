@@ -5,6 +5,7 @@ import './CartStep1.scss';
 import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
 import { ICartItem, CartValues } from '../../types/cart.types';
+import { updateItemInCart } from '../../../services/cartService';
 
 interface ICartStep1Props {
    children: ReactNode;
@@ -65,6 +66,22 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       console.log('after:', cartItems)
    };
 
+   const handleDecreaseItem = async (id: string) => {
+      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      
+      await updateItemInCart(id, 1, token);
+      
+      console.log('after:', cartItems)
+   };
+   
+   const handleRemoveItem = async (id: string) => {
+      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      
+      await removeItem(id, token);
+      
+      console.log('after:', cartItems)
+   };
+
    return (
       <main className="main">
          <div className="main__left">
@@ -90,7 +107,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                         <p className="main__item-price-old">257 руб</p>
                      </div>
                      <div className="main__item-quantity-control">
-                        <button className="main__item-quantity-button main__item-quantity-button--minus">-</button>
+                        <button onClick={() => handleDecreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
                            2
                         <button onClick={() => handleIncreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
                      </div>
