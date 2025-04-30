@@ -10,6 +10,7 @@ export interface ICartItem {
    name: string;
    price: number;
    stockQuantity: number;
+   userQuantity: number;
    weight: string;
    newPrice?: number;
    imagePath: ImageKeys;

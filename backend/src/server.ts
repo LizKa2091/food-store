@@ -494,7 +494,9 @@ app.post('/products-by-category', async (req: Request, res: Response): Promise<a
 });
 
 // Хранилище корзин пользователей
-let userCarts: Record<string, { productId: string; quantity: number }[]> = {};
+let userCarts: Record<string, { productId: string; name: string; price: number; stockQuantity: number; userQuantity: number; weight: string; newPrice?: number; imagePath: string }[]> = {
+   '79999999999': [{productId: '1', name: 'Продукт 1', price: 100, stockQuantity: 50, userQuantity: 1, weight: '1kg', newPrice: 90, imagePath: '../images/webpImages/catalogItems/catalog-item-1.webp'}]
+};
 
 app.post('/cart/add', async (req: Request, res: Response): Promise<any> => {
    const token = req.headers['authorization'];
@@ -524,9 +526,9 @@ app.post('/cart/add', async (req: Request, res: Response): Promise<any> => {
            // Проверка, существует ли товар уже в корзине
            const existingCartItem = userCarts[phoneNumberFromToken].find(item => item.productId === productId);
            if (existingCartItem) {
-               existingCartItem.quantity += quantity; // Увеличиваем количество
+               existingCartItem.userQuantity += quantity; // Увеличиваем количество
            } else {
-               userCarts[phoneNumberFromToken].push({ productId, quantity }); // Добавляем новый товар в корзину
+               userCarts[phoneNumberFromToken].push({ ...product, userQuantity: quantity }); // Добавляем новый товар в корзину
            }
            res.status(200).json({ message: 'Товар добавлен в корзину.', cart: userCarts[phoneNumberFromToken] });
        } else {
@@ -550,7 +552,7 @@ app.post('/cart/update', async (req: Request, res: Response): Promise<any> => {
        if (user) {
            const cartItem = userCarts[phoneNumberFromToken]?.find(item => item.productId === productId);
            if (cartItem) {
-               cartItem.quantity = quantity; // Обновляем количество
+               cartItem.userQuantity = quantity; // Обновляем количество
                res.status(200).json({ message: 'Количество товара обновлено.', cart: userCarts[phoneNumberFromToken] });
            } else {
                res.status(404).json({ message: 'Товар не найден в корзине.' });

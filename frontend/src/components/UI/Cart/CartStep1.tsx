@@ -94,32 +94,36 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                   <CartLate step={1} />
                }
                <ul className="main__list">
-                  <li className="main__item">
-                     <div className="main__item-img-container main__item-img-container--sale">
-                        <img src={img} alt="item" className="main__item-img" />
-                     </div>
-                     <div className="main__item-column main__item-column--main">
-                        <p className="main__item-title">Пицца мини с ветчиной и сыром, замороженная, 0.44 кг</p>
-                        <p className="main__item-quantity">В наличии 2 шт</p>
-                     </div>
-                     <div className="main__item-column main__item-column--main">
-                        <p className="main__item-price">205 руб</p>
-                        <p className="main__item-price-old">257 руб</p>
-                     </div>
-                     <div className="main__item-quantity-control">
-                        <button onClick={() => handleDecreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
-                           2
-                        <button onClick={() => handleIncreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
-                     </div>
-                     <div className="main__item-fav-control">
-                        <FavoriteButton productId='500' initialFavState={false} position='relative'/>
-                     </div>
-                     <div className="main__item-column main__item-column--main">
-                        <p className="main__item-total">410 руб</p>
-                        <p className="main__item-amount">2 шт</p>
-                     </div>
-                  </li>
-                  
+                  {(!currCart || currCart.length === 0) &&
+                     <p>В корзине пока пусто. Добавьте товары</p>
+                  }
+                  {currCart?.map((item: ICartItem) => (
+                     <li key={item.name} className="main__item">
+                        <div className="main__item-img-container main__item-img-container--sale">
+                           <img src={img} alt="item" className="main__item-img" />
+                        </div>
+                        <div className="main__item-column main__item-column--main">
+                           <p className="main__item-title">Пицца мини с ветчиной и сыром, замороженная, 0.44 кг</p>
+                           <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>
+                        </div>
+                        <div className="main__item-column main__item-column--main">
+                           <p className="main__item-price">205 руб</p>
+                           <p className="main__item-price-old">257 руб</p>
+                        </div>
+                        <div className="main__item-quantity-control">
+                           <button onClick={() => handleDecreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
+                              2
+                           <button onClick={() => handleIncreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
+                        </div>
+                        <div className="main__item-fav-control">
+                           <FavoriteButton productId='500' initialFavState={false} position='relative'/>
+                        </div>
+                        <div className="main__item-column main__item-column--main">
+                           <p className="main__item-total">410 руб</p>
+                           <p className="main__item-amount">2 шт</p>
+                        </div>
+                     </li>
+                  ))}
                </ul>
             </div>
          </div>
