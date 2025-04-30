@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import './ErrorPage.scss';
-import donut from '../images/webpImages/404.webp';
+import donut from '../../images/webpImages/404.webp';
 
 const ErrorPage: FC = () => {
   return (

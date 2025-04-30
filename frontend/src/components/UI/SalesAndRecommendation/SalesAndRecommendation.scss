@@ -42,7 +42,7 @@ $red: #FF0000;
 
         &::after {
             content: "";
-            background: url('../../images/webpImages/products/arrow-right-button.webp') no-repeat center center;
+            background: url('../../../images/webpImages/products/arrow-right-button.webp') no-repeat center center;
             background-size: contain;
             width: 6.96px;
             height: 11.89px;
@@ -57,7 +57,7 @@ $red: #FF0000;
             cursor: pointer;
 
             &::after {
-                background: url('../../images/webpImages/products/arrow-right-button-hover.webp') no-repeat center center;
+                background: url('../../../images/webpImages/products/arrow-right-button-hover.webp') no-repeat center center;
                 background-size: contain;
             }
         }

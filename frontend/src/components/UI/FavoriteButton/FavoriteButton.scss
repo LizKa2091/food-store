@@ -1,5 +1,5 @@
 .favorite-button {
-    background: url('../../images/webpImages/favorite-icon.webp') no-repeat center center;
+    background: url('../../../images/webpImages/favorite-icon.webp') no-repeat center center;
     background-size: contain;
     border: 0;
     width: 22px;
@@ -16,7 +16,7 @@
       transform: translate(-50%, -50%);
     }
     &--favorited {
-        background: url('../../images/webpImages/favorited-icon.webp') no-repeat center center;
+        background: url('../../../images/webpImages/favorited-icon.webp') no-repeat center center;
         background-size: contain;
     }
 }
