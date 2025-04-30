@@ -4,8 +4,7 @@ import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
-import { ICartItem, CartValues } from '../../types/cart.types';
-import { updateItemInCart } from '../../../services/cartService';
+import { ICartItem } from '../../types/cart.types';
 
 interface ICartStep1Props {
    children: ReactNode;
@@ -55,31 +54,35 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       } 
       catch (error) {
          console.error('ошибка при инициализации корзины:', error);
-       }
+      }
    };
 
    const handleIncreaseItem = async (id: string) => {
       if (!token) throw new Error('ошибка, пользователь не авторизован');
       
       await addItem(id, 1, token);
-      
-      console.log('after:', cartItems)
+      updateCartItemQuantity(id, 1);
    };
 
    const handleDecreaseItem = async (id: string) => {
       if (!token) throw new Error('ошибка, пользователь не авторизован');
       
-      await updateItemInCart(id, 1, token);
-      
-      console.log('after:', cartItems)
+      await updateItem(id, -1, token);
+      updateCartItemQuantity(id, -1);
    };
    
    const handleRemoveItem = async (id: string) => {
       if (!token) throw new Error('ошибка, пользователь не авторизован');
       
       await removeItem(id, token);
-      
-      console.log('after:', cartItems)
+      setCurrCart((prevCart) => prevCart?.filter(item => item.productId !== id) || null);
+   };
+
+   const updateCartItemQuantity = (id: string, change: number) => {
+      setCurrCart((prevCart) => 
+         prevCart?.map(item => 
+            item.productId === id ? { ...item, userQuantity: item.userQuantity + change } : item) || null
+      );
    };
 
    return (
@@ -98,29 +101,35 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                      <p>В корзине пока пусто. Добавьте товары</p>
                   }
                   {currCart?.map((item: ICartItem) => (
-                     <li key={item.name} className="main__item">
-                        <div className="main__item-img-container main__item-img-container--sale">
+                     <li key={item.productId} className="main__item">
+                        <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
                            <img src={img} alt="item" className="main__item-img" />
                         </div>
                         <div className="main__item-column main__item-column--main">
-                           <p className="main__item-title">Пицца мини с ветчиной и сыром, замороженная, 0.44 кг</p>
+                           <p className="main__item-title">{item.name}</p>
                            <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>
                         </div>
                         <div className="main__item-column main__item-column--main">
-                           <p className="main__item-price">205 руб</p>
-                           <p className="main__item-price-old">257 руб</p>
+                           <p className="main__item-price">{item.newPrice ? item.newPrice : item.price} руб</p>
+                           {item.newPrice &&
+                              <p className="main__item-price-old">{item.price} руб</p>
+                           }
                         </div>
                         <div className="main__item-quantity-control">
-                           <button onClick={() => handleDecreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
-                              2
-                           <button onClick={() => handleIncreaseItem('1')} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
+                           {item.userQuantity === 1 ? (
+                                 <button onClick={() => handleRemoveItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--delete"></button>
+                              ) : (
+                                 <button onClick={() => handleDecreaseItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
+                           )}
+                              {item.userQuantity}
+                           <button onClick={() => handleIncreaseItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
                         </div>
                         <div className="main__item-fav-control">
-                           <FavoriteButton productId='500' initialFavState={false} position='relative'/>
+                           <FavoriteButton productId={item.productId} initialFavState={false} position='relative'/>
                         </div>
                         <div className="main__item-column main__item-column--main">
-                           <p className="main__item-total">410 руб</p>
-                           <p className="main__item-amount">2 шт</p>
+                           <p className="main__item-total">{item.userQuantity * (item.newPrice || item.price)} руб</p>
+                           <p className="main__item-amount">{item.userQuantity} шт</p>
                         </div>
                      </li>
                   ))}

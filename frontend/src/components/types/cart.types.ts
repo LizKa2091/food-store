@@ -17,10 +17,6 @@ export interface ICartItem {
    filterCategory: string;
 };
 
-export type CartValues = {
-   cart: ICartItem[];
-};
-
 export type ImageKeys = keyof typeof images;
 
 export const images = {
