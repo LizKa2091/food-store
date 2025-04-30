@@ -1,0 +1,69 @@
+$cart-item-quantity-available: #434343;
+$cart-item-button-border: #FFE7B9;
+$cart-item-button-bg: #FFF8EB;
+$cart-item-button-text: #FFA900;
+
+$red: #FF0000;
+$white: #fff;
+
+.main__item-quantity {
+   font-size: 0.875rem;
+   font-weight: 400;
+   color: $cart-item-quantity-available;
+
+   &-control {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid $cart-item-button-border;
+      border-radius: 58px;
+      background-color: $cart-item-button-bg;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $cart-item-button-text;
+      width: 109px;
+      height: 42px;
+      padding: 0 16px;
+   }
+   &-button {
+      border: 0;
+      background-color: inherit;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $cart-item-button-text;
+      cursor: pointer;
+      position: relative;
+
+      &--delete {
+         width: 10px;
+         height: 12px;
+
+         &::before {
+            content: '';
+            background: url('../../../images/webpImages/delete-icon.webp') no-repeat center center;
+            background-size: cover;
+            width: 10px;
+            height: 12px;
+            position: absolute;
+            top: 0;
+         }
+      }
+   }
+}
+
+.main__item-cart-button {
+   border: 1px solid $red;
+   border-radius: 60px;
+   background-color: inherit;
+   color: $red;
+   width: 100%;
+   max-width: 109px;
+   height: 42px;
+   padding: 0 15px;
+
+   &:hover {
+       background-color: $red;
+       color: $white;
+       cursor: pointer;
+   }
+}
