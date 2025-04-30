@@ -1,5 +1,5 @@
 import { useState, useContext, lazy } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useMessage } from '../../context/MessageContext';
 import { useCategory } from '../../context/CategoryContext';
@@ -58,7 +58,7 @@ const Header: React.FC = () => {
                      {isProfileOpen &&
                         <NavProfile />
                      }
-                     <button className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</button>
+                     <Link to='/cart' className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</Link>
                   </div>
                </div>
                {isCatalogOpen &&

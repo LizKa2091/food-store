@@ -245,6 +245,8 @@ $button-sale-h: 43px;
                 }
             }
             &--cart {
+               display: flex;
+               align-items: center;
                 border: 1px solid $color-red;
                 background-color: $color-red;
                 color: $color-white;
@@ -253,6 +255,7 @@ $button-sale-h: 43px;
                 position: relative;
                 width: 100%;
                 max-width: 130px;
+                text-decoration: none;
 
                 &::before {
                     content: '';
