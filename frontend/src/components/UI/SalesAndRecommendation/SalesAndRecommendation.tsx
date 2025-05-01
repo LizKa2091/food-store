@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import item1Image from '../../../images/webpImages/products/sale-product-1.webp';
 import item2Image from '../../../images/webpImages/products/sale-product-2.webp';
 import FavoriteButton from "../FavoriteButton/FavoriteButton";
@@ -6,6 +6,9 @@ import { fetchUserFavorites } from "../../../services/userService";
 import ItemCard from "../ItemCard/ItemCard";
 import { useMessage } from "../../../context/MessageContext";
 import './SalesAndRecommendation.scss';
+import ItemQuantityButton from "../ItemQuantityButton/ItemQuantityButton";
+import { CartContext } from "../../../context/CartContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
@@ -37,12 +40,20 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
    const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+   const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
+   const { initCart, cartItems } = cartContext;
+   
+   const authContext = useContext(AuthContext);
 
    const { setMessage } = useMessage();
 
    useEffect(() => {
       getUserFavorites();
    }, []);
+
+   useEffect(() => {
+      if (authContext?.isAuthed) initCartState();
+   }, [authContext]);
 
    const items: Record<string, Item> = {
       item1: { productId: '1', image: item1Image, amount: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
@@ -65,6 +76,23 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
          catch(e) {
             setMessage(response?.message);
          }
+      }
+   };
+
+   const initCartState = async () => {
+      const token = localStorage.getItem('token');
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await initCart(token);
+         
+         if (result && 'error' in result) {
+           console.error(result.error);
+           return;
+         }
+      } 
+      catch (error) {
+         console.error('ошибка при инициализации корзины:', error);
       }
    };
 
@@ -105,7 +133,7 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
                               }
                            </div>
                            <div className="sales-and-recommendation__item__right">
-                              <button className="sales-and-recommendation__item__button">{item.amount !== 0 ? "В корзину" : "На завтра"}</button>
+                              <ItemQuantityButton itemId={item.productId} storageQuantity={item.amount} currCart={cartItems}/>
                            </div>
                         </li>
                      ))}

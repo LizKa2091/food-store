@@ -5,6 +5,8 @@ import './CartStep1.scss';
 import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
 import { ICartItem } from '../../types/cart.types';
+import { AuthContext } from '../../../context/AuthContext';
+import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
 
 interface ICartStep1Props {
    children: ReactNode;
@@ -12,19 +14,19 @@ interface ICartStep1Props {
 
 const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
-   const [currCart, setCurrCart] = useState<ICartItem[] | null>(null);
-   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+   const authContext = useContext(AuthContext);
 
    const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
-
-   const { cartItems, addItem, updateItem, removeItem, initCart } = cartContext;
+   const { initCart, cartItems } = cartContext;
 
    useEffect(() => {
       const time = getMoscowTime();
       setCurrTime(time);
-
-      initCartState();
    }, []);
+
+   useEffect(() => {
+      if (authContext?.isAuthed) initCartState();
+   }, [authContext]);
 
    const getMoscowTime = () => {
       const options: Intl.DateTimeFormatOptions = {
@@ -38,6 +40,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    };
 
    const initCartState = async () => {
+      const token = localStorage.getItem('token');
       try {
          if (!token) throw new Error('ошибка, пользователь не авторизован');
 
@@ -47,42 +50,10 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
            console.error(result.error);
            return;
          }
-         
-         if (result?.cart) {
-           setCurrCart(result.cart);
-         }
       } 
       catch (error) {
          console.error('ошибка при инициализации корзины:', error);
       }
-   };
-
-   const handleIncreaseItem = async (id: string) => {
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
-      
-      await addItem(id, 1, token);
-      updateCartItemQuantity(id, 1);
-   };
-
-   const handleDecreaseItem = async (id: string) => {
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
-      
-      await updateItem(id, -1, token);
-      updateCartItemQuantity(id, -1);
-   };
-   
-   const handleRemoveItem = async (id: string) => {
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
-      
-      await removeItem(id, token);
-      setCurrCart((prevCart) => prevCart?.filter(item => item.productId !== id) || null);
-   };
-
-   const updateCartItemQuantity = (id: string, change: number) => {
-      setCurrCart((prevCart) => 
-         prevCart?.map(item => 
-            item.productId === id ? { ...item, userQuantity: item.userQuantity + change } : item) || null
-      );
    };
 
    return (
@@ -90,17 +61,22 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
          <div className="main__left">
             <div className="main__top">
                <h2 className="main__title">Корзина</h2>
-               <button className="main__button">Очистить</button>
+               {authContext?.isAuthed &&
+                  <button className="main__button">Очистить</button>
+               }
             </div>
             <div className="main__bottom">
                {currTime && +currTime?.slice(0, 2) >= 0 && +currTime?.slice(0, 2) < 7 && +currTime?.slice(3) <= 59 &&
                   <CartLate step={1} />
                }
                <ul className="main__list">
-                  {(!currCart || currCart.length === 0) &&
+                  {!authContext?.isAuthed &&
+                     <p>Этот раздел доступен только авторизованным пользователям</p>
+                  }
+                  {authContext?.isAuthed && (!cartItems || cartItems.length === 0) &&
                      <p>В корзине пока пусто. Добавьте товары</p>
                   }
-                  {currCart?.map((item: ICartItem) => (
+                  {cartItems?.map((item: ICartItem) => (
                      <li key={item.productId} className="main__item">
                         <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
                            <img src={img} alt="item" className="main__item-img" />
@@ -110,25 +86,17 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                            <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>
                         </div>
                         <div className="main__item-column main__item-column--main">
-                           <p className="main__item-price">{item.newPrice ? item.newPrice : item.price} руб</p>
+                           <p className={"main__item-price" + (!item.newPrice ? ' main__item-price--default' : '')}>{item.newPrice ? item.newPrice : item.price} руб</p>
                            {item.newPrice &&
                               <p className="main__item-price-old">{item.price} руб</p>
                            }
                         </div>
-                        <div className="main__item-quantity-control">
-                           {item.userQuantity === 1 ? (
-                                 <button onClick={() => handleRemoveItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--delete"></button>
-                              ) : (
-                                 <button onClick={() => handleDecreaseItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--minus">-</button>
-                           )}
-                              {item.userQuantity}
-                           <button onClick={() => handleIncreaseItem(item.productId)} className="main__item-quantity-button main__item-quantity-button--plus">+</button>
-                        </div>
+                        <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
                         <div className="main__item-fav-control">
                            <FavoriteButton productId={item.productId} initialFavState={false} position='relative'/>
                         </div>
                         <div className="main__item-column main__item-column--main">
-                           <p className="main__item-total">{item.userQuantity * (item.newPrice || item.price)} руб</p>
+                           <p className="main__item-total">{(item.userQuantity * (item.newPrice || item.price)).toFixed(1)} руб</p>
                            <p className="main__item-amount">{item.userQuantity} шт</p>
                         </div>
                      </li>
