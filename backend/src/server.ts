@@ -258,6 +258,57 @@ app.post('/add-bonuses', async (req: Request, res: Response): Promise<any> => {
     }
 });
 
+// Получение данных о пользователе по номеру бонусной карты
+app.get('/user-by-bonus-card/:cardNumber', async (req: Request, res: Response): Promise<any> => {
+   const { cardNumber } = req.params;
+   const userPhoneNumber = Object.keys(bonusCards).find(phone => bonusCards[phone].cardNumber === cardNumber);
+   if (!userPhoneNumber) {
+       return res.status(404).json({ message: 'Пользователь с указанным номером бонусной карты не найден.' });
+   }
+   const user = users[userPhoneNumber];
+   if (user) {
+       const nameSurname = user.nameSurname || '';
+       const dateOfBirth = user.dateOfBirth || '01.01.1950';
+       const email = user.email || '';
+       
+       res.status(200).json({
+           nameSurname,
+           phoneNumber: userPhoneNumber,
+           dateOfBirth,
+           email
+       });
+   } else {
+       res.status(404).json({ message: 'Пользователь не найден.' });
+   }
+});
+// Изменение имени, фамилии или электронной почты
+app.post('/update-user-field', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   const { fieldType, newValue } = req.body; // fieldType: 'nameSurname' | 'email'
+   if (!token) {
+       return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+       if (err) {
+           return res.status(401).json({ message: 'Неверный токен.' });
+       }
+       const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+       const user = users[phoneNumberFromToken];
+       if (user) {
+           if (fieldType === 'nameSurname') {
+               user.nameSurname = newValue;
+           } else if (fieldType === 'email') {
+               user.email = newValue;
+           } else {
+               return res.status(400).json({ message: 'Неверный тип поля для изменения.' });
+           }
+           res.status(200).json({ message: 'Данные пользователя обновлены.', user });
+       } else {
+           res.status(404).json({ message: 'Пользователь не найден.' });
+       }
+   });
+});
+
 interface Order {
     orderId: string;
     status: 'в работе' | 'выполнен';
