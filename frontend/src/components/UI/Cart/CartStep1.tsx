@@ -4,7 +4,7 @@ import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
-import { ICartItem } from '../../types/cart.types';
+import { ICartItem } from '../../../types/cart.types';
 import { AuthContext } from '../../../context/AuthContext';
 import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
 

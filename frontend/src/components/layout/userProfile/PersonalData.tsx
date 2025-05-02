@@ -3,24 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/authService';
 import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
 import { useMessage } from '../../../context/MessageContext';
-
-interface UserInfo {
-   nameSurname: string;
-   phoneNumber: string;
-   dateOfBirth: string;
-   email: string;
-};
-
-interface UserBonuses {
-   bonuses: string;
-   cardNumber: string;
-};
+import { IUserBonuses, IUserInfo } from '../../../types/userData.types';
 
 const PersonalData: FC = () => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
    const [isCardLoading, setIsCardLoading] = useState<boolean>(false);
-   const [userInfo, setUserInfo] = useState<UserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
-   const [userBonusCard, setUserBonusCard] = useState<UserBonuses>({ bonuses: '', cardNumber: '' });
+   const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
+   const [userBonusCard, setUserBonusCard] = useState<IUserBonuses>({ bonuses: '', cardNumber: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);

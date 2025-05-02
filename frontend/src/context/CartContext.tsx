@@ -1,6 +1,6 @@
 import React, { useState, FC, ReactNode, createContext } from 'react';
 import { addItemToCart, updateItemInCart, removeItemFromCart, getCart } from '../services/cartService';
-import { ICartItem } from '../components/types/cart.types';
+import { ICartItem } from '../types/cart.types';
 
 interface ICartContext {
    cartItems: ICartItem[];

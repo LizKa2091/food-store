@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import './ItemQuantityButton.scss';
-import { ICartItem } from '../../types/cart.types';
+import { ICartItem } from '../../../types/cart.types';
 import { CartContext } from '../../../context/CartContext';
 
 interface IItemQuantityButtonProps {
