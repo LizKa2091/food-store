@@ -11,6 +11,8 @@ $yellow-list-item-bg: #FFF8EB;
 $selected-list-item-border: #FFA90073;
 $selected-list-item-marker: #FF0000;
 
+$empty-fio: #FF0000;
+
 .main {
    &__form {
       &-details-row {
@@ -34,6 +36,42 @@ $selected-list-item-marker: #FF0000;
       flex-direction: column;
       gap: 35px;
    }
+   &__radio-label {
+      font-size: 1.25rem;
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+
+      &::after {
+         content: '';
+         position: absolute;
+         left: 4px;
+         top: 50%;
+         left: 1.75%;
+         transform: translateY(-50%);
+         width: 9px;
+         height: 9px;
+         border-radius: 50%;
+         background-color: $selected-list-item-marker;
+         opacity: 0;
+         transition: opacity 0.2s;
+      }
+      &::before {
+         content: '';
+         position: absolute;
+         left: -1px;
+         top: 50%;
+         transform: translateY(-50%);
+         width: 19px;
+         height: 19px;
+         border: 2px solid $selected-list-item-border;
+         border-radius: 50%;
+         background-color: $yellow-list-item-bg;
+      }
+      &--last::after {
+         left: 3.75%;
+      }
+   }
    &__radio-row {
       display: flex;
       align-items: center;
@@ -41,40 +79,6 @@ $selected-list-item-marker: #FF0000;
       margin-top: 10px;
       opacity: 100%;
       position: relative;
-
-      label {
-         font-size: 1.25rem;
-         position: relative;
-         padding-left: 30px;
-         cursor: pointer;
-
-         &::after {
-            content: '';
-            position: absolute;
-            left: 4px;
-            top: 50%;
-            left: 1.75%;
-            transform: translateY(-50%);
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background-color: $selected-list-item-marker;
-            opacity: 0;
-            transition: opacity 0.2s;
-         }
-         &::before {
-            content: '';
-            position: absolute;
-            left: -1px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 19px;
-            height: 19px;
-            border: 2px solid $selected-list-item-border;
-            border-radius: 50%;
-            background-color: $yellow-list-item-bg;
-         }
-      }
    }
    &__details {
       display: flex;
@@ -97,6 +101,10 @@ $selected-list-item-marker: #FF0000;
       }
       &-fio {
          font-size: 1.25rem;
+
+         &--empty {
+            color: $empty-fio;
+         }
       }
       &-phone {
          font-size: 1.25rem;
