@@ -1,6 +1,7 @@
-import React, { FC, FormEvent, useEffect, useState } from 'react';
-import './CartPanel.scss';
+import React, { FC, FormEvent, useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
 import CartLate from './CartLate';
+import './CartPanel.scss';
 
 interface ICartPanelProps {
    step: number;
@@ -9,7 +10,8 @@ interface ICartPanelProps {
 
 const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
-
+   const authContext = useContext(AuthContext);
+   
    useEffect(() => {
       setCurrTime(getMoscowTime);
    }, [currTime]);
@@ -30,6 +32,12 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
 
       handleStepChange(2);
    };
+
+   if (!authContext?.isAuthed) {
+      return (
+         <div className="main__right main__panel main__panel--not-authed"></div>
+      )
+   }
 
    return (
       <div className="main__right main__panel">

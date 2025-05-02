@@ -13,6 +13,12 @@ $panel-button-color: #fff;
    max-width: 417px;
    max-height: 644px;
 
+   &--not-authed {
+      filter: blur(5px);
+      width: 417px;
+      height: 644px;
+   }
+
       &-form {
          display: flex;
          flex-direction: column;
