@@ -327,6 +327,28 @@ app.get('/user-orders', async (req: Request, res: Response): Promise<any> => {
     });
 });
 
+// Хранилище промокодов
+const coupons: Record<string, number> = {
+   'PROMO10A': 10,
+   'PROMO10B': 10,
+   'PROMO10C': 10,
+};
+// Обработчик для проверки промокода
+app.post('/check-coupon', (req: Request, res: Response): Promise<any> => {
+   return new Promise((resolve) => {
+       const { couponCode } = req.body;
+       if (!couponCode) {
+           return resolve(res.status(400).json({ message: 'Промокод не указан.' }));
+       }
+       const discount = coupons[couponCode];
+       if (discount) {
+           return resolve(res.status(200).json({ exists: true, discount }));
+       } else {
+           return resolve(res.status(404).json({ exists: false, discount: 0 }));
+       }
+   });
+});
+
 // Интерфейс для любимого товара
 interface FavoriteItem {
     productId: string;
