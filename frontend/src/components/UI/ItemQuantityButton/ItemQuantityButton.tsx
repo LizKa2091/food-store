@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import './ItemQuantityButton.scss';
 import { ICartItem } from '../../../types/cart.types';
 import { CartContext } from '../../../context/CartContext';
+import { useMessage } from '../../../context/MessageContext';
 
 interface IItemQuantityButtonProps {
    itemId: string;
@@ -14,19 +15,32 @@ const ItemQuantityButton: FC<IItemQuantityButtonProps> = ({ itemId, storageQuant
 
    const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
    const { addItem, updateItem, removeItem } = cartContext;
+   
+   const { setMessage } = useMessage();
 
    useEffect(() => {
       const filteredItem = currCart.find((item: ICartItem) => item.productId === itemId);
-
       setCurrItem(filteredItem || null);
-   }, [currCart, itemId]);
+   }, [itemId, currCart]);
 
    const handleIncreaseItem = async (id: string) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('ошибка, пользователь не авторизован');
-      
+
+      const currentQuantityInCart = currItem?.userQuantity || 0;
+
+      if (storageQuantity === 0) {
+         setMessage('Товар будет в наличии только завтра');
+         return;
+      }
+
+      if (currentQuantityInCart >= storageQuantity) {
+         setMessage('Вы не можете добавить товара больше, чем есть на складе');
+         return;
+      }
+
       await addItem(id, 1, token);
-      console.log(currCart)
+      setCurrItem(prev => prev ? { ...prev, userQuantity: prev.userQuantity + 1 } : null);
    };
 
    const handleDecreaseItem = async (id: string) => {
@@ -43,6 +57,7 @@ const ItemQuantityButton: FC<IItemQuantityButtonProps> = ({ itemId, storageQuant
       if (!token) throw new Error('ошибка, пользователь не авторизован');
       
       await removeItem(id, token);
+      setCurrItem(null);
    };
 
    if (!currItem) {
