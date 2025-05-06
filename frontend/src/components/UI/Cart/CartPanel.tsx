@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useState } fr
 import { AuthContext } from '../../../context/AuthContext';
 import CartLate from './CartLate';
 import { checkCoupon } from '../../../services/cartService';
+import { useMessage } from '../../../context/MessageContext';
 import './CartPanel.scss';
 
 interface ICartPanelProps {
@@ -13,8 +14,10 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
    const [couponInput, setCouponInput] = useState<string>('');
    const [discount, setDiscount] = useState<number>(0);
-   const authContext = useContext(AuthContext);
    
+   const authContext = useContext(AuthContext);
+   const { setMessage } = useMessage();
+
    useEffect(() => {
       setCurrTime(getMoscowTime);
    }, [currTime]);
@@ -29,7 +32,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
       const moscowTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
       return moscowTime;
    };
-
+   
    const validateCoupon = async (coupon: string) => {
       if (coupon.trim().length === 0) return;
       
@@ -40,19 +43,22 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
          const result = await checkCoupon(token, coupon);
          
          if (!result.exists) {
-            console.log('не существует');
+            setMessage('Такого промокода не существует');
             return;
          }
 
          if (result && 'error' in result) {
            console.error(result.error);
+           setMessage('Ошибка при проверке промокода')
            return;
          }
 
          setDiscount(result.discount);
+         setMessage('Промокод успешно применён');
       }
       catch (error) {
-         console.error('ошибка при инициализации корзины:', error);
+         console.error('Ошибка при проверке промокода:', error);
+         setMessage(`Ошибка при проверке промокода:, ${error}`);
       }
    };
 
