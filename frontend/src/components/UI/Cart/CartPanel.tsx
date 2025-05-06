@@ -84,11 +84,24 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
             {step === 1 &&
                <>
                   <div className="main__panel-input-container">
-                     <input 
-                        type="text" className="main__panel-input" placeholder='Есть промокод?' 
-                        value={couponInput} onChange={(e: ChangeEvent<HTMLInputElement>) => setCouponInput(e.target.value)}
-                     />
-                     <button className="main__panel-input-button" onClick={() => validateCoupon(couponInput)} type='button'>Применить</button>
+                     {discount ? (
+                        <>
+                           <input 
+                              className="main__panel-input" placeholder='Есть промокод?' 
+                              value={couponInput}
+                           />
+                           <button className="main__panel-input-button main__panel-input-button--disabled" disabled>Применён</button>
+                           <span className='main__panel-input-discount'>Скидка {discount}%</span>
+                        </>
+                     ) : (
+                        <>
+                           <input 
+                              className="main__panel-input" placeholder='Есть промокод?' 
+                              value={couponInput} onChange={(e: ChangeEvent<HTMLInputElement>) => setCouponInput(e.target.value)}
+                           />
+                           <button className="main__panel-input-button" onClick={() => validateCoupon(couponInput)} type='button'>Применить</button>
+                        </>
+                     )}
                   </div>
                   <div className="main__panel-row main__panel-row--withdraw">
                      <input type="radio" name="withdraw" id="withdraw" value='withdraw' className='main__panel-radio'/>
