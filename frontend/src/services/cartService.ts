@@ -111,4 +111,32 @@ const getCart = async (token: string) => {
    }
 };
 
-export { addItemToCart, updateItemInCart, removeItemFromCart, getCart };
+const checkCoupon = async (token: string, coupon: string) => {
+   let response;
+   try {
+      response = await fetch(`${baseUrl}/check-coupon`, {
+         method: 'POST',
+         headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ couponCode: coupon })
+      });
+
+      if (!response.ok) {
+         const errorData = await response.json();
+         console.error(errorData || 'ошибка при проверке валидности купона');
+         return { error: errorData.message || 'ошибка при проверке валидности купона' };
+      }
+
+      const result = await response.json();
+      return result;
+   }
+   catch (e) {
+      const errorData = await response?.json();
+      console.error(errorData || 'ошибка при проверке валидности купона');
+      return { error: errorData.message || 'ошибка при проверке валидности купона' };
+   }
+}
+
+export { addItemToCart, updateItemInCart, removeItemFromCart, getCart, checkCoupon };

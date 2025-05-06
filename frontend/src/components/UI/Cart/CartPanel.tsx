@@ -1,6 +1,7 @@
-import React, { FC, FormEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import CartLate from './CartLate';
+import { checkCoupon } from '../../../services/cartService';
 import './CartPanel.scss';
 
 interface ICartPanelProps {
@@ -10,6 +11,8 @@ interface ICartPanelProps {
 
 const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
+   const [couponInput, setCouponInput] = useState<string>('');
+   const [discount, setDiscount] = useState<number>(0);
    const authContext = useContext(AuthContext);
    
    useEffect(() => {
@@ -25,6 +28,32 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
       };
       const moscowTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
       return moscowTime;
+   };
+
+   const validateCoupon = async (coupon: string) => {
+      if (coupon.trim().length === 0) return;
+      
+      const token = localStorage.getItem('token');
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await checkCoupon(token, coupon);
+         
+         if (!result.exists) {
+            console.log('не существует');
+            return;
+         }
+
+         if (result && 'error' in result) {
+           console.error(result.error);
+           return;
+         }
+
+         setDiscount(result.discount);
+      }
+      catch (error) {
+         console.error('ошибка при инициализации корзины:', error);
+      }
    };
 
    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -55,8 +84,11 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
             {step === 1 &&
                <>
                   <div className="main__panel-input-container">
-                     <input type="text" className="main__panel-input" placeholder='Есть промокод?' />
-                     <button className="main__panel-input-button" type='button'>Применить</button>
+                     <input 
+                        type="text" className="main__panel-input" placeholder='Есть промокод?' 
+                        value={couponInput} onChange={(e: ChangeEvent<HTMLInputElement>) => setCouponInput(e.target.value)}
+                     />
+                     <button className="main__panel-input-button" onClick={() => validateCoupon(couponInput)} type='button'>Применить</button>
                   </div>
                   <div className="main__panel-row main__panel-row--withdraw">
                      <input type="radio" name="withdraw" id="withdraw" value='withdraw' className='main__panel-radio'/>
