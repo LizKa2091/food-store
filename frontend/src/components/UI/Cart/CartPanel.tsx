@@ -1,9 +1,11 @@
-import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useState, MouseEvent } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import CartLate from './CartLate';
 import { checkCoupon } from '../../../services/cartService';
 import { useMessage } from '../../../context/MessageContext';
 import './CartPanel.scss';
+import { CartContext } from '../../../context/CartContext';
+import { ICartItem } from '../../../types/cart.types';
 
 interface ICartPanelProps {
    step: number;
@@ -12,15 +14,29 @@ interface ICartPanelProps {
 
 const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
+   const [deliveryTime, setDeliveryTime] = useState<string>('18:11');
+   const [isChangingDeliTime, setIsChangingDeliTime] = useState<boolean>(false);
    const [couponInput, setCouponInput] = useState<string>('');
    const [discount, setDiscount] = useState<number>(0);
    
    const authContext = useContext(AuthContext);
+   const cartContext = useContext(CartContext) || { cartItems: []};
+   const { cartItems } = cartContext;
+   const [totalPrice, setTotalPrice] = useState<number>(0);
+
    const { setMessage } = useMessage();
 
    useEffect(() => {
       setCurrTime(getMoscowTime);
    }, [currTime]);
+
+   useEffect(() => {
+      if (cartItems.length > 0) {
+         let price = cartItems.map((item: ICartItem) => item.price * item.userQuantity).reduce((a: number, b: number) => a+b, 0);
+         setTotalPrice(+price.toFixed(2))
+      }
+      else setTotalPrice(0);
+   }, [cartItems])
 
    const getMoscowTime = () => {
       const options: Intl.DateTimeFormatOptions = {
@@ -68,6 +84,17 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
       handleStepChange(2);
    };
 
+   const handleDeliTime = () => {
+      const [hours, minutes] = deliveryTime.split(':').map(Number);
+      if (hours < 7) {
+         setMessage('Вы не можете выбрать время доставки между 00:00 и 07:00');
+         setDeliveryTime('18:11');
+         return;
+      }
+      setIsChangingDeliTime(false);
+      setMessage('Время доставки обновлено');
+   };
+
    if (!authContext?.isAuthed) {
       return (
          <div className="main__right main__panel main__panel--not-authed"></div>
@@ -78,9 +105,23 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
       <div className="main__right main__panel">
          <form onSubmit={handleFormSubmit} className="main__panel-form">
             <div className="main__panel-row">
-               <p className="main__panel-title">Доставка сегодня, 18:11</p>
-               {step === 1 &&
-                  <button className="main__panel-button">Изменить</button>
+               {step === 1 && !isChangingDeliTime &&
+                  <>
+                     <p className="main__panel-title">Доставка сегодня, {deliveryTime}</p>
+                     <button onClick={() => setIsChangingDeliTime(true)} className="main__panel-button">Изменить</button>
+                  </>
+               }
+               {step === 1 && isChangingDeliTime &&
+                  <div className='main__panel-container'>
+                     <label htmlFor='deli-time' className='main__panel-label'>Укажите новое время доставки</label>
+                     <div className="main__panel-container-row">
+                        <input type="time" name="deli-time" 
+                           value={deliveryTime} onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryTime(e.target.value)} 
+                           id="deli-time" className='main__panel-input--delivery'
+                        />
+                        <button onClick={handleDeliTime} type='button' className="main__panel-button">Сохранить</button>
+                     </div>
+                  </div>
                }
                {step === 2 && currTime && +currTime?.slice(0, 2) >= 0 && +currTime?.slice(0, 2) < 7 && +currTime?.slice(3) <= 59 &&
                   <CartLate step={2} />
@@ -137,7 +178,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
             </div>
             <div className="main__panel-total-row">
                <p className="main__panel-total">К оплате</p>
-               <p className="main__panel-total main__panel-total--bold">586 руб</p>
+               <p className="main__panel-total main__panel-total--bold">{totalPrice} руб</p>
             </div>
             <button className="main__panel-submit" type='submit'>
                {step === 1 ? 'Оформить заказ' : 'Оформить'}
