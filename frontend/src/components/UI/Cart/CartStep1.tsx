@@ -16,8 +16,8 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
    const authContext = useContext(AuthContext);
 
-   const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
-   const { initCart, cartItems } = cartContext;
+   const cartContext = useContext(CartContext) || { cartItems: [], initCart: async () => {}, handleClearCart: async () => {} };
+   const { initCart, cartItems, handleClearCart } = cartContext;
 
    useEffect(() => {
       const time = getMoscowTime();
@@ -52,7 +52,24 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
          }
       } 
       catch (error) {
-         console.error('ошибка при инициализации корзины:', error);
+         console.error(error);
+      }
+   };
+
+   const handleButtonClearCart = async () => {
+      const token = localStorage.getItem('token');
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await handleClearCart(token);
+
+         if (result && 'error' in result) {
+            console.error(result.error);
+            return;
+         }
+      }
+      catch (error) {
+         console.error(error);
       }
    };
 
@@ -62,7 +79,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
             <div className="main__top">
                <h2 className="main__title">Корзина</h2>
                {authContext?.isAuthed &&
-                  <button className="main__button">Очистить</button>
+                  <button onClick={handleButtonClearCart} className="main__button">Очистить</button>
                }
             </div>
             <div className="main__bottom">
