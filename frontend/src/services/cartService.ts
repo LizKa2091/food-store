@@ -84,6 +84,32 @@ const removeItemFromCart = async (productId: string, token: string) => {
    }
 };
 
+const clearCart = async (token: string) => {
+   let response;
+   try {
+      response = await fetch(`${baseUrl}/cart/clear`, {
+         method: 'DELETE',
+         headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+         },
+      });
+
+      if (!response.ok) {
+         const errorData = await response.json();
+         console.error(errorData || 'ошибка при очистке корзины');
+         return { error: errorData.message || 'ошибка при очистке корзины' };
+      }
+      let result = await response.json();
+      return result;
+   } 
+   catch (e) {
+      const errorData = await response?.json();
+      console.error(errorData || 'ошибка при очистке корзины');
+      return { error: errorData.message || 'ошибка при очистке корзины' };
+   }
+};
+
 const getCart = async (token: string) => {
    let response;
    try {
@@ -139,4 +165,4 @@ const checkCoupon = async (token: string, coupon: string) => {
    }
 }
 
-export { addItemToCart, updateItemInCart, removeItemFromCart, getCart, checkCoupon };
+export { addItemToCart, updateItemInCart, removeItemFromCart, getCart, clearCart, checkCoupon };
