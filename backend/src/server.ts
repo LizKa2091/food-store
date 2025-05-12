@@ -631,7 +631,28 @@ app.get('/cart', async (req: Request, res: Response): Promise<any> => {
    });
 });
 
-// Запуск сервера
+app.delete('/cart/clear', async (req: Request, res: Response): Promise<any> => {
+   const token = req.headers['authorization'];
+   if (!token) {
+      return res.status(401).json({ message: 'Токен не предоставлен.' });
+   }
+   jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+      if (err) {
+         return res.status(401).json({ message: 'Неверный токен.' });
+      }
+      const phoneNumberFromToken = (decoded as JwtPayload).phoneNumber;
+      const user = users[phoneNumberFromToken];
+
+      if (user) {
+         userCarts[phoneNumberFromToken] = [];
+         res.status(200).json({ message: 'Корзина очищена.', cart: userCarts[phoneNumberFromToken] });
+      } 
+      else {
+         res.status(404).json({ message: 'Пользователь не найден.' });
+      }
+   });
+});
+
 app.listen(port, () => {
     console.log(`Сервер запущен на http://localhost:${port}`);
 });

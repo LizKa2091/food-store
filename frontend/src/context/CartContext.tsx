@@ -1,5 +1,5 @@
 import React, { useState, FC, ReactNode, createContext } from 'react';
-import { addItemToCart, updateItemInCart, removeItemFromCart, getCart } from '../services/cartService';
+import { addItemToCart, updateItemInCart, removeItemFromCart, getCart, clearCart } from '../services/cartService';
 import { ICartItem } from '../types/cart.types';
 
 interface ICartContext {
@@ -8,6 +8,7 @@ interface ICartContext {
    updateItem: (productId: string, quantity: number, token: string) => Promise<CartResponse | unknown>;
    removeItem: (productId: string, token: string) => Promise<CartResponse | unknown>;
    initCart: (token: string) => Promise<CartResponse>;
+   handleClearCart: (token: string) => Promise<CartResponse>;
 };
 
 type CartResponse = {
@@ -78,9 +79,25 @@ const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
          };
       }
    };
+
+   const handleClearCart = async (token: string): Promise<{cart?: ICartItem[], error?: string}> => {
+      try {
+         let result = await clearCart(token);
+         if (result && Array.isArray(result.cart)) {
+            setCartItems(result.cart);
+            return { cart: result.cart };
+         }
+         return { error: result?.error || 'ошибка при очистке корзины' };
+      } 
+      catch (error) {
+         return { 
+            error: error instanceof Error ? error.message : 'Неизвестная ошибка' 
+         };
+      }
+   };
    
    return (
-      <CartContext.Provider value={{ cartItems, addItem, updateItem, removeItem, initCart }}>
+      <CartContext.Provider value={{ cartItems, addItem, updateItem, removeItem, initCart, handleClearCart }}>
          {children}
       </CartContext.Provider>
    );
