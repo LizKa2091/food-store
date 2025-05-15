@@ -17,15 +17,13 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [deliveryTime, setDeliveryTime] = useState<string>('18:11');
    const [isChangingDeliTime, setIsChangingDeliTime] = useState<boolean>(false);
    const [couponInput, setCouponInput] = useState<string>('');
-   const [promoDiscount, setPromoDiscount] = useState<number>(0);
-   const [bonusDiscount, setBonusDiscount] = useState<number>(0);
    const [itemsDiscount, setItemsDiscount] = useState<number>(0);
    const [itemsCount, setItemsCount] = useState<number>(0);
    const [weightCount, setWeightCount] = useState<number>(0);
    
    const authContext = useContext(AuthContext);
    const cartContext = useContext(CartContext) || { cartItems: []};
-   const { cartItems } = cartContext;
+   const { cartItems, promoDiscount, setPromoDiscount, bonusDiscount, setBonusDiscount } = cartContext;
    const [totalPrice, setTotalPrice] = useState<number>(0);
 
    const { setMessage } = useMessage();
@@ -86,7 +84,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
            setMessage('Ошибка при проверке промокода')
            return;
          }
-
+         
          setPromoDiscount(result.discount);
          setMessage('Промокод успешно применён');
       }
