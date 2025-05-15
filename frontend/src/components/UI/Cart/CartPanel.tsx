@@ -34,11 +34,13 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
 
    useEffect(() => {
       if (cartItems.length > 0) {
-         let price: number = cartItems.map((item: ICartItem) => item.price * item.userQuantity).reduce((a: number, b: number) => a+b, 0);
-         setTotalPrice(+price.toFixed(2));
+         let price: number = cartItems.reduce((sum, item) => sum + (item.price * item.userQuantity), 0);
 
-         let totalDiscount: number = cartItems.filter((item: ICartItem) => item.newPrice != null).map((item: ICartItem) => ((item.price - (item.newPrice!)) * item.userQuantity)).reduce((a: number, b: number) => a+b, 0);
+         let totalDiscount: number = cartItems.reduce((sum, item) => item.newPrice ? sum + ((item.price - item.newPrice) * item.userQuantity) : sum, 0);
          setItemsDiscount(totalDiscount);
+
+         let finalPrice = price - itemsDiscount - bonusDiscount - promoDiscount;
+         setTotalPrice(Math.max(0, +finalPrice.toFixed(2)));
 
          let totalItemsCount = cartItems.map((item: ICartItem) => item.userQuantity).reduce((a: number, b: number) => a+b, 0);
          setItemsCount(totalItemsCount);
@@ -52,7 +54,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
          setItemsCount(0);
          setWeightCount(0);
       }
-   }, [cartItems]);
+   }, [cartItems, promoDiscount, bonusDiscount, itemsDiscount]);
 
    const getMoscowTime = () => {
       const options: Intl.DateTimeFormatOptions = {
