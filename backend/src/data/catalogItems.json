@@ -6,7 +6,7 @@
        "category": "Хлеб и выпечка",
        "price": 409.9,
        "stockQuantity": 3,
-       "weight": "400г",
+       "weight": "0.4кг",
        "newPrice": 299.9,
        "imagePath": "bakeryImg1",
 
@@ -39,7 +39,7 @@
        "category": "Хлеб и выпечка",
        "price": 144.9,
        "stockQuantity": 33,
-       "weight": "400г",
+       "weight": "0.4кг",
        "imagePath": "bakeryImg3",
 
        "filterCategory": "Выпечка",
@@ -55,7 +55,7 @@
       "category": "Хлеб и выпечка",
       "price": 409.9,
       "stockQuantity": 34,
-      "weight": "400г",
+      "weight": "0.4кг",
       "newPrice": 299.9,
       "imagePath": "bakeryImg4",
 
@@ -72,7 +72,7 @@
       "category": "Хлеб и выпечка",
       "price": 144.9,
       "stockQuantity": 0,
-      "weight": "400г",
+      "weight": "0.4кг",
       "newPrice": 299.9,
       "imagePath": "bakeryImg5",
 
@@ -89,7 +89,7 @@
       "category": "Хлеб и выпечка",
       "price": 609.9,
       "stockQuantity": 3,
-      "weight": "400г",
+      "weight": "0.4кг",
       "imagePath": "bakeryImg6",
 
       "filterCategory": "Баранки и сухарики",
