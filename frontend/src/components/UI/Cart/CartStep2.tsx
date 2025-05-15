@@ -14,6 +14,8 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);
+   const [isChangingName, setIsChangingName] = useState<boolean>(false);
+   const [isChangingPhone, setIsChangingPhone] = useState<boolean>(false);
 
    const { setMessage } = useMessage();
 
@@ -85,38 +87,26 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
       }
    };
 
-   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>): void => {
+      setUserInfo((prev) => ({
+         ...prev,
+         phoneNumber: e.target.value,
+      }));
+      setIsDirty(true);
+   };
+
+   const saveNewUsername = (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
 
-      if (!isInputWrong && isDirty) {
-         const token = localStorage.getItem('token');
+      if (isInputWrong) return;
+      setIsChangingName(false);
+   };
 
-         if (token) {
-            const { nameSurname, phoneNumber, dateOfBirth, email } = userInfo;
-            let response;
+   const saveNewPhone = (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
 
-            try {
-               response = await updateUserInfo(token, nameSurname, phoneNumber, dateOfBirth, email);
-
-               if (response.user) {
-                  setIsFormSaved(true);
-                  setIsDirty(false);
-               }
-            }
-            catch (e) {
-               setMessage(response.message);
-            }
-         }
-         else {
-            setMessage('Пользователь не авторизован');
-         }
-      }
-      else if (isDirty) {
-         setIsFormSaved(false);
-      }
-      else {
-         setIsFormSaved(!isInputWrong);
-      }
+      if (isInputWrong) return;
+      setIsChangingPhone(false);
    };
 
    const formatPhoneNum = (num: string) => {
@@ -131,12 +121,31 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
                <div className="main__details">
                   <h3 className="main__subtitle">Ваши данные</h3>
                   <div className="main__details-row">
-                     <p className={"main__details-fio" + (userInfo.nameSurname.length === 0 ? ' main__details-fio--empty' : '')}>{userInfo.nameSurname.length > 0 ? userInfo.nameSurname : 'Не указано'}</p>
-                     <button onClick={(e: MouseEvent<HTMLButtonElement>) => accessValueChange('fio', e)} className="main__details-button main__details-button--fio">Изменить получателя</button>
+                     {!isChangingName ? (
+                        <>
+                           <p className={"main__details-fio" + (userInfo.nameSurname.length === 0 ? ' main__details-fio--empty' : '')}>{userInfo.nameSurname.length > 0 ? userInfo.nameSurname : 'Не указано'}</p>
+                           <button onClick={(e: MouseEvent<HTMLButtonElement>) => { e.preventDefault(); accessValueChange('fio', e); setIsChangingName(true) }} className="main__details-button main__details-button--fio">Изменить получателя</button>
+                        </>
+                     ) : (
+                        <>
+                           <input type="text" value={userInfo.nameSurname} onChange={handleNameChange}/>
+                           <button type='button' onClick={saveNewUsername}>Сохранить</button>
+                        </>
+                     )
+                     }
                   </div>
                   <div className="main__details-row">
-                     <p className="main__details-phone">{formatPhoneNum(userInfo.phoneNumber)}</p>
-                     <button onClick={(e: MouseEvent<HTMLButtonElement>) => accessValueChange('phone', e)} className="main__details-button main__details-button--phone">Изменить контактный номер для заказа</button>
+                     {!isChangingPhone ? (
+                        <>
+                           <p className="main__details-phone">{formatPhoneNum(userInfo.phoneNumber)}</p>
+                           <button onClick={(e: MouseEvent<HTMLButtonElement>) => { e.preventDefault(); setIsChangingPhone(true); accessValueChange('phone', e)} } className="main__details-button main__details-button--phone">Изменить контактный номер для заказа</button>
+                        </>
+                     ) : (
+                        <>
+                           <input type="tel" value={userInfo.phoneNumber} onChange={handlePhoneChange} />
+                           <button type='button' onClick={saveNewPhone}>Сохранить</button>
+                        </>
+                     )}
                   </div>
                   <p className="main__details-card">К этому номеру телефона привязана карта №{userBonusCard.cardNumber}</p>
                   <h3 className="main__subtitle">Способ оплаты</h3>
@@ -160,8 +169,8 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
                   <p className="main__details-address">ул. Новая,Ильинское-Усово, городской округ Красногорск</p>
                   <div className="main__details-form-els">
                      <div className="main__form-details-row">
-                        <input type="number" name="room" id="room" className='main__details-input' placeholder='Квартира'/>
-                        <input type="number" name="floor" id="floor" className='main__details-input' placeholder='Этаж'/>
+                        <input type="number" name="room" id="room" className='main__details-input' placeholder='Квартира' required/>
+                        <input type="number" name="floor" id="floor" className='main__details-input' placeholder='Этаж' required/>
                         <input name="intercom" id="intercom" className='main__details-input' placeholder='Домофон'/>
                         <input type="number" name="entrance" id="entrance" className='main__details-input' placeholder='Подъезд'/>
                      </div>
