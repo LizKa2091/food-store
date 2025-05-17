@@ -18,7 +18,7 @@ const SalesPage: FC = () => {
          <Wrapper modalState={isModalOpened}>
             <Header />
             <Categories category='Акции' type='extended'/>
-            <SalesAndRecommendation onModalChange={ handleModalChange } type='Рекомендации для вас' />
+            <SalesAndRecommendation modalState={isModalOpened} onModalChange={ handleModalChange } type='Рекомендации для вас' />
             <Feedback />
             <Footer />
          </Wrapper>

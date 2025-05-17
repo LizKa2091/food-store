@@ -30,7 +30,7 @@ const MainPage: FC = () => {
     <Wrapper modalState={ isModalOpened }>
         <Header />
         <Promo />
-        <SalesAndRecommendation onModalChange={ handleModalChange } type='Скидки'/>
+        <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Скидки'/>
         {categoriesList.map((category) => (
             <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
         ))}

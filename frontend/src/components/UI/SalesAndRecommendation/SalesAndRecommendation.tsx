@@ -14,6 +14,7 @@ type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
 interface ICategoryProps {
    type: CategoryType;
+   modalState: boolean;
    onModalChange?: (modalState: boolean) => void;
 };
 
@@ -36,7 +37,7 @@ interface Item {
    oldPrice?: number;
 };
 
-const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
+const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryProps) => {
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
    const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -49,7 +50,7 @@ const SalesAndRecommendation = ({ type, onModalChange } : ICategoryProps) => {
 
    useEffect(() => {
       getUserFavorites();
-   }, []);
+   }, [modalState]);
 
    useEffect(() => {
       if (authContext?.isAuthed) initCartState();
