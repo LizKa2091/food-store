@@ -16,9 +16,8 @@ $item-button-like-border: #DADADA;
     border: 1px solid $color-white;
     border-radius: 20px;
     background-color: $color-white;
-    width: 67.292dvw;
+    width: clamp(200px, 100dvw, 1290px);
     height: 76.019dvh;
-    max-width: 1290px;
     max-height: 819px;
     position: fixed;
     top: 50%;
@@ -31,6 +30,7 @@ $item-button-like-border: #DADADA;
         justify-content: space-around;
         align-items: center;
         flex-wrap: wrap;
+        flex-direction: column;
         height: 100%;
     }
     &__right {
@@ -43,8 +43,8 @@ $item-button-like-border: #DADADA;
     &__img {
         width: 100%;
         height: 100%;
-        max-width: 490px;
-        max-height: 490px;
+        max-width: 450px;
+        max-height: 450px;
     }
     &__row {
         display: flex;
