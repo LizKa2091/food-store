@@ -9,6 +9,11 @@ import CartPanel from '../../components/UI/Cart/CartPanel';
 
 const CartPage: FC = () => {
    const [currStep, setCurrStep] = useState<number>(1);
+   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+   const handleModalChange = (modalState: boolean) => {
+      setIsModalOpened(modalState);
+   };
 
    const handleStepChange = (step: number) => {
       setCurrStep(step)
@@ -35,7 +40,7 @@ const CartPage: FC = () => {
       <Wrapper>
          <Header />
          {renderCartStep()}
-         <SalesAndRecommendation type='Рекомендации для вас' />
+         <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Рекомендации для вас' />
          <Footer />
     </Wrapper>
    )

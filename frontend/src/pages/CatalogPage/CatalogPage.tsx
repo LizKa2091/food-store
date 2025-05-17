@@ -186,7 +186,7 @@ const CatalogPage: FC = () => {
                </div>
             </section>
          </div>
-         <SalesAndRecommendation onModalChange={handleModalChange} type='Рекомендации для вас' />
+         <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Рекомендации для вас' />
          <Footer />
       </Wrapper>
    )
