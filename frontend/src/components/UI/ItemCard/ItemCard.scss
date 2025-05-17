@@ -9,6 +9,9 @@ $orange-button-bg-hover: #FFA900;
 $color-gray-close-text: #AAAAAA;
 $color-gray-close-bg: #F2F3F5;
 
+$item-button-like-border: #DADADA;
+
+
 .item-modal {
     border: 1px solid $color-white;
     border-radius: 20px;
@@ -158,6 +161,13 @@ $color-gray-close-bg: #F2F3F5;
             height: 38px;
             padding-bottom: 5px;
             cursor: pointer;
+        }
+        &--fav {
+            position: relative;
+            border: 1px solid $item-button-like-border;
+            border-radius: 50%;
+            width: 44px;
+            height: 42px;
         }
     }
     &__close {

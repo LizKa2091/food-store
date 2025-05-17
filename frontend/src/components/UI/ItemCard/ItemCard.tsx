@@ -106,7 +106,9 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
                      <button className={"item-modal__button item-modal__button--cart" + (product.stockQuantity === 0 ? 'item-modal__button item-modal__button--cart--empty' : '')}>
                         {product.stockQuantity > 0 ? 'В корзину' : 'На завтра'}
                      </button>
-                     <FavoriteButton productId={product.productId} initialFavState={userFavorites ? userFavorites.includes(product.productId) : false} position='relative'/>
+                     <div className="item-modal__button--fav">
+                        <FavoriteButton productId={product.productId} initialFavState={userFavorites ? userFavorites.includes(product.productId) : false} position='relative'/>
+                     </div>
                   </div>
                </div>
                <div className="item-modal__extra-container">
