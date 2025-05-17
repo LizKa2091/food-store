@@ -119,7 +119,7 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
       <div className='item-modal'>
          <div className="item-modal__inner">
             <div className="item-modal__left">
-               <img className='item-modal__img' src={`${product.imagePath}`} alt='item'/>
+               <img className='item-modal__img' src={`${product.imagePath}`} alt={product.name}/>
             </div>
             <div className="item-modal__right">
                <p className="item-modal__category">{product.category}</p>

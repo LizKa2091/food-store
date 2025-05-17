@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useContext, useEffect, useState } from 'react';
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
-import img from '../../../images/webpImages/catalogItems/catalog-item-2.webp';
 import './CartStep1.scss';
 import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
@@ -96,7 +95,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                   {cartItems?.map((item: ICartItem) => (
                      <li key={item.productId} className="main__item">
                         <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
-                           <img src={img} alt="item" className="main__item-img" />
+                           <img src={item.imagePath} alt={item.name} className="main__item-img" />
                         </div>
                         <div className="main__item-column main__item-column--main">
                            <p className="main__item-title">{item.name}</p>
