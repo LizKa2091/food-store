@@ -1,9 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { useMessage } from '../../../context/MessageContext';
 import { getProduct } from '../../../services/productService';
 import './ItemCard.scss';
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import { fetchUserFavorites } from '../../../services/userService';
+import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
+import { CartContext } from '../../../context/CartContext';
+import { AuthContext } from '../../../context/AuthContext';
 
 interface IItemCardProps {
    onModalAction: (newState: boolean) => void;
@@ -42,10 +45,18 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
 
    const { setMessage } = useMessage();
 
+   const authContext = useContext(AuthContext);
+   const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
+   const { initCart, cartItems } = cartContext;
+
    useEffect(() => {
       loadItemInfo(id);
       getUserFavorites();
    }, [])
+
+   useEffect(() => {
+      if (authContext?.isAuthed) initCartState();
+   }, [authContext]);
 
    const handleCloseClick = () => {
       onModalAction(false);
@@ -86,6 +97,23 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
          }
       }
    };
+
+   const initCartState = async () => {
+      const token = localStorage.getItem('token');
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await initCart(token);
+         
+         if (result && 'error' in result) {
+           console.error(result.error);
+           return;
+         }
+      } 
+      catch (error) {
+         console.error('ошибка при инициализации корзины:', error);
+      }
+   };
  
    return (
       <div className='item-modal'>
@@ -103,9 +131,9 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
                <div className="item-modal__row item-modal__row--main">
                   <p className="item-modal__price">{product.price} руб</p>
                   <div className="item-modal__row item-modal__row--buttons">
-                     <button className={"item-modal__button item-modal__button--cart" + (product.stockQuantity === 0 ? 'item-modal__button item-modal__button--cart--empty' : '')}>
-                        {product.stockQuantity > 0 ? 'В корзину' : 'На завтра'}
-                     </button>
+                     <div>
+                        <ItemQuantityButton itemId={product.productId} storageQuantity={product.stockQuantity} currCart={cartItems}/>
+                     </div>
                      <div className="item-modal__button--fav">
                         <FavoriteButton productId={product.productId} initialFavState={userFavorites ? userFavorites.includes(product.productId) : false} position='relative'/>
                      </div>
