@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import './ContactsPage.scss';
-import Header from '../../components/layout/Header';
+import Header from '../../components/layout/header/Header';
 import Wrapper from '../../components/layout/Wrapper';
 import Footer from '../../components/layout/Footer';
 

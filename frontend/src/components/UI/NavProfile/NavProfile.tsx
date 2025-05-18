@@ -1,8 +1,8 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
-import { Link } from 'react-router-dom';
-import { postPhoneNum, postCode, verifyUser, logout, createBonusCard } from '../../../services/authService';
+import { postPhoneNum, postCode, createBonusCard } from '../../../services/authService';
 import { fetchBonusCard, fetchUserFavorites } from '../../../services/userService';
 import PinInput from '../PinInput/PinInput';
 import './NavProfile.scss';

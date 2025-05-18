@@ -1,11 +1,13 @@
 import React, { FC, ReactNode, useContext, useEffect, useState } from 'react';
-import FavoriteButton from '../FavoriteButton/FavoriteButton';
-import './CartStep1.scss';
-import CartLate from './CartLate';
 import { CartContext } from '../../../context/CartContext';
-import { ICartItem } from '../../../types/cart.types';
 import { AuthContext } from '../../../context/AuthContext';
+import { useMessage } from '../../../context/MessageContext';
+import { fetchUserFavorites } from '../../../services/userService';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
+import { ICartItem, IFavoriteItem } from '../../../types/cart.types';
+import CartLate from './CartLate';
+import './CartStep1.scss';
 
 interface ICartStep1Props {
    children: ReactNode;
@@ -13,10 +15,19 @@ interface ICartStep1Props {
 
 const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
+   const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
+
    const authContext = useContext(AuthContext);
+
+   const { setMessage } = useMessage();
 
    const cartContext = useContext(CartContext) || { cartItems: [], initCart: async () => {}, handleClearCart: async () => {} };
    const { initCart, cartItems, handleClearCart } = cartContext;
+
+   
+   useEffect(() => {
+      getUserFavorites();
+   }, []);
 
    useEffect(() => {
       const time = getMoscowTime();
@@ -52,6 +63,24 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       } 
       catch (error) {
          console.error(error);
+      }
+   };
+
+   const getUserFavorites = async () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+         let response;
+         try {
+            response = await fetchUserFavorites(token);
+
+            const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
+            setUserFavorites(favorites);
+            setMessage('');
+         }
+         catch(e) {
+            setMessage(response?.message);
+         }
       }
    };
 
@@ -109,7 +138,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                         </div>
                         <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
                         <div className="main__item-fav-control">
-                           <FavoriteButton productId={item.productId} initialFavState={false} position='relative'/>
+                           <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} position='relative'/>
                         </div>
                         <div className="main__item-column main__item-column--main">
                            <p className="main__item-total">{(item.userQuantity * (item.newPrice || item.price)).toFixed(1)} руб</p>

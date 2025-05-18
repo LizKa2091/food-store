@@ -1,11 +1,11 @@
 import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
-import CartLate from './CartLate';
-import { checkCoupon } from '../../../services/cartService';
 import { useMessage } from '../../../context/MessageContext';
-import './CartPanel.scss';
 import { CartContext } from '../../../context/CartContext';
+import { checkCoupon } from '../../../services/cartService';
 import { ICartItem } from '../../../types/cart.types';
+import CartLate from './CartLate';
+import './CartPanel.scss';
 
 interface ICartPanelProps {
    step: number;
@@ -176,7 +176,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
             }
             <div className="main__panel-total-row">
                <p className="main__panel-total">Товары ({itemsCount})</p>
-               <p className="main__panel-total">{weightCount} кг</p>
+               <p className="main__panel-total">{weightCount.toFixed(2)} кг</p>
             </div>
             <div className="main__panel-total-row">
                <p className="main__panel-total">Скидки</p>

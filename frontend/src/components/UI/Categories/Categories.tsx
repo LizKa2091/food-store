@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCategory } from '../../../context/CategoryContext';
+import { ISubCategory } from '../../../types/products.types';
 import './Categories.scss';
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
@@ -11,13 +12,6 @@ interface ICategoriesProps {
    selectedSubcategory?: string;
    setSelectedSubcategory?: (selectedSubcategory: string) => void;
 }
-
-interface ISubCategory {
-   name: string;
-   extra?: string;
-   extended1?: string;
-   extended2?: string;
-};
 
 const Categories: FC<ICategoriesProps> = ({ category, type, setSelectedSubcategory}) => {
    const navigate = useNavigate();

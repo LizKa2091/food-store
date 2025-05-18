@@ -1,42 +1,18 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { useMessage } from '../../../context/MessageContext';
-import { getProduct } from '../../../services/productService';
-import './ItemCard.scss';
-import FavoriteButton from '../FavoriteButton/FavoriteButton';
-import { fetchUserFavorites } from '../../../services/userService';
-import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
-import { CartContext } from '../../../context/CartContext';
 import { AuthContext } from '../../../context/AuthContext';
+import { useMessage } from '../../../context/MessageContext';
+import { CartContext } from '../../../context/CartContext';
+import { getProduct } from '../../../services/productService';
+import { fetchUserFavorites } from '../../../services/userService';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
+import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
+import { IFavoriteItem } from '../../../types/cart.types';
+import { IItemInfo } from '../../../types/products.types';
+import './ItemCard.scss';
 
 interface IItemCardProps {
    onModalAction: (newState: boolean) => void;
    id: string;
-};
-
-interface IItemInfo {
-   imagePath: string;
-   productId: string;
-   category: string;
-   name: string;
-   weight: string;
-   stockQuantity: number;
-   price: number;
-   newPrice?: number;
-   composition: string;
-   nutritionValue: string;
-   bestBefore: string;
-   storageConditions: string;
-   package: string;
-};
-
-interface FavoriteItem {
-   productId: string;
-   name: string;
-   price: number;
-   stockQuantity: number;
-   weight: string;
-   newPrice?: number;
-   imagePath?: string;
 };
 
 const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
@@ -88,7 +64,7 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
          try {
             response = await fetchUserFavorites(token);
 
-            const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
+            const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
             setUserFavorites(favorites);
             setMessage('');
          }

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import Wrapper from '../../components/layout/Wrapper';
-import Header from '../../components/layout/Header';
+import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/Footer';
 import SalesAndRecommendation from '../../components/UI/SalesAndRecommendation/SalesAndRecommendation';
 import CartStep1 from '../../components/UI/Cart/CartStep1';

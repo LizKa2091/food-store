@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import item1Image from '../../../images/webpImages/products/sale-product-1.webp';
-import item2Image from '../../../images/webpImages/products/sale-product-2.webp';
-import FavoriteButton from "../FavoriteButton/FavoriteButton";
-import { fetchUserFavorites } from "../../../services/userService";
-import ItemCard from "../ItemCard/ItemCard";
 import { useMessage } from "../../../context/MessageContext";
-import './SalesAndRecommendation.scss';
-import ItemQuantityButton from "../ItemQuantityButton/ItemQuantityButton";
 import { CartContext } from "../../../context/CartContext";
 import { AuthContext } from "../../../context/AuthContext";
+import { fetchUserFavorites } from "../../../services/userService";
+import ItemCard from "../ItemCard/ItemCard";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import ItemQuantityButton from "../ItemQuantityButton/ItemQuantityButton";
+import { IFavoriteItem } from "../../../types/cart.types";
+import { IItemShortInfo } from "../../../types/products.types";
+import item1Image from '../../../images/webpImages/products/sale-product-1.webp';
+import item2Image from '../../../images/webpImages/products/sale-product-2.webp';
+import './SalesAndRecommendation.scss';
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
@@ -16,25 +18,6 @@ interface ICategoryProps {
    type: CategoryType;
    modalState: boolean;
    onModalChange?: (modalState: boolean) => void;
-};
-
-interface FavoriteItem {
-   productId: string;
-   name: string;
-   price: number;
-   stockQuantity: number;
-   weight: string;
-   newPrice?: number;
-   imagePath?: string;
-};
-
-interface Item {
-   productId: string;
-   image: string;
-   amount: number;
-   name: string;
-   price: number;
-   oldPrice?: number;
 };
 
 const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryProps) => {
@@ -56,10 +39,10 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
       if (authContext?.isAuthed) initCartState();
    }, [authContext]);
 
-   const items: Record<string, Item> = {
-      item1: { productId: '1', image: item1Image, amount: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
-      item2: { productId: '2', image: item2Image, amount: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
-      item3: { productId: '3', image: item1Image, amount: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+   const items: Record<string, IItemShortInfo> = {
+      item1: { productId: '1', imagePath: item1Image, stockQuantity: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+      item2: { productId: '2', imagePath: item2Image, stockQuantity: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
+      item3: { productId: '3', imagePath: item1Image, stockQuantity: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
    };
 
    const getUserFavorites = async () => {
@@ -70,7 +53,7 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
          try {
             response = await fetchUserFavorites(token);
 
-            const favorites = response.favorites.map((item: FavoriteItem) => item.productId);
+            const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
             setUserFavorites(favorites);
             setMessage('');
          }
@@ -120,10 +103,10 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
                      {Object.entries(items).map(([key, item]) => (
                         <li onClick={ () => handleItemClick(item.productId) } key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
                            <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} />
-                           <img src={item.image} className="sales-and-recommendation__item__img" alt={item.name}/>
+                           <img src={item.imagePath} className="sales-and-recommendation__item__img" alt={item.name}/>
                            <div className="sales-and-recommendation__item__left">
-                              {item.amount !== 0 ?
-                                 <p className="sales-and-recommendation__item__amount">В наличии {item.amount}</p>
+                              {item.stockQuantity !== 0 ?
+                                 <p className="sales-and-recommendation__item__amount">В наличии {item.stockQuantity}</p>
                                  : <p className="sales-and-recommendation__item__amount item--outofstock">Появится завтра</p>
                               }
                               <p className="sales-and-recommendation__item__title">{item.name}</p>
@@ -134,7 +117,7 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
                               }
                            </div>
                            <div className="sales-and-recommendation__item__right">
-                              <ItemQuantityButton itemId={item.productId} storageQuantity={item.amount} currCart={cartItems}/>
+                              <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems}/>
                            </div>
                         </li>
                      ))}

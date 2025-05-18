@@ -1,23 +1,14 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { fetchUserFavorites } from '../../../services/userService';
-import FavoriteButton from '../../UI/FavoriteButton/FavoriteButton';
 import { useMessage } from '../../../context/MessageContext';
-import ItemQuantityButton from '../../UI/ItemQuantityButton/ItemQuantityButton';
 import { CartContext } from '../../../context/CartContext';
 import { AuthContext } from '../../../context/AuthContext';
-
-interface IItems {
-   productId: string;
-   name: string;
-   price: number;
-   stockQuantity: number;
-   weight: string;
-   newPrice?: number;
-   imagePath: string;
-};
+import FavoriteButton from '../../UI/FavoriteButton/FavoriteButton';
+import ItemQuantityButton from '../../UI/ItemQuantityButton/ItemQuantityButton';
+import { fetchUserFavorites } from '../../../services/userService';
+import { IFavoriteItem } from '../../../types/cart.types';
 
 const Favorites: FC = () => {
-   const [userFavoritesInfo, setUserFavoritesInfo] = useState<IItems[]>([]);
+   const [userFavoritesInfo, setUserFavoritesInfo] = useState<IFavoriteItem[]>([]);
    const [isLoading, setIsLoading] = useState<boolean>(false);
 
    const authContext = useContext(AuthContext);

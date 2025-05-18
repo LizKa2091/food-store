@@ -1,6 +1,6 @@
-import React, { ChangeEvent, MouseEvent, FC, FormEvent, ReactNode, useEffect, useState } from 'react';
+import React, { ChangeEvent, MouseEvent, FC, ReactNode, useEffect, useState } from 'react';
 import { useMessage } from '../../../context/MessageContext';
-import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
+import { fetchBonusCard, fetchUserInfo } from '../../../services/userService';
 import { IUserBonuses, IUserInfo } from '../../../types/userData.types';
 import './CartStep2.scss';
 
@@ -12,8 +12,6 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
    const [userBonusCard, setUserBonusCard] = useState<IUserBonuses>({ bonuses: '', cardNumber: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
-   const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
-   const [isDirty, setIsDirty] = useState<boolean>(false);
    const [isChangingName, setIsChangingName] = useState<boolean>(false);
    const [isChangingPhone, setIsChangingPhone] = useState<boolean>(false);
 
@@ -73,7 +71,6 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
          ...prev,
          nameSurname: e.target.value
       }));
-      setIsDirty(true);
 
       const nameRegex = /^[A-ZА-Я][a-zа-яё]+ [A-ZА-Я][a-zа-яё]+$/;
 
@@ -92,7 +89,6 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
          ...prev,
          phoneNumber: e.target.value,
       }));
-      setIsDirty(true);
    };
 
    const saveNewUsername = (e: MouseEvent<HTMLButtonElement>) => {

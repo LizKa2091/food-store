@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Wrapper from '../../components/layout/Wrapper';
-import Header from '../../components/layout/Header';
+import Header from '../../components/layout/header/Header';
 import UserProfileInfo from '../../components/layout/userProfile/UserProfileInfo';
 import Footer from '../../components/layout/Footer';
 import './ProfilePage.scss';
