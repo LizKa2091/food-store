@@ -1,61 +1,64 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
+import { useCategory } from '../../context/CategoryContext';
+import { CartContext } from '../../context/CartContext';
+import { AuthContext } from '../../context/AuthContext';
+import { useMessage } from '../../context/MessageContext';
+import { getCatalogProducts, searchProductByKeyword } from '../../services/productService';
+import { fetchUserFavorites } from '../../services/userService';
+import FavoriteButton from '../../components/UI/FavoriteButton/FavoriteButton';
+import ItemQuantityButton from '../../components/UI/ItemQuantityButton/ItemQuantityButton';
 import Wrapper from '../../components/layout/Wrapper';
-import Header from '../../components/layout/Header';
+import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/Footer';
 import SalesAndRecommendation from '../../components/UI/SalesAndRecommendation/SalesAndRecommendation';
-import { useCategory } from '../../context/CategoryContext';
-import { getCatalogProducts } from '../../services/productService';
+import { IFavoriteItem } from '../../types/cart.types';
+import { IItemShortInfo, ISubCategory } from '../../types/products.types';
 import './CatalogPage.scss';
-
-import bakeryImg1 from '../../images/webpImages/catalogItems/catalog-item-1.webp';
-import bakeryImg2 from '../../images/webpImages/catalogItems/catalog-item-2.webp';
-import bakeryImg3 from '../../images/webpImages/catalogItems/catalog-item-3.webp';
-import bakeryImg4 from '../../images/webpImages/catalogItems/catalog-item-4.webp';
-import bakeryImg5 from '../../images/webpImages/catalogItems/catalog-item-5.webp';
-import bakeryImg6 from '../../images/webpImages/catalogItems/catalog-item-6.webp';
-import FavoriteButton from '../../components/UI/FavoriteButton/FavoriteButton';
-
-const images = {
-   bakeryImg1,
-   bakeryImg2,
-   bakeryImg3,
-   bakeryImg4,
-   bakeryImg5,
-   bakeryImg6,
-};
+import { useParams } from 'react-router-dom';
 
 type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое';
 
-interface ISubCategory {
-   name: string;
-   extra?: string;
-   filters: string[];
-};
-
 type productResponse = {
-   products: responseItem[];
+   products: IItemShortInfo[];
 };
-
-type ImageKeys = keyof typeof images;
-
-type responseItem = {
-   productId: string;
-   name: string;
-   price: number;
-   stockQuantity: number;
-   weight: string;
-   newPrice?: number;
-   imagePath: ImageKeys;
-   filterCategory: string;
-}
 
 const CatalogPage: FC = () => {
    const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
    const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
    const [currProducts, setCurrProducts] = useState<productResponse | undefined>(undefined);
-   const [filtersResult, setFiltersResult] = useState<responseItem[]>([]);
-   const [displayProductsList, setDisplayProductsList] = useState<responseItem[] | undefined>(undefined);
+   const [filtersResult, setFiltersResult] = useState<IItemShortInfo[]>([]);
+   const [displayProductsList, setDisplayProductsList] = useState<IItemShortInfo[] | undefined>(undefined);
+   const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
+   const [keyWord, setKeyWord] = useState<string>('');
+
+   const params = useParams();
+
    const { selectedCategory, setSelectedCategory  } = useCategory();
+
+   const authContext = useContext(AuthContext);
+
+   const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
+   const { initCart, cartItems } = cartContext;
+
+   const { setMessage } = useMessage();
+
+   useEffect(() => {
+      if (params?.keyword) setKeyWord(params.keyword);
+   }, [params])
+
+   useEffect(() => {
+      getUserFavorites();
+   }, [isModalOpened]);
+
+   useEffect(() => {
+      if (authContext?.isAuthed) initCartState();
+   }, [authContext]);
+
+   useEffect(() => {
+      if (keyWord) {
+         getResultsByKeyword(keyWord);
+      }
+   }, [keyWord]);
 
    useEffect(() => {
       const getProducts = async () => {
@@ -63,7 +66,9 @@ const CatalogPage: FC = () => {
             let result = await getCatalogProducts(selectedCategory);
             
             if (result.message) {
-               console.error(result.message)
+               setDisplayProductsList([]);
+               console.error(result.message);
+               setMessage(result.message);
             }
             else setCurrProducts(result);
          }   
@@ -74,24 +79,82 @@ const CatalogPage: FC = () => {
 
    useEffect(() => {
       if (selectedFilters && currProducts) {
-         setFiltersResult(currProducts.products.filter((product: responseItem) => selectedFilters.includes(product.filterCategory)))
+         setFiltersResult(currProducts.products.filter((product: IItemShortInfo) => product.filterCategory && selectedFilters.includes(product.filterCategory)))
       }
    }, [selectedFilters, currProducts]);
 
    useEffect(() => {
       if (selectedFilters.length > 0) setDisplayProductsList(filtersResult)
       else if (currProducts) setDisplayProductsList(currProducts.products);
-   }, [selectedFilters, currProducts, filtersResult] )
+   }, [selectedFilters, currProducts, filtersResult])
+
+   const getResultsByKeyword = async (key: string) => {
+      try {
+         const result = await searchProductByKeyword(key);
+         
+         if (result.message) {
+            setMessage(result.message);
+            setDisplayProductsList([]);
+         }
+         else if (result && 'error' in result) {
+           console.error(result.error);
+           setMessage(result.message || result.error);
+           setDisplayProductsList([]);
+           return;
+         }
+
+         setDisplayProductsList(result.products);
+      } 
+      catch (error) {
+         console.error(error);
+      }
+   };
+
+   const initCartState = async () => {
+      const token = localStorage.getItem('token');
+      try {
+         if (!token) throw new Error('ошибка, пользователь не авторизован');
+
+         const result = await initCart(token);
+         
+         if (result && 'error' in result) {
+           console.error(result.error);
+           return;
+         }
+      } 
+      catch (error) {
+         console.error(error);
+      }
+   };
+
+   const getUserFavorites = async () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+         let response;
+         try {
+            response = await fetchUserFavorites(token);
+
+            const favorites = response.favorites.map((item: IFavoriteItem) => item.productId);
+            setUserFavorites(favorites);
+            setMessage('');
+         }
+         catch(e) {
+            setMessage(response?.message);
+         }
+      }
+   };
 
    const handleCategorySelect = (category: string) => {
       setSelectedCategory(category);
+      setKeyWord('');
    };
 
    const handleFilterClick = (filter: string) => {
       setSelectedFilters((prev) => {
          if (prev.includes(filter)) return prev.filter((filterItem) => filterItem !== filter)
          return [...prev, filter];
-      })
+      });
    };
 
    const clearFilters = () => {
@@ -149,7 +212,7 @@ const CatalogPage: FC = () => {
                   <ul className="catalog-section__list catalog-section__list--categories">
                      {Object.keys(subCategories).map((category: string) => (
                         subCategories[category as CategoryType].filter((item: ISubCategory) => item.name === selectedCategory).map((item) => (
-                           item.filters.map((filterItem) => (
+                           item.filters && !keyWord && item.filters.map((filterItem) => (
                               <li key={filterItem} className="catalog-section__item catalog-section__item--category">      
                                  <button onClick={() => handleFilterClick(filterItem)} className={'catalog-section__item-button' + (selectedFilters.includes(filterItem) ? ' catalog-section__item-button--selected' : '')}>{filterItem}</button>
                               </li>
@@ -157,31 +220,36 @@ const CatalogPage: FC = () => {
                         ))
                      ))}
                      <li key={999} className='catalog-section__item catalog-section__item--clear'>
-                        <button onClick={clearFilters} className='catalog-section__item-button--clear'>Очистить фильтры</button>
+                        {!keyWord && <button onClick={clearFilters} className='catalog-section__item-button--clear'>Очистить фильтры</button>}
                      </li>
                   </ul>
                </div>
                <div className="catalog-section__products">
+                  {keyWord && <p>Результаты по поиску: {keyWord}</p>}
                   <ul className="catalog-section__list catalog-section__list--products">
-                     {displayProductsList?.map((product: responseItem) => (
-                        <li key={product.productId} className="catalog-section__item catalog-section__item--product">
-                           <FavoriteButton productId={product.productId} initialFavState={false} />
-                           <img src={images[product.imagePath]} alt={product.name} className="catalog-section__item-img" />
-                           <div className="catalog-section__item-container">
-                              <p className="catalog-section__item-quantity">В наличии {product.stockQuantity}</p>
-                              <p className="catalog-section__item-name">{product.name}</p>
-                              <div className="catalog-section__item-bottom">
-                                 <div className="catalog-section__item-prices">
-                                    <p className={"catalog-section__item-new-price" + (product.newPrice ? ' catalog-section__item-new-price-red' : '')}>{product.price} руб</p>
-                                    {product.newPrice &&
-                                       <p className="catalog-section__item-old-price">{product.price} руб</p>
-                                    }
+                     {displayProductsList?.length === 0 ? (
+                        <p>Продукты не найдены. Попробуйте выбрать другую категорию или ввести другое слово для поиска</p>
+                     ) : (
+                        displayProductsList?.map((product: IItemShortInfo) => (
+                           <li key={product.productId} className="catalog-section__item catalog-section__item--product">
+                              <FavoriteButton productId={product.productId} initialFavState={userFavorites ? userFavorites.includes(product.productId) : false} />
+                              <img src={product.imagePath} alt={product.name} className="catalog-section__item-img" />
+                              <div className="catalog-section__item-container">
+                                 <p className="catalog-section__item-quantity">В наличии {product.stockQuantity}</p>
+                                 <p className="catalog-section__item-name">{product.name}</p>
+                                 <div className="catalog-section__item-bottom">
+                                    <div className="catalog-section__item-prices">
+                                       <p className={"catalog-section__item-new-price" + (product.newPrice ? ' catalog-section__item-new-price-red' : '')}>{product.price} руб</p>
+                                       {product.newPrice &&
+                                          <p className="catalog-section__item-old-price">{product.price} руб</p>
+                                       }
+                                    </div>
+                                    <ItemQuantityButton itemId={product.productId} storageQuantity={product.stockQuantity} currCart={cartItems}/>
                                  </div>
-                                 <button className='catalog-section__item-button catalog-section__item-button--buy'>{product.stockQuantity > 0 ? 'В корзину' : 'На завтра'}</button>
                               </div>
-                           </div>
-                        </li> 
-                     ))}
+                           </li> 
+                        ))
+                     )}
                   </ul>
                </div>
             </section>
