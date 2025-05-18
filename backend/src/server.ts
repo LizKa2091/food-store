@@ -370,6 +370,31 @@ const initializeFavoriteItems = (phoneNumber: string) => {
     }
 };
 
+app.post('/search-products', async (req: Request, res: Response): Promise<any> => {
+   const { searchTerm } = req.body; // Предполагаем, что вы передаете поисковый запрос в теле запроса
+   // Проверка на наличие поискового слова
+   if (!searchTerm) {
+       return res.status(400).json({ message: 'Поисковое слово не указано.' });
+   }
+   const filePath = path.join(__dirname, 'data', 'catalogItems.json');
+   try {
+       const data = await fs.promises.readFile(filePath, 'utf8');
+       const catalogItems = JSON.parse(data);
+       // Фильтрация товаров по имени или категории
+       const filteredProducts = catalogItems.filter((item: any) =>
+           item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+           item.category.toLowerCase().includes(searchTerm.toLowerCase())
+       );
+       if (filteredProducts.length === 0) {
+           return res.status(404).json({ message: 'Товары не найдены.' });
+       }
+       res.status(200).json({ products: filteredProducts });
+   } catch (error) {
+       console.error('Ошибка при чтении файла с товарами каталога:', error);
+       res.status(500).json({ message: 'Ошибка при чтении файла с товарами каталога.' });
+   }
+});
+
 // Получение любимых товаров пользователя
 app.get('/favorites', async (req: Request, res: Response): Promise<any> => {
     const token = req.headers['authorization'];

@@ -100,6 +100,32 @@ const getCatalogProducts = async (category: string) => {
         const errorData = await response?.json();
         return errorData || 'Неизвестная ошибка'
    }
+};
+
+const searchProductByKeyword = async (keyword: string) => {
+   let response;
+
+   try {
+      response = await fetch(`${baseUrl}/search-products`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ searchTerm: keyword })
+      });
+
+      if (!response.ok) {
+         const errorData = await response.json();
+         return errorData || 'Неизвестная ошибка';
+      }
+
+      let result = await response.json();
+      return result;
+   }
+   catch (e) {
+      const errorData = await response?.json();
+      return errorData || 'Неизвестная ошибка'
+  }
 }
 
-export { addToFavorites, removeFromFavorites, getProduct, getCatalogProducts };
+export { addToFavorites, removeFromFavorites, getProduct, getCatalogProducts, searchProductByKeyword };
