@@ -26,6 +26,7 @@ function App() {
                   <Routes>
                      <Route path='/' element={<MainPage />} />
                      <Route path='/catalog' element={<CatalogPage />} />
+                     <Route path='/catalog/:keyword' element={<CatalogPage />} />
                      <Route path='/profile' element={<ProtectedProfile />} />
                      <Route path='/profile/:section' element={<ProtectedProfile />} />
                      <Route path='/sales' element={<SalesPage />} />

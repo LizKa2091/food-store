@@ -121,6 +121,12 @@ $catalog-item-buy: #FF0000;
             gap: 25px;
          }
       }
+      &__products {
+         display: flex;
+         justify-content: center;
+         flex-direction: column;
+         gap: 20px;
+      }
       &__item {
          list-style-type: none;
          position: relative;
