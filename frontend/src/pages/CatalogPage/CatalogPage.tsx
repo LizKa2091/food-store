@@ -174,7 +174,7 @@ const CatalogPage: FC = () => {
    
    return (
       <Wrapper modalState={isModalOpened}>
-         <Header />
+         <Header modalState={isModalOpened} onModalChange={handleModalChange} />
          <h2 className='catalog-title'>{selectedCategory}</h2>
          <div className="catalog">
             <aside className="catalog-aside">

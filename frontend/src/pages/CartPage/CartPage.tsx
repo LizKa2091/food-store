@@ -38,7 +38,7 @@ const CartPage: FC = () => {
 
    return (
       <Wrapper>
-         <Header />
+         <Header modalState={isModalOpened} onModalChange={handleModalChange} />
          {renderCartStep()}
          <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Рекомендации для вас' />
          <Footer />

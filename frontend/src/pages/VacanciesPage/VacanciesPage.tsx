@@ -25,6 +25,11 @@ const VacanciesPage: FC = () => {
    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
    const [formData, setFormData] = useState<IFormData>({fio: '', tel: '', date: '', country: ''});
    const [error, setError] = useState<string>('');
+   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+   const handleModalChange = (modalState: boolean) => {
+      setIsModalOpened(modalState);
+   };
 
    useEffect(() => {
       const fetchItems = async () => {
@@ -72,7 +77,7 @@ const VacanciesPage: FC = () => {
 
    return (
       <Wrapper modalState={Boolean(selectedItem)}>
-         <Header />
+         <Header modalState={isModalOpened} onModalChange={handleModalChange} />
          <main className='vacancies'>
             <h2 className="vacancies__title">Вакансии</h2>
             <div className="vacancies__inner">
