@@ -8,6 +8,9 @@ $modal-delivery-input-border: #E1E1E1;
 
 $close-button-color: #AAAAAA;
 $close-button-bg: #F2F3F5;
+$submit-button-color: #fff;
+$submit-button-bg: #FF0000;
+$submit-button-border: #FF0000;
 
 .modal-delivery {
    &-container {
@@ -27,7 +30,9 @@ $close-button-bg: #F2F3F5;
       z-index: 3;
    }
    &__form {
+      padding: 33px;
       width: 40%;
+
       &-label {
          font-size: 1.25rem;
          font-weight: 700;
@@ -50,11 +55,21 @@ $close-button-bg: #F2F3F5;
          font-size: 1rem;
          height: 64px;
       }
+      &-submit {
+         border: 1px solid $submit-button-border;
+         border-radius: 16px;
+         background-color: $submit-button-bg;
+         font-weight: 700;
+         height: 48px;
+         padding: 5px 10px;
+         color: $submit-button-color;
+         margin-top: 25px;
+         cursor: pointer;
+      }
    }
    &--left {
       display: flex;
       flex-direction: column;
-      padding: 33px;
    }
    &-row {
       display: flex;
