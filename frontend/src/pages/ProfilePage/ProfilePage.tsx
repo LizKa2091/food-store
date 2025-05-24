@@ -17,7 +17,7 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
   };
 
   return (
-    <Wrapper modalState={false}>
+    <Wrapper modalState={isModalOpened}>
       <Header modalState={isModalOpened} onModalChange={handleModalChange} />
       <h2 className='title'>Личный кабинет</h2>
       <UserProfileInfo section={section}/>

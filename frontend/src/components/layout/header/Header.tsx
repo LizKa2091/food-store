@@ -110,7 +110,7 @@ const Header: FC<IHeaderProps> = ({ modalState, onModalChange }) => {
             </nav>
          </header>
          {modalState &&
-            <ModalDeliveryMethod />
+            <ModalDeliveryMethod onModalChange={onModalChange} />
          }
       </>
    );

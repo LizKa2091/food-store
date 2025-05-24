@@ -11,7 +11,7 @@ const ContactsPage: FC = () => {
     setIsModalOpened(modalState);
    };
    return (
-      <Wrapper>
+      <Wrapper modalState={isModalOpened}>
          <Header modalState={isModalOpened} onModalChange={handleModalChange}/>
          <div className="contacts">
             <div className="contacts__top">
