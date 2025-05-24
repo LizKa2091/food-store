@@ -1,0 +1,109 @@
+$modal-delivery-bg: #FFFFFF;
+$modal-delivery-button-border: #FFA90073;
+$modal-delivery-button-bg: #FFF8EB;
+$modal-delivery-button-border-hover: #FFA900;
+$modal-delivery-button-bg-hover: #FFA900;
+$modal-delivery-button-text-hover: #fff;
+$modal-delivery-input-border: #E1E1E1;
+
+$close-button-color: #AAAAAA;
+$close-button-bg: #F2F3F5;
+
+.modal-delivery {
+   &-container {
+      display: flex;
+      background-color: $modal-delivery-bg;
+      border: 1px solid $modal-delivery-bg;
+      border-radius: 20px;
+      width: 75dvw;
+      height: 60dvh;
+      min-height: 400px;
+      max-width: 1290px;
+      max-height: 805px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+   }
+   &__form {
+      width: 40%;
+      &-label {
+         font-size: 1.25rem;
+         font-weight: 700;
+         margin: 24px 0 13px 0;
+      }
+      &-input {
+         border: 1px solid $modal-delivery-input-border;
+         border-radius: 16px;
+         font-size: 1rem;
+         height: 48px;
+         padding: 12px 15px;
+
+         &--date {
+            height: 64px;
+         }
+      }
+      &-select {
+         border: 1px solid $modal-delivery-input-border;
+         border-radius: 16px;
+         font-size: 1rem;
+         height: 64px;
+      }
+   }
+   &--left {
+      display: flex;
+      flex-direction: column;
+      padding: 33px;
+   }
+   &-row {
+      display: flex;
+      gap: 15px;
+   }
+   &__button {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid $modal-delivery-button-border;
+      border-radius: 16px;
+      background-color: $modal-delivery-button-bg;
+      font-size: 0.875rem;
+      font-weight: 700;
+      width: 100%;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+
+      &-title {
+         font-size: 1.25rem;
+      }
+      &.active {
+         border-color: $modal-delivery-button-border-hover;
+         background-color: $modal-delivery-button-bg-hover;
+         color: $modal-delivery-button-text-hover;
+      }
+      &:hover {
+         border-color: $modal-delivery-button-border-hover;
+         background-color: $modal-delivery-button-bg-hover;
+         color: $modal-delivery-button-text-hover;
+      }
+   }
+   &__iframe {
+      border-color: #fff;
+      border-radius: 0 20px 20px 0;
+      border-left: 0;
+      border-top: 0;
+      width: 60%;
+   }
+   &__close {
+      border-color: $close-button-bg;
+      border-radius: 50%;
+      background-color: $close-button-bg;
+      color: $close-button-color;
+      width: 38px;
+      height: 38px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+   }
+}
