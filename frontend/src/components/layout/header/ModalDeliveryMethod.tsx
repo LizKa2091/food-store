@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent, useEffect, FormEvent, ChangeEvent } from 'react';
+import React, { FC, useState, MouseEvent, FormEvent, ChangeEvent } from 'react';
 import './ModalDeliveryMethod.scss';
 
 interface IModalDeliveryMethod {
@@ -17,6 +17,7 @@ const ModalDeliveryMethod: FC<IModalDeliveryMethod> = ({ onModalChange }) => {
       e.preventDefault();
 
       localStorage.setItem('deliveryInfo', JSON.stringify({ address, deliveryDate, deliveryTime }));
+      onModalChange(false);
    };
 
    return (
