@@ -3,7 +3,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
 import { CartContext } from '../../../context/CartContext';
 import { checkCoupon } from '../../../services/cartService';
-import { ICartItem } from '../../../types/cart.types';
+import { ICartItem, IDeliveryData } from '../../../types/cart.types';
 import CartLate from './CartLate';
 import { getMoscowTime, calculateDeliveryTime } from '../../../utils/utils';
 import './CartPanel.scss';
@@ -12,12 +12,6 @@ interface ICartPanelProps {
    step: number;
    handleStepChange: (step: number) => void;
 };
-
-interface IDeliveryData {
-   address: string;
-   deliveryDate: string;
-   deliveryTime: 'for 25 mins' | 'for 2 hours';
-}
 
 const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
