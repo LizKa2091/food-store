@@ -19,3 +19,9 @@ export interface IFavoriteItem {
    newPrice?: number;
    imagePath?: string;
 };
+
+export interface IDeliveryData {
+   address: string;
+   deliveryDate: string;
+   deliveryTime: 'for 25 mins' | 'for 2 hours';
+};

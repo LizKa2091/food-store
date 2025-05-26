@@ -20,17 +20,17 @@ const MainPage: FC = () => {
   };
 
   return (
-    <Wrapper modalState={ isModalOpened }>
-        <Header />
-        <Promo />
-        <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Скидки'/>
-        {categoriesList.map((category) => (
-            <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
-        ))}
-         <Delivery />
-        <DeliveryBanner />
-        <RateBanner />
-        <Footer />
+    <Wrapper modalState={isModalOpened}>
+      <Header modalState={isModalOpened} onModalChange={handleModalChange} />
+      <Promo />
+      <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Скидки'/>
+      {categoriesList.map((category) => (
+          <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
+      ))}
+      <Delivery />
+      <DeliveryBanner />
+      <RateBanner />
+      <Footer />
     </Wrapper>
   )
 };

@@ -3,6 +3,7 @@ import { useMessage } from '../../../context/MessageContext';
 import { fetchBonusCard, fetchUserInfo } from '../../../services/userService';
 import { IUserBonuses, IUserInfo } from '../../../types/userData.types';
 import './CartStep2.scss';
+import { IDeliveryData } from '../../../types/cart.types';
 
 interface ICartStep2Props {
    children: ReactNode;
@@ -14,13 +15,24 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isChangingName, setIsChangingName] = useState<boolean>(false);
    const [isChangingPhone, setIsChangingPhone] = useState<boolean>(false);
+   const [address, setAddress] = useState<string>('');
 
    const { setMessage } = useMessage();
 
    useEffect(() => {
       loadUserInfo();
       loadUserCard();
+      getUserAddress();
    }, []);
+
+   const getUserAddress = () => {
+      let deliveryDataJson = localStorage.getItem('deliveryInfo');
+      if (deliveryDataJson) {
+         let deliveryData: IDeliveryData = JSON.parse(deliveryDataJson);
+
+         setAddress(deliveryData.address);
+      }
+   }
 
    const loadUserInfo = async () => {
       const token = localStorage.getItem('token');
@@ -162,7 +174,7 @@ const CartStep2: FC<ICartStep2Props> = ({ children }) => {
                   <div className="main__details-row">
                      <h3 className="main__subtitle">Детали адреса</h3>
                   </div>
-                  <p className="main__details-address">ул. Новая,Ильинское-Усово, городской округ Красногорск</p>
+                  <p className="main__details-address">{address}</p>
                   <div className="main__details-form-els">
                      <div className="main__form-details-row">
                         <input type="number" name="room" id="room" className='main__details-input' placeholder='Квартира' required/>

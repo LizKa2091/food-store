@@ -3,8 +3,9 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
 import { CartContext } from '../../../context/CartContext';
 import { checkCoupon } from '../../../services/cartService';
-import { ICartItem } from '../../../types/cart.types';
+import { ICartItem, IDeliveryData } from '../../../types/cart.types';
 import CartLate from './CartLate';
+import { getMoscowTime, calculateDeliveryTime } from '../../../utils/utils';
 import './CartPanel.scss';
 
 interface ICartPanelProps {
@@ -14,7 +15,9 @@ interface ICartPanelProps {
 
 const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
-   const [deliveryTime, setDeliveryTime] = useState<string>('18:11');
+   const [deliveryTime, setDeliveryTime] = useState<string>(calculateDeliveryTime(getMoscowTime(), 'for 25 mins'));
+   const [deliveryTimeType, setDeliveryTimeType] = useState<'for 25 mins' | 'for 2 hours'>('for 25 mins');
+   const [address, setAddress] = useState<string>('');
    const [isChangingDeliTime, setIsChangingDeliTime] = useState<boolean>(false);
    const [couponInput, setCouponInput] = useState<string>('');
    const [itemsDiscount, setItemsDiscount] = useState<number>(0);
@@ -27,6 +30,18 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    const [totalPrice, setTotalPrice] = useState<number>(0);
 
    const { setMessage } = useMessage();
+
+   useEffect(() => {
+      let deliveryDataJson = localStorage.getItem('deliveryInfo');
+      if (deliveryDataJson) {
+        let deliveryData: IDeliveryData = JSON.parse(deliveryDataJson);
+
+        setDeliveryTimeType(deliveryData.deliveryTime);
+        setDeliveryTime(calculateDeliveryTime(getMoscowTime(), deliveryData.deliveryTime));
+
+        setAddress(deliveryData.address);
+      }
+   }, []);
 
    useEffect(() => {
       setCurrTime(getMoscowTime);
@@ -55,17 +70,6 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
          setWeightCount(0);
       }
    }, [cartItems, promoDiscount, bonusDiscount, itemsDiscount]);
-
-   const getMoscowTime = () => {
-      const options: Intl.DateTimeFormatOptions = {
-         timeZone: 'Europe/Moscow',
-         hour: '2-digit',
-         minute: '2-digit',
-         hour12: false
-      };
-      const moscowTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
-      return moscowTime;
-   };
    
    const validateCoupon = async (coupon: string): Promise<void> => {
       if (coupon.trim().length === 0) return;
@@ -103,14 +107,27 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
    };
 
    const handleDeliTime = () => {
-      const [hours, minutes] = deliveryTime.split(':').map(Number);
-      if (hours < 7) {
-         setMessage('Вы не можете выбрать время доставки между 00:00 и 07:00');
-         setDeliveryTime('18:11');
-         return;
+      if (deliveryTimeType === 'for 25 mins') {
+         const [hours] = (currTime || getMoscowTime()).split(':').map(Number);
+
+         if (hours < 7 || hours >= 23) {
+           setMessage('Быстрая доставка недоступна с 23:00 до 07:00');
+           return;
+         }
       }
+
+      const newDeliveryTime = calculateDeliveryTime(currTime || getMoscowTime(), deliveryTimeType);
+      setDeliveryTime(newDeliveryTime);
       setIsChangingDeliTime(false);
       setMessage('Время доставки обновлено');
+      
+      const deliveryData = {
+         address: address,
+         deliveryDate: new Date().toISOString().split('T')[0],
+         deliveryTime: deliveryTimeType
+      };
+
+      localStorage.setItem('deliveryInfo', JSON.stringify(deliveryData));
    };
 
    if (!authContext?.isAuthed) {
@@ -125,7 +142,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
             <div className="main__panel-row">
                {step === 1 && !isChangingDeliTime &&
                   <>
-                     <p className="main__panel-title">Доставка сегодня, {deliveryTime}</p>
+                     <p className="main__panel-title">Доставка сегодня, {deliveryTime} ({deliveryTimeType === 'for 25 mins' ? 'быстрая' : 'стандартная'})</p>
                      <button onClick={() => setIsChangingDeliTime(true)} className="main__panel-button">Изменить</button>
                   </>
                }
@@ -133,10 +150,10 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
                   <div className='main__panel-container'>
                      <label htmlFor='deli-time' className='main__panel-label'>Укажите новое время доставки</label>
                      <div className="main__panel-container-row">
-                        <input type="time" name="deli-time" 
-                           value={deliveryTime} onChange={(e: ChangeEvent<HTMLInputElement>) => setDeliveryTime(e.target.value)} 
-                           id="deli-time" className='main__panel-input--delivery'
-                        />
+                        <select value={deliveryTimeType} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDeliveryTimeType(e.target.value as 'for 25 mins' | 'for 2 hours')} className='main__panel-select'>
+                           <option value="for 25 mins">Быстрая доставка (25 мин)</option>
+                           <option value="for 2 hours">Стандартная доставка (2 часа)</option>
+                        </select>
                         <button onClick={handleDeliTime} type='button' className="main__panel-button">Сохранить</button>
                      </div>
                   </div>
@@ -145,7 +162,7 @@ const CartPanel: FC<ICartPanelProps> = ({ step, handleStepChange }) => {
                   <CartLate step={2} />
                }
             </div>
-            <p className="main__panel-info">ул. Новая, д. 13, посёлок Ильинское-Усово, городской округ Красногорск</p>
+            <p className="main__panel-info">{address}</p>
             {step === 1 &&
                <>
                   <div className="main__panel-input-container">

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Wrapper from '../../components/layout/Wrapper';
 import Header from '../../components/layout/header/Header';
 import UserProfileInfo from '../../components/layout/userProfile/UserProfileInfo';
@@ -10,12 +10,18 @@ interface IProfilePageProps {
 };
 
 const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+  const handleModalChange = (modalState: boolean) => {
+    setIsModalOpened(modalState);
+  };
+
   return (
-    <Wrapper modalState={false}>
-        <Header />
-        <h2 className='title'>Личный кабинет</h2>
-        <UserProfileInfo section={section}/>
-        <Footer />
+    <Wrapper modalState={isModalOpened}>
+      <Header modalState={isModalOpened} onModalChange={handleModalChange} />
+      <h2 className='title'>Личный кабинет</h2>
+      <UserProfileInfo section={section}/>
+      <Footer />
     </Wrapper>
   )
 };

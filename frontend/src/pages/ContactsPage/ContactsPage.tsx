@@ -1,13 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './ContactsPage.scss';
 import Header from '../../components/layout/header/Header';
 import Wrapper from '../../components/layout/Wrapper';
 import Footer from '../../components/layout/Footer';
 
 const ContactsPage: FC = () => {
+   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+   const handleModalChange = (modalState: boolean) => {
+    setIsModalOpened(modalState);
+   };
    return (
-      <Wrapper>
-         <Header />
+      <Wrapper modalState={isModalOpened}>
+         <Header modalState={isModalOpened} onModalChange={handleModalChange}/>
          <div className="contacts">
             <div className="contacts__top">
                <div className="contacts__left">
