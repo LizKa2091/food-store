@@ -4,17 +4,17 @@ import { AuthProvider } from './context/AuthContext';
 import { MessageProvider } from './context/MessageContext';
 import MainPage from './pages/MainPage';
 import CatalogPage from './pages/CatalogPage/CatalogPage';
-import ProtectedProfile from './pages/protectedPages/ProtectedProfile';
 import Loading from './pages/Loading';
-import SalesPage from './pages/SalesPage';
-import VacanciesPage from './pages/VacanciesPage/VacanciesPage';
-import ContactsPage from './pages/ContactsPage/ContactsPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { CategoryProvider } from './context/CategoryContext';
-import './App.scss';
-import CartPage from './pages/CartPage/CartPage';
 import { CartProvider } from './context/CartContext';
+import './App.scss';
 
-const ErrorPage = lazy(() => import('./pages/ErrorPage/ErrorPage'));
+const ProtectedProfile = lazy(() => import('./pages/protectedPages/ProtectedProfile'));
+const SalesPage = lazy(() => import('./pages/SalesPage'));
+const VacanciesPage = lazy(() => import('./pages/VacanciesPage/VacanciesPage'));
+const ContactsPage = lazy(() => import('./pages/ContactsPage/ContactsPage'));
+const CartPage = lazy(() => import('./pages/CartPage/CartPage'));
 
 function App() {
   return (
@@ -24,22 +24,45 @@ function App() {
             <CartProvider>
                <BrowserRouter>
                   <Routes>
-                     <Route path='/' element={<MainPage />} />
+                  <Route path='/' element={<MainPage />} />
                      <Route path='/catalog' element={<CatalogPage />} />
                      <Route path='/catalog/:keyword' element={<CatalogPage />} />
-                     <Route path='/profile' element={<ProtectedProfile />} />
-                     <Route path='/profile/:section' element={<ProtectedProfile />} />
-                     <Route path='/sales' element={<SalesPage />} />
-                     <Route path='/vacancies' element={<VacanciesPage />} />
-                     <Route path='/contacts' element={<ContactsPage />} />
-                     <Route path='/cart' element={<CartPage />} />
-                     <Route path='*' 
-                        element={ 
+                     <Route path='/profile/*' 
+                        element={
                            <Suspense fallback={<Loading />}>
-                              <ErrorPage />
-                           </Suspense> 
+                              <ProtectedProfile />
+                           </Suspense>
                         }
                      />
+                     <Route path='/sales' 
+                        element={
+                           <Suspense fallback={<Loading />}>
+                              <SalesPage />
+                           </Suspense>
+                        }
+                     />
+                     <Route path='/vacancies' 
+                        element={
+                           <Suspense fallback={<Loading />}>
+                              <VacanciesPage />
+                           </Suspense>
+                        }
+                     />
+                     <Route path='/contacts' 
+                        element={
+                           <Suspense fallback={<Loading />}>
+                              <ContactsPage />
+                           </Suspense>
+                        } 
+                     />
+                     <Route path='/cart' 
+                        element={
+                           <Suspense fallback={<Loading />}>
+                              <CartPage />
+                           </Suspense>
+                        }
+                     />
+                     <Route path='*' element={<ErrorPage />} />
                   </Routes>
                </BrowserRouter>
             </CartProvider>
