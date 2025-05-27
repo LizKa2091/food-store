@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, FC } from "react";
 import { useMessage } from "../../../context/MessageContext";
 import { CartContext } from "../../../context/CartContext";
 import { AuthContext } from "../../../context/AuthContext";
 import { fetchUserFavorites } from "../../../services/userService";
+import { useModal } from "../../../context/ModalContext";
 import ItemCard from "../ItemCard/ItemCard";
 import FavoriteButton from "../FavoriteButton/FavoriteButton";
 import ItemQuantityButton from "../ItemQuantityButton/ItemQuantityButton";
@@ -16,13 +17,10 @@ type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
 interface ICategoryProps {
    type: CategoryType;
-   modalState: boolean;
-   onModalChange?: (modalState: boolean) => void;
 };
 
-const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryProps) => {
+const SalesAndRecommendation: FC<ICategoryProps> = ({ type }) => {
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
-   const [isItemClicked, setIsItemClicked] = useState<boolean>(false);
    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
    const cartContext = useContext(CartContext) || { cartItems: [], addItem: async () => {}, updateItem: async () => {}, removeItem: async () => {}, initCart: async () => {} };
    const { initCart, cartItems } = cartContext;
@@ -30,13 +28,13 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
    const authContext = useContext(AuthContext);
 
    const { setMessage } = useMessage();
+   const { openModal, closeModal, currentModal } = useModal();
 
    useEffect(() => {
-      getUserFavorites();
-   }, [modalState]);
-
-   useEffect(() => {
-      if (authContext?.isAuthed) initCartState();
+      if (authContext?.isAuthed) {
+         initCartState();
+         getUserFavorites();
+      }
    }, [authContext]);
 
    const items: Record<string, IItemShortInfo> = {
@@ -82,13 +80,7 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
 
    const handleItemClick = (productId: string) => {
       setSelectedProductId(productId);
-      setIsItemClicked(true);
-      onModalChange?.(true)
-   };  
-
-   const handleItemAction = (newState: boolean) => {
-      setIsItemClicked(newState);
-      onModalChange?.(false)
+      openModal(`product-${productId}`);
    };
 
    return (
@@ -124,9 +116,9 @@ const SalesAndRecommendation = ({ type, modalState, onModalChange } : ICategoryP
                   </ul>
                </div>
          </section>
-         {isItemClicked && selectedProductId &&
-            <ItemCard onModalAction={ handleItemAction } id={ selectedProductId }/>
-         }
+         {currentModal?.startsWith('product-') && selectedProductId && (
+            <ItemCard id={selectedProductId} onClose={closeModal} />
+         )}
       </>
    );
 };

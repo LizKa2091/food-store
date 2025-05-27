@@ -9,30 +9,28 @@ import DeliveryBanner from '../components/layout/banners/DeliveryBanner';
 import RateBanner from '../components/layout/banners/RateBanner';
 import Footer from '../components/layout/Footer';
 import { CategoryType } from '../components/UI/Categories/Categories';
+import { ModalsRenderer } from '../components/UI/ModalsRenderer';
 
 const categoriesList: CategoryType[] = ["Супермаркет", "Кулинария", "Заморозка", "Другое", "Акции"];
 
 const MainPage: FC = () => {
-  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-
-  const handleModalChange = (modalState: boolean) => {
-    setIsModalOpened(modalState);
-  };
-
-  return (
-    <Wrapper modalState={isModalOpened}>
-      <Header modalState={isModalOpened} onModalChange={handleModalChange} />
-      <Promo />
-      <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Скидки'/>
-      {categoriesList.map((category) => (
-          <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
-      ))}
-      <Delivery />
-      <DeliveryBanner />
-      <RateBanner />
-      <Footer />
-    </Wrapper>
-  )
+   return (
+      <>
+         <Wrapper>
+            <Header />
+            <Promo />
+            <SalesAndRecommendation type='Скидки'/>
+            {categoriesList.map((category) => (
+               <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
+            ))}
+            <Delivery />
+            <DeliveryBanner />
+            <RateBanner />
+            <Footer />
+         </Wrapper>
+         <ModalsRenderer />
+      </>
+   )
 };
 
 export default MainPage;
