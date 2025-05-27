@@ -11,11 +11,11 @@ import { IItemInfo } from '../../../types/products.types';
 import './ItemCard.scss';
 
 interface IItemCardProps {
-   onModalAction: (newState: boolean) => void;
    id: string;
+   onClose: () => void;
 };
 
-const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
+const ItemCard: FC<IItemCardProps> = ({ id, onClose }) => {
    const [product, setProduct] = useState<IItemInfo>({ imagePath: '', productId: '', category: '', name: '', weight: '', stockQuantity: 0, price: 0, composition: '', nutritionValue: '', bestBefore: '', storageConditions: '', package: '' });
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
 
@@ -33,10 +33,6 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
    useEffect(() => {
       if (authContext?.isAuthed) initCartState();
    }, [authContext]);
-
-   const handleCloseClick = () => {
-      onModalAction(false);
-   };
 
    const loadItemInfo = async (itemId: string) => {
       let response;
@@ -135,7 +131,7 @@ const ItemCard: FC<IItemCardProps> = ({ onModalAction, id }) => {
                <button className="item-modal__button item-modal__button--more">Подробнее</button>
             </div>
             <div className="item-modal__close">
-               <button onClick={ handleCloseClick } className="item-modal__button--close">x</button>
+               <button onClick={onClose} className="item-modal__button--close">x</button>
             </div>
          </div>
       </div>

@@ -3,23 +3,15 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
 import { useCategory } from '../../../context/CategoryContext';
+import { useModal } from '../../../context/ModalContext';
 import Notifications from '../../UI/Notifications/Notifications';
 import './Header.scss';
 import logo from '../../../images/webpImages/logo.webp';
 import SearchBar from './SearchBar';
-import ModalDeliveryMethod from './ModalDeliveryMethod';
 
 const NavProfile = lazy(() => import('../../UI/NavProfile/NavProfile'));
 
-interface IHeaderProps {
-   modalState: boolean;
-   onModalChange: (modalState: boolean) => void;
-};
-
-const Header: FC<IHeaderProps> = ({ modalState, onModalChange }) => {
-   const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
-   const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
-
+const Header: FC = () => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const [isCatalogOpen, setIsCatalogOpen] = useState(false);
    const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
@@ -28,6 +20,10 @@ const Header: FC<IHeaderProps> = ({ modalState, onModalChange }) => {
    const navigate = useNavigate();
    const { setMessage } = useMessage();
    const { setSelectedCategory } = useCategory();
+   const { openModal } = useModal();
+
+   const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
+   const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
 
    const handleCatalogClick = () : void => {
       setIsCatalogOpen(prevVal => !prevVal);
@@ -57,7 +53,7 @@ const Header: FC<IHeaderProps> = ({ modalState, onModalChange }) => {
                      <SearchBar />
                   </div>
                   <div className="nav__locations">
-                     <button onClick={() => onModalChange(true)} className='nav__button nav__button--location'>
+                     <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
                         <div className="nav__button--location-left">МСК</div>
                         <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
                      </button>
@@ -109,9 +105,6 @@ const Header: FC<IHeaderProps> = ({ modalState, onModalChange }) => {
                </div>
             </nav>
          </header>
-         {modalState &&
-            <ModalDeliveryMethod onModalChange={onModalChange} />
-         }
       </>
    );
 };

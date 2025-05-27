@@ -9,6 +9,7 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { CategoryProvider } from './context/CategoryContext';
 import { CartProvider } from './context/CartContext';
 import './App.scss';
+import { ModalProvider } from './context/ModalContext';
 
 const ProtectedProfile = lazy(() => import('./pages/protectedPages/ProtectedProfile'));
 const SalesPage = lazy(() => import('./pages/SalesPage'));
@@ -22,49 +23,51 @@ function App() {
       <MessageProvider>
          <CategoryProvider>
             <CartProvider>
-               <BrowserRouter>
-                  <Routes>
-                  <Route path='/' element={<MainPage />} />
-                     <Route path='/catalog' element={<CatalogPage />} />
-                     <Route path='/catalog/:keyword' element={<CatalogPage />} />
-                     <Route path='/profile/*' 
-                        element={
-                           <Suspense fallback={<Loading />}>
-                              <ProtectedProfile />
-                           </Suspense>
-                        }
-                     />
-                     <Route path='/sales' 
-                        element={
-                           <Suspense fallback={<Loading />}>
-                              <SalesPage />
-                           </Suspense>
-                        }
-                     />
-                     <Route path='/vacancies' 
-                        element={
-                           <Suspense fallback={<Loading />}>
-                              <VacanciesPage />
-                           </Suspense>
-                        }
-                     />
-                     <Route path='/contacts' 
-                        element={
-                           <Suspense fallback={<Loading />}>
-                              <ContactsPage />
-                           </Suspense>
-                        } 
-                     />
-                     <Route path='/cart' 
-                        element={
-                           <Suspense fallback={<Loading />}>
-                              <CartPage />
-                           </Suspense>
-                        }
-                     />
-                     <Route path='*' element={<ErrorPage />} />
-                  </Routes>
-               </BrowserRouter>
+               <ModalProvider>
+                  <BrowserRouter>
+                     <Routes>
+                     <Route path='/' element={<MainPage />} />
+                        <Route path='/catalog' element={<CatalogPage />} />
+                        <Route path='/catalog/:keyword' element={<CatalogPage />} />
+                        <Route path='/profile/*' 
+                           element={
+                              <Suspense fallback={<Loading />}>
+                                 <ProtectedProfile />
+                              </Suspense>
+                           }
+                        />
+                        <Route path='/sales' 
+                           element={
+                              <Suspense fallback={<Loading />}>
+                                 <SalesPage />
+                              </Suspense>
+                           }
+                        />
+                        <Route path='/vacancies' 
+                           element={
+                              <Suspense fallback={<Loading />}>
+                                 <VacanciesPage />
+                              </Suspense>
+                           }
+                        />
+                        <Route path='/contacts' 
+                           element={
+                              <Suspense fallback={<Loading />}>
+                                 <ContactsPage />
+                              </Suspense>
+                           } 
+                        />
+                        <Route path='/cart' 
+                           element={
+                              <Suspense fallback={<Loading />}>
+                                 <CartPage />
+                              </Suspense>
+                           }
+                        />
+                        <Route path='*' element={<ErrorPage />} />
+                     </Routes>
+                  </BrowserRouter>
+               </ModalProvider>
             </CartProvider>
         </CategoryProvider>
       </MessageProvider>

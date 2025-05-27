@@ -6,14 +6,10 @@ import SalesAndRecommendation from '../../components/UI/SalesAndRecommendation/S
 import CartStep1 from '../../components/UI/Cart/CartStep1';
 import CartStep2 from '../../components/UI/Cart/CartStep2';
 import CartPanel from '../../components/UI/Cart/CartPanel';
+import { ModalsRenderer } from '../../components/UI/ModalsRenderer';
 
 const CartPage: FC = () => {
    const [currStep, setCurrStep] = useState<number>(1);
-   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-
-   const handleModalChange = (modalState: boolean) => {
-      setIsModalOpened(modalState);
-   };
 
    const handleStepChange = (step: number) => {
       setCurrStep(step)
@@ -37,12 +33,15 @@ const CartPage: FC = () => {
    }
 
    return (
-      <Wrapper modalState={isModalOpened}>
-         <Header modalState={isModalOpened} onModalChange={handleModalChange} />
-         {renderCartStep()}
-         <SalesAndRecommendation modalState={isModalOpened} onModalChange={handleModalChange} type='Рекомендации для вас' />
-         <Footer />
-    </Wrapper>
+      <>
+         <Wrapper>
+            <Header />
+            {renderCartStep()}
+            <SalesAndRecommendation type='Рекомендации для вас' />
+            <Footer />
+         </Wrapper>
+         <ModalsRenderer />
+      </>   
    )
 };
 
