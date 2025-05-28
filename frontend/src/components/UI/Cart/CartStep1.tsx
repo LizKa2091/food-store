@@ -7,6 +7,7 @@ import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import ItemQuantityButton from '../ItemQuantityButton/ItemQuantityButton';
 import { ICartItem, IFavoriteItem } from '../../../types/cart.types';
 import CartLate from './CartLate';
+import { getMoscowTime } from '../../../utils/utils';
 import './CartStep1.scss';
 
 interface ICartStep1Props {
@@ -24,32 +25,17 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
    const cartContext = useContext(CartContext) || { cartItems: [], initCart: async () => {}, handleClearCart: async () => {} };
    const { initCart, cartItems, handleClearCart } = cartContext;
 
-   
-   useEffect(() => {
-      getUserFavorites();
-   }, []);
-
    useEffect(() => {
       const time = getMoscowTime();
       setCurrTime(time);
+      getUserFavorites();
    }, []);
 
    useEffect(() => {
       if (authContext?.isAuthed) initCartState();
    }, [authContext]);
 
-   const getMoscowTime = () => {
-      const options: Intl.DateTimeFormatOptions = {
-         timeZone: 'Europe/Moscow',
-         hour: '2-digit',
-         minute: '2-digit',
-         hour12: false
-      };
-      const moscowTime = new Intl.DateTimeFormat('ru-RU', options).format(new Date());
-      return moscowTime;
-   };
-
-   const initCartState = async () => {
+   const initCartState = async (): Promise<void> => {
       const token = localStorage.getItem('token');
       try {
          if (!token) throw new Error('ошибка, пользователь не авторизован');
@@ -66,7 +52,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       }
    };
 
-   const getUserFavorites = async () => {
+   const getUserFavorites = async (): Promise<void> => {
       const token = localStorage.getItem('token');
 
       if (token) {
@@ -84,7 +70,7 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
       }
    };
 
-   const handleButtonClearCart = async () => {
+   const handleButtonClearCart = async (): Promise<void> => {
       const token = localStorage.getItem('token');
       try {
          if (!token) throw new Error('ошибка, пользователь не авторизован');
