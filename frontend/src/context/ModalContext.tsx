@@ -30,4 +30,9 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
    );
 };
 
-export const useModal = () => useContext(ModalContext);
+export const useModal = () => {
+   const context = useContext(ModalContext);
+
+   if (!context) throw new Error('useModal должен быть использован внутри ModalProvider');
+   return context;
+}; 
