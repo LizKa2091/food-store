@@ -8,8 +8,8 @@ import Loading from './pages/Loading';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { CategoryProvider } from './context/CategoryContext';
 import { CartProvider } from './context/CartContext';
-import './App.scss';
 import { ModalProvider } from './context/ModalContext';
+import './App.scss';
 
 const ProtectedProfile = lazy(() => import('./pages/protectedPages/ProtectedProfile'));
 const SalesPage = lazy(() => import('./pages/SalesPage'));

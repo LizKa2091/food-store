@@ -2,9 +2,9 @@ import React, { createContext, useState, FC, ReactNode } from 'react';
 import { logout, postCode } from '../services/authService';
 
 interface IAuthContext {
-    isAuthed: boolean;
-    loginUser: (phoneNumber: string, code: string) => Promise<void>;
-    logoutUser: () => Promise<void>;
+   isAuthed: boolean;
+   loginUser: (phoneNumber: string, code: string) => Promise<void>;
+   logoutUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);

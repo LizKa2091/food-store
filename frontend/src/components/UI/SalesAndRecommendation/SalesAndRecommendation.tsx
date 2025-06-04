@@ -13,6 +13,12 @@ import item1Image from '../../../images/webpImages/products/sale-product-1.webp'
 import item2Image from '../../../images/webpImages/products/sale-product-2.webp';
 import './SalesAndRecommendation.scss';
 
+const items: Record<string, IItemShortInfo> = {
+   item1: { productId: '1', imagePath: item1Image, stockQuantity: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+   item2: { productId: '2', imagePath: item2Image, stockQuantity: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
+   item3: { productId: '3', imagePath: item1Image, stockQuantity: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
+};
+
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 
 interface ICategoryProps {
@@ -37,13 +43,7 @@ const SalesAndRecommendation: FC<ICategoryProps> = ({ type }) => {
       }
    }, [authContext]);
 
-   const items: Record<string, IItemShortInfo> = {
-      item1: { productId: '1', imagePath: item1Image, stockQuantity: 2, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
-      item2: { productId: '2', imagePath: item2Image, stockQuantity: 33, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 70.90},
-      item3: { productId: '3', imagePath: item1Image, stockQuantity: 0, name: 'Гранола Мюсли Bionova ягодные запечённые хрустящие, 400г', price: 99.90, oldPrice: 129.00},
-   };
-
-   const getUserFavorites = async () => {
+   const getUserFavorites = async (): Promise<void> => {
       const token = localStorage.getItem('token');
 
       if (token) {
@@ -56,12 +56,13 @@ const SalesAndRecommendation: FC<ICategoryProps> = ({ type }) => {
             setMessage('');
          }
          catch(e) {
+            console.error(e);
             setMessage(response?.message);
          }
       }
    };
 
-   const initCartState = async () => {
+   const initCartState = async (): Promise<void> => {
       const token = localStorage.getItem('token');
       try {
          if (!token) throw new Error('ошибка, пользователь не авторизован');
@@ -73,12 +74,13 @@ const SalesAndRecommendation: FC<ICategoryProps> = ({ type }) => {
            return;
          }
       } 
-      catch (error) {
-         console.error('ошибка при инициализации корзины:', error);
+      catch (e) {
+         console.error('ошибка при инициализации корзины:', e);
+         setMessage('ошибка при инициализации корзины');
       }
    };
 
-   const handleItemClick = (productId: string) => {
+   const handleItemClick = (productId: string): void => {
       setSelectedProductId(productId);
       openModal(`product-${productId}`);
    };
@@ -93,7 +95,7 @@ const SalesAndRecommendation: FC<ICategoryProps> = ({ type }) => {
                <div className="sales-and-recommendation__bottom">
                   <ul className="sales-and-recommendation__list">
                      {Object.entries(items).map(([key, item]) => (
-                        <li onClick={ () => handleItemClick(item.productId) } key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
+                        <li onClick={() => handleItemClick(item.productId)} key={key} className={item.oldPrice ? "sales-and-recommendation__item item--onsale" : "sales-and-recommendation__item"}>
                            <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} />
                            <img src={item.imagePath} className="sales-and-recommendation__item__img" alt={item.name}/>
                            <div className="sales-and-recommendation__item__left">

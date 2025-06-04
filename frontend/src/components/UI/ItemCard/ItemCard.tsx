@@ -34,7 +34,7 @@ const ItemCard: FC<IItemCardProps> = ({ id, onClose }) => {
       if (authContext?.isAuthed) initCartState();
    }, [authContext]);
 
-   const loadItemInfo = async (itemId: string) => {
+   const loadItemInfo = async (itemId: string): Promise<void> => {
       let response;
 
       try {
@@ -48,11 +48,12 @@ const ItemCard: FC<IItemCardProps> = ({ id, onClose }) => {
          }
       }
       catch (e) {
+         console.error(e);
          setMessage(response.message || 'произошла ошибка при получении сведений о товаре');
       }
    };
 
-   const getUserFavorites = async () => {
+   const getUserFavorites = async (): Promise<void> => {
       const token = localStorage.getItem('token');
 
       if (token) {
@@ -65,12 +66,13 @@ const ItemCard: FC<IItemCardProps> = ({ id, onClose }) => {
             setMessage('');
          }
          catch(e) {
+            console.error(e);
             setMessage(response?.message);
          }
       }
    };
 
-   const initCartState = async () => {
+   const initCartState = async (): Promise<void> => {
       const token = localStorage.getItem('token');
       try {
          if (!token) throw new Error('ошибка, пользователь не авторизован');
@@ -84,6 +86,7 @@ const ItemCard: FC<IItemCardProps> = ({ id, onClose }) => {
       } 
       catch (error) {
          console.error('ошибка при инициализации корзины:', error);
+         setMessage('ошибка при инициализации корзины');
       }
    };
  
