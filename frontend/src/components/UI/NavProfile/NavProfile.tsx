@@ -7,6 +7,8 @@ import { fetchBonusCard, fetchUserFavorites } from '../../../services/userServic
 import PinInput from '../PinInput/PinInput';
 import './NavProfile.scss';
 
+const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
+
 const NavProfile: FC = () => {
    const { isAuthed, loginUser, logoutUser } = useContext(AuthContext) || { isAuthed: false, loginUser: () => {}, logoutUser: () => {} };
    const [currStep, setCurrStep] = useState<number>(1);
@@ -27,12 +29,10 @@ const NavProfile: FC = () => {
       if (isAuthed) loadUserData();
    }, [isAuthed]);
 
-   const loadUserData = async () => {
+   const loadUserData = async (): Promise<void> => {
       await loadUserCard();
       await loadUserFavorites();
    };
-
-   const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
 
    const handleStepButton = (): void => {
       setMessage('');
@@ -56,7 +56,7 @@ const NavProfile: FC = () => {
    const handleStep2Submit = (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
 
-      const phoneNum = currUserTel.trim();
+      const phoneNum: string = currUserTel.trim();
       const phoneRegExp: RegExp = /^\d{11}$/;
       const phoneInput = (e.target as HTMLFormElement).tel;
 
@@ -89,6 +89,7 @@ const NavProfile: FC = () => {
          setCurrCode(resultCode);
       }
       catch (e) {
+         console.error(e);
          setMessage(response.message);
       }     
    };
@@ -110,12 +111,13 @@ const NavProfile: FC = () => {
          }
       }
       catch (e) {
+         console.error(e);
          setMessage(response.message);
          setIsCodeCorrect(false);
       }
    };
 
-   const loadUserCard = async () => {
+   const loadUserCard = async (): Promise<void> => {
       const token = localStorage.getItem('token');
 
       if (token) {
@@ -126,6 +128,7 @@ const NavProfile: FC = () => {
             setUserCardBalance(response.bonuses ?? 0)
          }
          catch (e) {
+            console.error(e);
             setMessage(response.message);
          }
       }
@@ -146,6 +149,7 @@ const NavProfile: FC = () => {
             setFavoritesLen(response.favorites.length);
          }
          catch (e) {
+            console.error(e);
             setMessage(response.message);
          }
       }
@@ -159,12 +163,13 @@ const NavProfile: FC = () => {
          await logoutUser();
          resetForm();
       }
-      catch (error) {
+      catch (e) {
+         console.error(e);
          setMessage('Ошибка выхода');
       }
    };
 
-   const resetForm = () => {
+   const resetForm = (): void => {
       setCurrStep(1);
       setCurrCode('');
       setCurrUserCode('');
@@ -175,50 +180,50 @@ const NavProfile: FC = () => {
    return (
       <>
          {isAuthed ? (
-               <div className='profile profile--user'>
-                  <div className="profile__inner">
-                     <p className="profile--user__title">Имя Фамилия</p>
-                     <ul className="profile--user__list">
-                           {authedItems.map((item, index) =>
-                              <li className="profile--user__item" key={`${item}${index}`}>
-                                 {item === 'Выход' ? (
-                                       <button onClick={ handleLogout } className="profile--user__logout-button">
-                                          {item}
-                                       </button>
+            <div className='profile profile--user'>
+               <div className="profile__inner">
+                  <p className="profile--user__title">Имя Фамилия</p>
+                  <ul className="profile--user__list">
+                     {authedItems.map((item: string, index: number) =>
+                        <li className="profile--user__item" key={`${item}${index}`}>
+                           {item === 'Выход' ? (
+                              <button onClick={handleLogout} className="profile--user__logout-button">
+                                 {item}
+                              </button>
+                           ) : (
+                              item === 'Профиль' ? (
+                                 <Link to='/profile' className="profile--user__profile-button">
+                                    {item}
+                                 </Link>
+                              ) : (
+                                 item === 'Заказы' ? (
+                                    <Link to='/profile/orders' className="profile--user__profile-button">
+                                       {item}
+                                    </Link>
                                  ) : (
-                                       item === 'Профиль' ? (
-                                          <Link to='/profile' className="profile--user__profile-button">
+                                    item === 'Бонусы' ? (
+                                       <Link to='/profile' className="profile--user__profile-button profile--user__profile-button--bonus">
+                                          {item}
+                                          <span className='profile--user__bonus-balance'>{userCardBalance}</span>
+                                       </Link>
+                                    ) : (
+                                       item === 'Избранное' ? (
+                                          <Link to='/profile/favorites' className="profile--user__profile-button profile--user__profile-button--favorites">
                                              {item}
+                                             <span className="profile--user__favorites-len">{favoritesLen} тов.</span>
                                           </Link>
                                        ) : (
-                                          item === 'Заказы' ? (
-                                             <Link to='/profile/orders' className="profile--user__profile-button">
-                                                   {item}
-                                             </Link>
-                                          ) : (
-                                             item === 'Бонусы' ? (
-                                                <Link to='/profile' className="profile--user__profile-button profile--user__profile-button--bonus">
-                                                   {item}
-                                                   <span className='profile--user__bonus-balance'>{userCardBalance}</span>
-                                                </Link>
-                                             ) : (
-                                                item === 'Избранное' ? (
-                                                   <Link to='/profile/favorites' className="profile--user__profile-button profile--user__profile-button--favorites">
-                                                      {item}
-                                                      <span className="profile--user__favorites-len">{favoritesLen} тов.</span>
-                                                   </Link>
-                                                ) : (
-                                                   item
-                                                )
-                                             )
-                                          )
+                                          item
                                        )
-                                 )}
-                              </li>
+                                    )
+                                 )
+                              )
                            )}
-                     </ul>
-                  </div>
+                        </li>
+                     )}
+                  </ul>
                </div>
+            </div>
          ) : (
                <>
                   {currStep === 1 && (
@@ -227,13 +232,13 @@ const NavProfile: FC = () => {
                            <p className="profile--guest__title profile--guest__title--1">Авторизуйтесь</p>
                            <ul className="profile--guest__list">
                               <li className="profile--guest__item profile--guest__item--1">
-                                    Покупайте продукты со скидкой
+                                 Покупайте продукты со скидкой
                               </li>
                               <li className="profile--guest__item profile--guest__item--2">
-                                    Заказывайте товары с доставкой день в день
+                                 Заказывайте товары с доставкой день в день
                               </li>
                               <li className="profile--guest__item profile--guest__item--3">
-                                    Узнавайте первыми и участвуйте в акциях
+                                 Узнавайте первыми и участвуйте в акциях
                               </li>
                            </ul>
                            <button className="profile--guest__button" onClick={ handleStepButton }>Войти по номеру телефона</button>
@@ -244,10 +249,10 @@ const NavProfile: FC = () => {
                      <div className='profile profile--guest guest__step2'>
                         <div className="profile__inner">
                            <p className="profile--guest__title profile--guest__title--2">Введите номер телефона</p>
-                           <form onSubmit={ handleStep2Submit } className='profile--guest__form'>
+                           <form onSubmit={handleStep2Submit} className='profile--guest__form'>
                               <div className="profile--guest__form--item profile--guest__inputdiv">
                                  <label htmlFor="tel" className='profile--guest__label profile--guest__label--phone'>Ваш телефон</label>
-                                 <input onChange={ handleInputTelChange } type="tel" name="tel" className='profile--guest__input'/>
+                                 <input onChange={handleInputTelChange} type="tel" name="tel" className='profile--guest__input'/>
                               </div>
                               <div className="profile--guest__form--item">
                                  <input type="checkbox" name="confidence" className='profile--guest__checkbox' required={true}/>
@@ -274,12 +279,12 @@ const NavProfile: FC = () => {
                                  <span className="profile--guest__extra">ожидается получение кода...</span>
                               )}
 
-                              <PinInput onCodeChange={(code) => setCurrUserCode(code)} isCorrect={isCodeCorrect}/>
+                              <PinInput onCodeChange={(code: string) => setCurrUserCode(code)} isCorrect={isCodeCorrect}/>
                               
                               {isCodeCorrect &&
                                  <span className="profile--guest__extra">Вход выполнен успешно</span>
                               }
-                              <button onClick={ handleCheckCodeButton } className="profile--guest__button profile--guest__button--3">Подтвердить</button>
+                              <button onClick={handleCheckCodeButton} className="profile--guest__button profile--guest__button--3">Подтвердить</button>
                            </div>
                         </div>
                      )

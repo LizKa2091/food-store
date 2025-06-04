@@ -10,10 +10,9 @@ interface ICategoriesProps {
    category: CategoryType;
    type?: 'extended';
    selectedSubcategory?: string;
-   setSelectedSubcategory?: (selectedSubcategory: string) => void;
 }
 
-const Categories: FC<ICategoriesProps> = ({ category, type, setSelectedSubcategory}) => {
+const Categories: FC<ICategoriesProps> = ({ category, type }) => {
    const navigate = useNavigate();
    const { setSelectedCategory } = useCategory();
    
@@ -23,6 +22,12 @@ const Categories: FC<ICategoriesProps> = ({ category, type, setSelectedSubcatego
       Заморозка: [{ name: 'Пельмени, вареники, равиоли' }, { name: 'Хинкали и манты' }, { name: 'Полу фабрикаты' }, { name: 'Замороженные овощи' }, { name: 'Рыба и морепродукты' }, { name: 'Мясо' }],
       Другое: [{ name: 'Красота и гигиена' }, { name: 'Стирка и уборка' }, { name: 'Полезные мелочи' }, { name: 'Бытовая техника' }],
       Акции: [{ name: 'Сделай предзаказ в кулинарии со скидкой', extended1: 'Оформите заказ на кулинарию за сутки и получите скидку', extended2: 'Заказ будет доставлен вовремя' }, { name: 'Праздник к нам приходит', extra: '15% скидка', extended1: 'Оформите заказ на кулинарию за сутки и получите скидку', extended2: 'Заказ будет доставлен вовремя' }, { name: 'Скидка на третий товар в разделе "Чистая линия"', extended1: 'Оформите заказ на кулинарию за сутки и получите скидку', extended2: 'Заказ будет доставлен вовремя' }, { name: 'Комбо набор 3 пиццы за 1500', extra: 'trio1500', extended1: 'Оформите заказ на кулинарию за сутки и получите скидку', extended2: 'Заказ будет доставлен вовремя' }]
+   };
+
+   const handleLiClick = (name: string): void => {
+      setSelectedCategory(name); 
+
+      navigate('/catalog')
    };
 
    return (
@@ -50,7 +55,7 @@ const Categories: FC<ICategoriesProps> = ({ category, type, setSelectedSubcatego
                      </div>
                   </li>
                ) : (
-                  <li onClick={() => { setSelectedCategory(el.name); navigate('/catalog') }} className={`subcategory__item ${category} ${el.name.split(' ').length === 1 ? el.name : el.name.split(' ')[0].replace(',', '')}`} key={el.name}>
+                  <li onClick={() => handleLiClick(el.name)} className={`subcategory__item ${category} ${el.name.split(' ').length === 1 ? el.name : el.name.split(' ')[0].replace(',', '')}`} key={el.name}>
                      <p className={`subcategory__title ${category}`}>{el.name}</p>
                      {el.extra &&
                         <span className='subcategory__extra'>{el.extra}</span>

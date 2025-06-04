@@ -23,9 +23,12 @@ const ItemQuantityButton: FC<IItemQuantityButtonProps> = ({ itemId, storageQuant
       setCurrItem(filteredItem || null);
    }, [itemId, currCart]);
 
-   const handleIncreaseItem = async (id: string) => {
+   const handleIncreaseItem = async (id: string): Promise<void> => {
       const token = localStorage.getItem('token');
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      if (!token) {
+         setMessage('ошибка, пользователь не авторизован');
+         return;
+      }
 
       const currentQuantityInCart = currItem?.userQuantity || 0;
 
@@ -43,18 +46,24 @@ const ItemQuantityButton: FC<IItemQuantityButtonProps> = ({ itemId, storageQuant
       setCurrItem(prev => prev ? { ...prev, userQuantity: prev.userQuantity + 1 } : null);
    };
 
-   const handleDecreaseItem = async (id: string) => {
+   const handleDecreaseItem = async (id: string): Promise<void> => {
       const token = localStorage.getItem('token');
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      if (!token) {
+         setMessage('ошибка, пользователь не авторизован');
+         return;
+      }
       
       if (currItem && currItem.userQuantity > 1) {
          await updateItem(id, currItem.userQuantity - 1, token);
       }
    };
    
-   const handleRemoveItem = async (id: string) => {
+   const handleRemoveItem = async (id: string): Promise<void> => {
       const token = localStorage.getItem('token');
-      if (!token) throw new Error('ошибка, пользователь не авторизован');
+      if (!token) {
+         setMessage('ошибка, пользователь не авторизован');
+         return;
+      }   
       
       await removeItem(id, token);
       setCurrItem(null);

@@ -21,7 +21,7 @@ const MainPage: FC = () => {
             <Promo />
             <SalesAndRecommendation type='Скидки'/>
             {categoriesList.map((category) => (
-               <Categories key={category} category={category} selectedSubcategory='' setSelectedSubcategory={undefined}/>
+               <Categories key={category} category={category} selectedSubcategory='' />
             ))}
             <Delivery />
             <DeliveryBanner />

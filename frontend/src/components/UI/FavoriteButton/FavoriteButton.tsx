@@ -51,21 +51,18 @@ const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState, 
             }
          }
          catch (e) {
+            console.error(e);
             setMessage(response.message);
          }
       }
       else {
-      setMessage('Пожалуйста, авторизуйтесь');
+         setMessage('Пожалуйста, авторизуйтесь');
       }
    };
 
    return (
       <>
-         <button 
-            className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '') + (position === 'relative' ? ' favorite-button--relative' : '')} 
-            onClick={ handleClick }
-         >
-         </button>
+         <button onClick={handleClick} className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '') + (position === 'relative' ? ' favorite-button--relative' : '')} />
       </>
    )
 };
