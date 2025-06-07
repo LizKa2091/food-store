@@ -12,7 +12,6 @@ const Promo: FC = () => {
 
    useEffect(() => {
       const handleWindowResize = () => {
-         console.log(window.innerWidth);
          setDeviceWidth(window.innerWidth);
       };
 

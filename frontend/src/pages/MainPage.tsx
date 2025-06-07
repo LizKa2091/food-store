@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import Wrapper from '../components/layout/Wrapper';
 import Header from '../components/layout/header/Header';
 import Promo from '../components/layout/Promo';
@@ -8,10 +8,8 @@ import Delivery from '../components/layout/Delivery';
 import DeliveryBanner from '../components/layout/banners/DeliveryBanner';
 import RateBanner from '../components/layout/banners/RateBanner';
 import Footer from '../components/layout/Footer';
-import { CategoryType } from '../components/UI/Categories/Categories';
 import { ModalsRenderer } from '../components/UI/ModalsRenderer';
-
-const categoriesList: CategoryType[] = ["Супермаркет", "Кулинария", "Заморозка", "Другое", "Акции"];
+import { categoriesList } from '../data/categories';
 
 const MainPage: FC = () => {
    return (
