@@ -1,4 +1,4 @@
-import { FC, useState, useContext, lazy } from 'react';
+import { FC, useState, useContext, lazy, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
@@ -16,11 +16,24 @@ const Header: FC = () => {
    const [isCatalogOpen, setIsCatalogOpen] = useState(false);
    const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
    const [isProfileOpen, setIsProfileOpen] = useState(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const navigate = useNavigate();
    const { setMessage } = useMessage();
    const { setSelectedCategory } = useCategory();
    const { openModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      console.log(window.innerWidth)
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
    const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
@@ -53,8 +66,10 @@ const Header: FC = () => {
                </div>
                <div className="nav__locations">
                   <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
-                     <div className="nav__button--location-left">МСК</div>
-                     <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
+                     <div className={"nav__button--location-left" + (deviceWidth <= 1155 ? ' nav__button--location-left--single' : '')}>МСК</div>
+                     {deviceWidth > 1155 &&
+                        <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
+                     }
                   </button>
                </div>
                <div className="nav__user">

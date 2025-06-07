@@ -130,17 +130,18 @@ $button-sale-h: 43px;
          cursor: pointer;
 
          &-left {
-            border: 1px solid $color-orange-location-left;
-            border-radius: 16px 0 0 16px;
-            background-color: $color-orange-location-left;
-            width: 100%;
-            max-width: 65px;
-            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             gap: 3px;
+            border: 1px solid $color-orange-location-left;
+            border-radius: 16px 0 0 16px;
+            background-color: $color-orange-location-left;
+            width: 100%;
+            height: 100%;
+            max-width: 65px;
+            position: relative;
 
             &::before {
                content: '';
@@ -150,17 +151,23 @@ $button-sale-h: 43px;
                width: 14px;
                height: 14px;
             }
+            &--single {
+               border-radius: 16px;
+               width: 43px;
+            }
          }
          &-right {
+            display: inline-block;
             border: 1px solid $color-orange-location-right;
             border-radius: 0 16px 16px 0;
             background-color: $color-orange-location-right;
             font-weight: 700;
             width: 100%;
+            height: 100%;
             max-width: 230px;
             overflow: hidden; 
             text-overflow: ellipsis;
-            display: inline-block;
+            padding: 6px 0;
          }
       }
    }
