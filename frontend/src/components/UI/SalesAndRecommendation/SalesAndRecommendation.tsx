@@ -9,7 +9,7 @@ import FavoriteButton from "../FavoriteButton/FavoriteButton";
 import ItemQuantityButton from "../ItemQuantityButton/ItemQuantityButton";
 import { IFavoriteItem } from "../../../types/cart.types";
 import './SalesAndRecommendation.scss';
-import { saleItems } from "../../../data/categories";
+import { saleItems } from "../../../data/saleItems";
 
 type CategoryType = 'Скидки' | 'Рекомендации для вас';
 

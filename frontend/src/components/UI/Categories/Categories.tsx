@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCategory } from '../../../context/CategoryContext';
 import { ISubCategory } from '../../../types/products.types';
 import './Categories.scss';
-import { subCategories } from '../../../data/categories';
+import { subCategories } from '../../../data/subcategories';
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
 
