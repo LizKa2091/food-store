@@ -5,9 +5,11 @@ import { useMessage } from '../../../context/MessageContext';
 import { useCategory } from '../../../context/CategoryContext';
 import { useModal } from '../../../context/ModalContext';
 import Notifications from '../../UI/Notifications/Notifications';
-import './Header.scss';
-import logo from '../../../images/webpImages/logo.webp';
 import SearchBar from './SearchBar';
+import { navItems } from '../../../data/navItems';
+import { catalogItems } from '../../../data/catalogItems';
+import logo from '../../../images/webpImages/logo.webp';
+import './Header.scss';
 
 const NavProfile = lazy(() => import('../../UI/NavProfile/NavProfile'));
 
@@ -34,9 +36,6 @@ const Header: FC = () => {
       handleWindowResize();
       return () => window.removeEventListener('windowResize', handleWindowResize);
    }, []);
-
-   const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
-   const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
 
    const handleCatalogClick = () : void => {
       setIsCatalogOpen(prevVal => !prevVal);
