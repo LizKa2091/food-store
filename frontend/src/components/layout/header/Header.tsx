@@ -35,77 +35,75 @@ const Header: FC = () => {
    };
 
    return (
-      <>
-         <header className="header">
-            <div className="header__inner">
-               <p className="header__text">Питайтесь разнообразно и копите <span className="header__important">скидку</span> до 10%</p>
-               <button className="header__button">Получить скидку</button>
+      <header className="header">
+         <div className="header__inner">
+            <p className="header__text">Питайтесь разнообразно и копите <span className="header__important">скидку</span> до 10%</p>
+            <button className="header__button">Получить скидку</button>
+         </div>
+         <nav className='nav'>
+            <div className='nav__top'>
+               <div className="nav__logo">
+                  <NavLink to='/'>
+                     <img src={logo} alt="Ильинский" className="nav__logo-img" />
+                  </NavLink>
+               </div>
+               <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
+               <div className="nav__search">
+                  <SearchBar />
+               </div>
+               <div className="nav__locations">
+                  <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
+                     <div className="nav__button--location-left">МСК</div>
+                     <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
+                  </button>
+               </div>
+               <div className="nav__user">
+                  <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
+                  <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
+                  {isProfileOpen &&
+                     <NavProfile />
+                  }
+                  <Link to='/cart' className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</Link>
+               </div>
             </div>
-            <nav className='nav'>
-               <div className='nav__top'>
-                  <div className="nav__logo">
-                     <NavLink to='/'>
-                        <img src={logo} alt="Ильинский" className="nav__logo-img" />
-                     </NavLink>
+            {isCatalogOpen &&
+               <div className="nav__catalog">
+                  <div className="nav__catalog__left">
+                     <ul className="nav__catalog__list">
+                        {catalogItems.map(item =>
+                           <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                        )}
+                     </ul>
                   </div>
-                  <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
-                  <div className="nav__search">
-                     <SearchBar />
-                  </div>
-                  <div className="nav__locations">
-                     <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
-                        <div className="nav__button--location-left">МСК</div>
-                        <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
-                     </button>
-                  </div>
-                  <div className="nav__user">
-                     <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
-                     <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
-                     {isProfileOpen &&
-                        <NavProfile />
-                     }
-                     <Link to='/cart' className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</Link>
+                  <div className="nav__catalog__divider"></div>
+                  <div className="nav__catalog__right">
+                     <ul className="nav__catalog__list">
+                        <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
+                        {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
+                           <li key={subItem} onClick={ () => {setSelectedCategory(subItem); navigate('/catalog')} } className="nav__catalog__subitem">{subItem}</li>
+                        ))}
+                     </ul>
                   </div>
                </div>
-               {isCatalogOpen &&
-                  <div className="nav__catalog">
-                     <div className="nav__catalog__left">
-                        <ul className="nav__catalog__list">
-                           {catalogItems.map(item =>
-                              <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
-                           )}
-                        </ul>
-                     </div>
-                     <div className="nav__catalog__divider"></div>
-                     <div className="nav__catalog__right">
-                        <ul className="nav__catalog__list">
-                           <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
-                           {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
-                              <li key={subItem} onClick={ () => {setSelectedCategory(subItem); navigate('/catalog')} } className="nav__catalog__subitem">{subItem}</li>
-                           ))}
-                        </ul>
-                     </div>
-                  </div>
-               }
-               <div className="nav__bottom">
-                  <ul className="nav__list">
-                     {navItems.map((item: string, id: number) => (
-                        item === 'Акции' ? (
-                           <NavLink to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
-                              {item}
-                           </NavLink>
-                        ) : (
-                           <li className='nav__item' key={id}>
-                              <button className='nav__link' id={'nav__link-' + id}>{item}</button>
-                           </li>
-                        )
-                     ))}
-                  </ul>
-                  <Notifications />
-               </div>
-            </nav>
-         </header>
-      </>
+            }
+            <div className="nav__bottom">
+               <ul className="nav__list">
+                  {navItems.map((item: string, id: number) => (
+                     item === 'Акции' ? (
+                        <NavLink to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
+                           {item}
+                        </NavLink>
+                     ) : (
+                        <li className='nav__item' key={id}>
+                           <button className='nav__link' id={'nav__link-' + id}>{item}</button>
+                        </li>
+                     )
+                  ))}
+               </ul>
+               <Notifications />
+            </div>
+         </nav>
+      </header>
    );
 };
 
