@@ -10,11 +10,13 @@ import RateBanner from '../components/layout/banners/RateBanner';
 import Footer from '../components/layout/Footer';
 import { ModalsRenderer } from '../components/UI/ModalsRenderer';
 import { categoriesList } from '../data/categories';
+import MobileLowerNav from '../components/layout/header/MobileLowerNav';
 
 const MainPage: FC = () => {
    return (
       <>
          <Wrapper>
+            <MobileLowerNav />
             <Header />
             <Promo />
             <SalesAndRecommendation type='Скидки'/>
