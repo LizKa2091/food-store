@@ -2,7 +2,8 @@
     width: 100%;
     max-width: 1291px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 15px 70px 15px;
+    overflow: visible;
 
     &--darked::before {
         content: '';

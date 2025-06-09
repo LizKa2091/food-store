@@ -1,4 +1,4 @@
-import React, { FC, useState, useLayoutEffect, useRef, useCallback } from 'react';
+import React, { FC, useState, useLayoutEffect, useRef, useCallback, useEffect } from 'react';
 import './Promo.scss';
 import star from '../../images/webpImages/star.webp';
 import { Link } from 'react-router-dom';
@@ -6,7 +6,20 @@ import { Link } from 'react-router-dom';
 const Promo: FC = () => {
    const [currMainSlide, setCurrMainSlide] = useState<number>(0);
    const [isAnimating, setIsAnimating] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
+
    const promoContainerRef = useRef<HTMLDivElement>(null);
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    const changeSlide = useCallback((direction: 'next' | 'prev') => {
       setIsAnimating(true);
@@ -38,7 +51,7 @@ const Promo: FC = () => {
          id: 1,
          title: "Начните день с вкусной выпечки из нашей кулинарии",
          link: "/catalog",
-         linkText: "Перейти к покупкам",
+         linkText: deviceWidth > 500 ? "Перейти к покупкам" : 'К покупкам',
          className: 'promo__first',
          gridSpan: 'span 1 / span 1',
          bgClass: 'promo__first__plain',
@@ -85,7 +98,7 @@ const Promo: FC = () => {
                      {item.title}
                   </p>
                   {item.link && (
-                     <Link to={item.link} className="promo__first__link">{item.linkText}</Link>
+                     <Link to={item.link} className={"promo__first__link" + (index === currMainSlide ? "" : " promo__first__link--extra")}>{item.linkText}</Link>
                   )}
                </div>
                   {index === currMainSlide && (

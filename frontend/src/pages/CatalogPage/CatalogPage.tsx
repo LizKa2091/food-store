@@ -15,6 +15,9 @@ import { IFavoriteItem } from '../../types/cart.types';
 import { IItemShortInfo, ISubCategory } from '../../types/products.types';
 import { useParams } from 'react-router-dom';
 import { ModalsRenderer } from '../../components/UI/ModalsRenderer';
+import MobileLowerNav from '../../components/layout/header/MobileLowerNav';
+import { useModal } from '../../context/ModalContext';
+import NavProfile from '../../components/UI/NavProfile/NavProfile';
 import './CatalogPage.scss';
 
 type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое';
@@ -31,9 +34,12 @@ const CatalogPage: FC = () => {
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
    const [keyWord, setKeyWord] = useState<string>('');
 
+   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+
    const params = useParams();
 
    const { selectedCategory, setSelectedCategory  } = useCategory();
+   const { currentModal } = useModal();
 
    const authContext = useContext(AuthContext);
 
@@ -170,7 +176,11 @@ const CatalogPage: FC = () => {
    return (
       <>
          <Wrapper>
-            <Header />
+            {isProfileOpen &&
+               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+            }
+            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <h2 className='catalog-title'>{selectedCategory}</h2>
             <div className="catalog">
                <aside className="catalog-aside">

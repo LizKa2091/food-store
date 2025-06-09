@@ -1,15 +1,20 @@
 import React, { FC, useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
 import { postPhoneNum, postCode, createBonusCard } from '../../../services/authService';
 import { fetchBonusCard, fetchUserFavorites } from '../../../services/userService';
 import PinInput from '../PinInput/PinInput';
+import { authedItems } from '../../../data/navProfileItems';
+import { useModal } from '../../../context/ModalContext';
 import './NavProfile.scss';
 
-const authedItems: string[] = ['Профиль', 'Заказы', 'Бонусы', 'Избранное', 'Выход'];
+interface INavProfileProps {
+   isMobile?: boolean;
+   setIsProfileOpen?: (value: boolean) => void;
+}
 
-const NavProfile: FC = () => {
+const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsProfileOpen }) => {
    const { isAuthed, loginUser, logoutUser } = useContext(AuthContext) || { isAuthed: false, loginUser: () => {}, logoutUser: () => {} };
    const [currStep, setCurrStep] = useState<number>(1);
    const [currUserTel, setCurrUserTel] = useState<string>('');
@@ -19,8 +24,11 @@ const NavProfile: FC = () => {
    const [userCardBalance, setUserCardBalance] = useState<number>(0);
    const [favoritesLen, setFavoritesLen] = useState<number>(0);
 
+   const navigate = useNavigate();
+
    const { setMessage } = useMessage();
-   
+   const { closeModal } = useModal();
+
    useEffect(() => {
       if (currStep === 3) getGeneratedCode();
    }, [currStep]);
@@ -104,6 +112,11 @@ const NavProfile: FC = () => {
             await loginUser(currUserTel, currUserCode);
             setIsCodeCorrect(true);
             await createBonusCard(currUserTel);
+
+            if (isMobile && setIsProfileOpen) {
+               closeModal();
+               setIsProfileOpen(false);
+            }
          }
          else {
             setMessage(response.message);
@@ -177,10 +190,17 @@ const NavProfile: FC = () => {
       setIsCodeCorrect(null);
    };
 
+   const handleCloseButton = () => {
+      if (setIsProfileOpen) {
+         closeModal();
+         setIsProfileOpen(false);
+      }
+   };
+
    return (
       <>
-         {isAuthed ? (
-            <div className='profile profile--user'>
+         {isAuthed && !isMobile ? (
+            <div className={'profile profile--user' + (isMobile ? ' profile--mobile' : '')}>
                <div className="profile__inner">
                   <p className="profile--user__title">Имя Фамилия</p>
                   <ul className="profile--user__list">
@@ -225,73 +245,85 @@ const NavProfile: FC = () => {
                </div>
             </div>
          ) : (
-               <>
-                  {currStep === 1 && (
-                     <div className='profile profile--guest guest__step1'>
-                        <div className="profile__inner">
-                           <p className="profile--guest__title profile--guest__title--1">Авторизуйтесь</p>
-                           <ul className="profile--guest__list">
-                              <li className="profile--guest__item profile--guest__item--1">
-                                 Покупайте продукты со скидкой
-                              </li>
-                              <li className="profile--guest__item profile--guest__item--2">
-                                 Заказывайте товары с доставкой день в день
-                              </li>
-                              <li className="profile--guest__item profile--guest__item--3">
-                                 Узнавайте первыми и участвуйте в акциях
-                              </li>
-                           </ul>
-                           <button className="profile--guest__button" onClick={ handleStepButton }>Войти по номеру телефона</button>
-                        </div>
-                     </div>
-                  )}
-                  {currStep === 2 && (
-                     <div className='profile profile--guest guest__step2'>
-                        <div className="profile__inner">
-                           <p className="profile--guest__title profile--guest__title--2">Введите номер телефона</p>
-                           <form onSubmit={handleStep2Submit} className='profile--guest__form'>
-                              <div className="profile--guest__form--item profile--guest__inputdiv">
-                                 <label htmlFor="tel" className='profile--guest__label profile--guest__label--phone'>Ваш телефон</label>
-                                 <input onChange={handleInputTelChange} type="tel" name="tel" className='profile--guest__input'/>
-                              </div>
-                              <div className="profile--guest__form--item">
-                                 <input type="checkbox" name="confidence" className='profile--guest__checkbox' required={true}/>
-                                 <label htmlFor="confidence" className="profile--guest__label">Соглашаюсь с политикой конфиденциальности</label>
-                              </div>
-                              <div className="profile--guest__form--item">
-                                 <input type="checkbox" name="news" className='profile--guest__checkbox' required={true}/>
-                                 <label htmlFor="news" className="profile--guest__label">Соглашаюсь получать новости и специальные предложения</label>
-                              </div>
-                              <button className="profile--guest__button">Получить код по SMS</button>
-                           </form>
-                        </div>
-                     </div>
-                     )}
-                     {currStep === 3 && (
-                        <div className='profile profile--guest guest__step3'>
+            isAuthed && isMobile ? (
+               navigate('/profile')
+            ) : (
+                  <>
+                     {currStep === 1 && (
+                        <div className={'profile profile--guest guest__step1' + ((isMobile ? ' profile--mobile' : ''))}>
                            <div className="profile__inner">
-                              <p className="profile--guest__title profile--guest__title--3">Подтверждение</p>
-                              <p className="profile--guest__text">Код подтверждения отправлен на номер  +{currUserTel}</p>
-                              <p className="profile--guest__extra">Введите код подтверждения</p>
-                              {currCode ? (
-                                 <span className="profile--guest__extra">Текущий код: {currCode}</span>
-                              ) : (
-                                 <span className="profile--guest__extra">ожидается получение кода...</span>
-                              )}
-
-                              <PinInput onCodeChange={(code: string) => setCurrUserCode(code)} isCorrect={isCodeCorrect}/>
-                              
-                              {isCodeCorrect &&
-                                 <span className="profile--guest__extra">Вход выполнен успешно</span>
+                              {isMobile &&
+                                 <button onClick={handleCloseButton} className='profile__button profile__button--close'>x</button>
                               }
-                              <button onClick={handleCheckCodeButton} className="profile--guest__button profile--guest__button--3">Подтвердить</button>
+                              <p className="profile--guest__title profile--guest__title--1">Авторизуйтесь</p>
+                              <ul className="profile--guest__list">
+                                 <li className="profile--guest__item profile--guest__item--1">
+                                    Покупайте продукты со скидкой
+                                 </li>
+                                 <li className="profile--guest__item profile--guest__item--2">
+                                    Заказывайте товары с доставкой день в день
+                                 </li>
+                                 <li className="profile--guest__item profile--guest__item--3">
+                                    Узнавайте первыми и участвуйте в акциях
+                                 </li>
+                              </ul>
+                              <button className="profile--guest__button" onClick={handleStepButton}>Войти по номеру телефона</button>
                            </div>
                         </div>
-                     )
-                  }
-               </>
+                     )}
+                     {currStep === 2 && (
+                        <div className={'profile profile--guest guest__step2' + ((isMobile ? ' profile--mobile' : ''))}>
+                           <div className="profile__inner">
+                              {isMobile &&
+                                 <button onClick={handleCloseButton} className='profile__button profile__button--close'>x</button>
+                              }
+                              <p className="profile--guest__title profile--guest__title--2">Введите номер телефона</p>
+                              <form onSubmit={handleStep2Submit} className='profile--guest__form'>
+                                 <div className="profile--guest__form--item profile--guest__inputdiv">
+                                    <label htmlFor="tel" className='profile--guest__label profile--guest__label--phone'>Ваш телефон</label>
+                                    <input onChange={handleInputTelChange} type="tel" name="tel" className='profile--guest__input'/>
+                                 </div>
+                                 <div className="profile--guest__form--item">
+                                    <input type="checkbox" name="confidence" className='profile--guest__checkbox' required={true}/>
+                                    <label htmlFor="confidence" className="profile--guest__label">Соглашаюсь с политикой конфиденциальности</label>
+                                 </div>
+                                 <div className="profile--guest__form--item">
+                                    <input type="checkbox" name="news" className='profile--guest__checkbox' required={true}/>
+                                    <label htmlFor="news" className="profile--guest__label">Соглашаюсь получать новости и специальные предложения</label>
+                                 </div>
+                                 <button className="profile--guest__button">Получить код по SMS</button>
+                              </form>
+                           </div>
+                        </div>
+                        )}
+                        {currStep === 3 && (
+                           <div className={'profile profile--guest guest__step3' + ((isMobile ? ' profile--mobile' : ''))}>
+                              <div className="profile__inner">
+                                 {isMobile &&
+                                    <button onClick={handleCloseButton} className='profile__button profile__button--close'>x</button>
+                                 }
+                                 <p className="profile--guest__title profile--guest__title--3">Подтверждение</p>
+                                 <p className="profile--guest__text">Код подтверждения отправлен на номер  +{currUserTel}</p>
+                                 <p className="profile--guest__extra">Введите код подтверждения</p>
+                                 {currCode ? (
+                                    <span className="profile--guest__extra">Текущий код: {currCode}</span>
+                                 ) : (
+                                    <span className="profile--guest__extra">ожидается получение кода...</span>
+                                 )}
+
+                                 <PinInput onCodeChange={(code: string) => setCurrUserCode(code)} isCorrect={isCodeCorrect}/>
+                                 
+                                 {isCodeCorrect &&
+                                    <span className="profile--guest__extra">Вход выполнен успешно</span>
+                                 }
+                                 <button onClick={handleCheckCodeButton} className="profile--guest__button profile--guest__button--3">Подтвердить</button>
+                              </div>
+                           </div>
+                        )
+                     }
+                  </>
             )
-         }
+         )}
       </>
    )
 }

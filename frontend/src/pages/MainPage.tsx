@@ -8,16 +8,24 @@ import Delivery from '../components/layout/Delivery';
 import DeliveryBanner from '../components/layout/banners/DeliveryBanner';
 import RateBanner from '../components/layout/banners/RateBanner';
 import Footer from '../components/layout/Footer';
-import { CategoryType } from '../components/UI/Categories/Categories';
 import { ModalsRenderer } from '../components/UI/ModalsRenderer';
-
-const categoriesList: CategoryType[] = ["Супермаркет", "Кулинария", "Заморозка", "Другое", "Акции"];
+import { categoriesList } from '../data/categories';
+import MobileLowerNav from '../components/layout/header/MobileLowerNav';
+import NavProfile from '../components/UI/NavProfile/NavProfile';
+import { useModal } from '../context/ModalContext';
 
 const MainPage: FC = () => {
+   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const { currentModal } = useModal();
+
    return (
       <>
          <Wrapper>
-            <Header />
+            {isProfileOpen &&
+               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+            }
+            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen}/>
+            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <Promo />
             <SalesAndRecommendation type='Скидки'/>
             {categoriesList.map((category) => (

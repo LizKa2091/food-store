@@ -1,29 +1,46 @@
-import { FC, useState, useContext, lazy } from 'react';
+import { FC, useState, useContext, lazy, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
 import { useCategory } from '../../../context/CategoryContext';
 import { useModal } from '../../../context/ModalContext';
 import Notifications from '../../UI/Notifications/Notifications';
-import './Header.scss';
-import logo from '../../../images/webpImages/logo.webp';
 import SearchBar from './SearchBar';
+import { navItems } from '../../../data/navItems';
+import { catalogItems } from '../../../data/catalogItems';
+import logo from '../../../images/webpImages/logo.webp';
+import './Header.scss';
 
 const NavProfile = lazy(() => import('../../UI/NavProfile/NavProfile'));
 
-const Header: FC = () => {
+interface IHeaderProps {
+   isProfileOpen: boolean;
+   setIsProfileOpen: (value: boolean) => void;
+}
+
+const Header: FC<IHeaderProps> = ({ isProfileOpen, setIsProfileOpen }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
-   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
-   const [currCatalogItem, setCurrCatalogItem] = useState('Супермаркет');
-   const [isProfileOpen, setIsProfileOpen] = useState(false);
+   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
+   const [currCatalogItem, setCurrCatalogItem] = useState<string>('Супермаркет');
+   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const navigate = useNavigate();
    const { setMessage } = useMessage();
    const { setSelectedCategory } = useCategory();
    const { openModal } = useModal();
 
-   const navItems: string[] = ['Супермаркет', 'Кулинария', 'Заморозка', 'Другое', 'Акции', 'Магазины'];
-   const catalogItems: {category: string, categoryItems: string[]}[] = [{ category: 'Акции', categoryItems: [] }, { category: 'Популярное', categoryItems: [] }, { category: 'Супермаркет', categoryItems: ['Вода и напитки', 'Молоко, масло и яйца', 'Снэки и сухофрукты', 'Кофе, чай и сладости', 'Макароны и крупы', 'Хлеб и выпечка', 'Масло, соусы и специи', 'Консервы и соленья'] }, { category: 'Кулинария', categoryItems: ['Выпечка', 'Пиццы', 'Гриль меню', 'Свежее мясо', 'Салаты', 'Супы', 'Горячие блюда', 'Десерты'] }, { category: 'Заморозка', categoryItems: ['Пельмени, вареники и равиоли', 'Хинкали и манты', 'Полу фабрикаты', 'Замороженные овощи', 'Рыба и морепродукты', 'Мясо'] }, { category: 'Другое', categoryItems: ['Красота и гигиена', 'Стирка и уборка', 'Полезные мелочи', 'Бытовая техника'] }, { category: 'Продукция от Ильинского', categoryItems: [] } ]
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      console.log(window.innerWidth)
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    const handleCatalogClick = () : void => {
       setIsCatalogOpen(prevVal => !prevVal);
@@ -34,37 +51,34 @@ const Header: FC = () => {
       setCurrCatalogItem(target.textContent || '');
    };
 
-   return (
-      <>
+   const handleMobileSearch = () => {
+      setIsMobileSearchOpen((prev: boolean) => !prev);
+   };
+
+   if (deviceWidth < 650) {
+      return (
          <header className="header">
-            <div className="header__inner">
-               <p className="header__text">Питайтесь разнообразно и копите <span className="header__important">скидку</span> до 10%</p>
-               <button className="header__button">Получить скидку</button>
-            </div>
             <nav className='nav'>
-               <div className='nav__top'>
-                  <div className="nav__logo">
-                     <NavLink to='/'>
-                        <img src={logo} alt="Ильинский" className="nav__logo-img" />
-                     </NavLink>
+               <div className='nav__top nav__top--mobile'>
+                  <div className="nav__top--left">
+                     <button className={`nav__button nav__button--mobile nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
+                     <div className="nav__logo">
+                        <NavLink to='/'>
+                           <img src={logo} alt="Ильинский" className="nav__logo-img" />
+                        </NavLink>
+                     </div>
                   </div>
-                  <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
-                  <div className="nav__search">
-                     <SearchBar />
-                  </div>
-                  <div className="nav__locations">
-                     <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
-                        <div className="nav__button--location-left">МСК</div>
-                        <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
-                     </button>
-                  </div>
-                  <div className="nav__user">
-                     <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
-                     <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
-                     {isProfileOpen &&
-                        <NavProfile />
-                     }
-                     <Link to='/cart' className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</Link>
+                  <div className="nav__top--right">
+                     <div className="nav__locations">
+                        <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
+                           <div className="nav__button--location-left nav__button--location-left--single">МСК</div>
+                        </button>
+                     </div>
+                     <div className="nav__user">
+                        <div className="nav__search">
+                           <button onClick={handleMobileSearch} className='nav__button--search'></button>
+                        </div>
+                     </div>
                   </div>
                </div>
                {isCatalogOpen &&
@@ -81,7 +95,81 @@ const Header: FC = () => {
                         <ul className="nav__catalog__list">
                            <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
                            {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
-                              <li key={subItem} onClick={ () => {setSelectedCategory(subItem); navigate('/catalog')} } className="nav__catalog__subitem">{subItem}</li>
+                              <li key={subItem} onClick={() => { setSelectedCategory(subItem); navigate('/catalog') }} className="nav__catalog__subitem">{subItem}</li>
+                           ))}
+                        </ul>
+                     </div>
+                  </div>
+               }
+               <div className="nav__bottom">
+                  {isMobileSearchOpen ? (
+                     <SearchBar />
+                  ) : (
+                     <>
+                        <ul className="nav__list">
+                           {navItems.map((item: string, id: number) => (
+                              item === 'Акции' ? (
+                                 <NavLink to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
+                                    {item}
+                                 </NavLink>
+                              ) : (
+                                 <li className='nav__item' key={id}>
+                                    <button className='nav__link' id={'nav__link-' + id}>{item}</button>
+                                 </li>
+                              )
+                           ))}
+                        </ul>
+                        <Notifications />
+                     </>
+                  )}
+               </div>
+            </nav>
+         </header>
+      )
+   }
+
+   if (deviceWidth < 1024) {
+      return (
+         <header className="header">
+            <div className="header__inner">
+               <p className="header__text">Питайтесь разнообразно и копите <span className="header__important">скидку</span> до 10%</p>
+               <button className="header__button">Получить скидку</button>
+            </div>
+            <nav className='nav'>
+               <div className='nav__top'>
+                  <div className="nav__logo">
+                     <NavLink to='/'>
+                        <img src={logo} alt="Ильинский" className="nav__logo-img" />
+                     </NavLink>
+                  </div>
+                  <button className={`nav__button nav__button--tablet nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог"></button>
+                  <div className="nav__search">
+                     <SearchBar />
+                  </div>
+                  <div className="nav__locations">
+                     <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
+                        <div className="nav__button--location-left nav__button--location-left--single">МСК</div>
+                     </button>
+                  </div>
+                  <div className="nav__user">
+
+                  </div>
+               </div>
+               {isCatalogOpen &&
+                  <div className="nav__catalog">
+                     <div className="nav__catalog__left">
+                        <ul className="nav__catalog__list">
+                           {catalogItems.map(item =>
+                              <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                           )}
+                        </ul>
+                     </div>
+                     <div className="nav__catalog__divider"></div>
+                     <div className="nav__catalog__right">
+                        <ul className="nav__catalog__list">
+                           <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
+                           {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
+                              <li key={subItem} onClick={() => { setSelectedCategory(subItem); navigate('/catalog') }} className="nav__catalog__subitem">{subItem}</li>
                            ))}
                         </ul>
                      </div>
@@ -105,7 +193,81 @@ const Header: FC = () => {
                </div>
             </nav>
          </header>
-      </>
+      );
+   }
+
+   return (
+      <header className="header">
+         <div className="header__inner">
+            <p className="header__text">Питайтесь разнообразно и копите <span className="header__important">скидку</span> до 10%</p>
+            <button className="header__button">Получить скидку</button>
+         </div>
+         <nav className='nav'>
+            <div className='nav__top'>
+               <div className="nav__logo">
+                  <NavLink to='/'>
+                     <img src={logo} alt="Ильинский" className="nav__logo-img" />
+                  </NavLink>
+               </div>
+               <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
+               <div className="nav__search">
+                  <SearchBar />
+               </div>
+               <div className="nav__locations">
+                  <button onClick={() => openModal('delivery')} className='nav__button nav__button--location'>
+                     <div className={"nav__button--location-left"}>МСК</div>
+                        <div className="nav__button--location-right" title='Выберите способ получения Доставка или самовывоз' aria-label='Выберите способ получения Доставка или самовывоз'>Выберите способ получения Доставка или самовывоз</div>
+                  </button>
+               </div>
+               <div className="nav__user">
+                  {deviceWidth > 1155 &&
+                     <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
+                  }
+                  <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
+                  {isProfileOpen &&
+                     <NavProfile />
+                  }
+                  <Link to='/cart' className="nav__user-action nav__user-action--cart" title="Корзина" aria-label='Корзина'>Корзина</Link>
+               </div>
+            </div>
+            {isCatalogOpen &&
+               <div className="nav__catalog">
+                  <div className="nav__catalog__left">
+                     <ul className="nav__catalog__list">
+                        {catalogItems.map(item =>
+                           <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                        )}
+                     </ul>
+                  </div>
+                  <div className="nav__catalog__divider"></div>
+                  <div className="nav__catalog__right">
+                     <ul className="nav__catalog__list">
+                        <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
+                        {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
+                           <li key={subItem} onClick={() => { setSelectedCategory(subItem); navigate('/catalog') }} className="nav__catalog__subitem">{subItem}</li>
+                        ))}
+                     </ul>
+                  </div>
+               </div>
+            }
+            <div className="nav__bottom">
+               <ul className="nav__list">
+                  {navItems.map((item: string, id: number) => (
+                     item === 'Акции' ? (
+                        <NavLink to='/sales' className='nav__link' id={'nav__link-' + id} key={id}>
+                           {item}
+                        </NavLink>
+                     ) : (
+                        <li className='nav__item' key={id}>
+                           <button className='nav__link' id={'nav__link-' + id}>{item}</button>
+                        </li>
+                     )
+                  ))}
+               </ul>
+               <Notifications />
+            </div>
+         </nav>
+      </header>
    );
 };
 

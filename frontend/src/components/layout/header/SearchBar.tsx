@@ -20,7 +20,7 @@ const SearchBar: FC = () => {
 
    return (
       <form onSubmit={handleFormSubmit} className='nav__form'>
-         <input type="text" value={searchInput} onChange={handleInputChange} className="nav__input" id='nav-search' name='nav-search' />
+         <input type="text" value={searchInput} onChange={handleInputChange} className="nav__input" id='nav-search' name='nav-search' placeholder='Начните поиск' />
          <button className='nav__input-button' title='Поиск'></button>
       </form>
    )
