@@ -6,8 +6,8 @@ import { postPhoneNum, postCode, createBonusCard } from '../../../services/authS
 import { fetchBonusCard, fetchUserFavorites } from '../../../services/userService';
 import PinInput from '../PinInput/PinInput';
 import { authedItems } from '../../../data/navProfileItems';
-import './NavProfile.scss';
 import { useModal } from '../../../context/ModalContext';
+import './NavProfile.scss';
 
 interface INavProfileProps {
    isMobile?: boolean;

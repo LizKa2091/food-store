@@ -21,8 +21,9 @@ $profile-button-close-text: #AAAAAA;
    z-index: 1;
 
    &--mobile {
-      left: 50%;
-      transform: translate(-50%, -50%);
+      position: fixed;
+      left: 5%;
+      transform: translateY(-50%);
    }
    &__inner {
       position: relative;
