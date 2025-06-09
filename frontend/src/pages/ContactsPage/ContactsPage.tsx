@@ -1,15 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Header from '../../components/layout/header/Header';
 import Wrapper from '../../components/layout/Wrapper';
 import Footer from '../../components/layout/Footer';
 import { ModalsRenderer } from '../../components/UI/ModalsRenderer';
+import MobileLowerNav from '../../components/layout/header/MobileLowerNav';
+import { useModal } from '../../context/ModalContext';
+import NavProfile from '../../components/UI/NavProfile/NavProfile';
 import './ContactsPage.scss';
 
 const ContactsPage: FC = () => {
+   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const { currentModal } = useModal();
+
    return (
       <>
          <Wrapper>
-            <Header />
+            {isProfileOpen &&
+               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+            }
+            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <div className="contacts">
                <div className="contacts__top">
                   <div className="contacts__left">

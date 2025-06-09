@@ -3,6 +3,9 @@ import Wrapper from '../../components/layout/Wrapper';
 import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/Footer';
 import { ModalsRenderer } from '../../components/UI/ModalsRenderer';
+import MobileLowerNav from '../../components/layout/header/MobileLowerNav';
+import { useModal } from '../../context/ModalContext';
+import NavProfile from '../../components/UI/NavProfile/NavProfile';
 import './VacanciesPage.scss';
 
 interface IItem {
@@ -26,6 +29,9 @@ const VacanciesPage: FC = () => {
    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
    const [formData, setFormData] = useState<IFormData>({fio: '', tel: '', date: '', country: ''});
    const [error, setError] = useState<string>('');
+   
+   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const { currentModal } = useModal();
 
    useEffect(() => {
       const fetchItems = async () => {
@@ -74,7 +80,11 @@ const VacanciesPage: FC = () => {
    return (
       <>
          <Wrapper>
-            <Header />
+            {isProfileOpen &&
+               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+            }
+            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <main className='vacancies'>
                <h2 className="vacancies__title">Вакансии</h2>
                <div className="vacancies__inner">

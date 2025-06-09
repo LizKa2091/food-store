@@ -2,12 +2,25 @@ import React, { FC, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useMessage } from '../../../context/MessageContext';
+import { useModal } from '../../../context/ModalContext';
 import './MobileLowerNav.scss';
 
-const MobileLowerNav: FC = () => {
+interface IMobileLowerNavProps {
+   isProfileOpen: boolean;
+   setIsProfileOpen: (value: boolean) => void;
+}
+
+const MobileLowerNav: FC<IMobileLowerNavProps> = ({ isProfileOpen, setIsProfileOpen }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const { setMessage } = useMessage();
+   const { openModal } = useModal();
    const navigate = useNavigate();
+
+   const handleOpenProfile = () => {
+      setIsProfileOpen(!isProfileOpen);
+
+      if (!isAuthed) openModal('mobileAuth');
+   };
 
    return (
       <nav className='nav-mobile'>
@@ -33,7 +46,7 @@ const MobileLowerNav: FC = () => {
                </button>
             </li>
             <li className="nav-mobile__item">
-               <button onClick={() => {}} className="nav-mobile__button nav-mobile__button--login" aria-label="Профиль">
+               <button onClick={handleOpenProfile} className="nav-mobile__button nav-mobile__button--login" aria-label="Профиль">
                   Профиль
                </button>
             </li>

@@ -13,11 +13,15 @@ import './Header.scss';
 
 const NavProfile = lazy(() => import('../../UI/NavProfile/NavProfile'));
 
-const Header: FC = () => {
+interface IHeaderProps {
+   isProfileOpen: boolean;
+   setIsProfileOpen: (value: boolean) => void;
+}
+
+const Header: FC<IHeaderProps> = ({ isProfileOpen, setIsProfileOpen }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const [currCatalogItem, setCurrCatalogItem] = useState<string>('Супермаркет');
-   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
    const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
@@ -100,7 +104,7 @@ const Header: FC = () => {
                <div className="nav__bottom">
                   {isMobileSearchOpen ? (
                      <SearchBar />
-                  ): (
+                  ) : (
                      <>
                         <ul className="nav__list">
                            {navItems.map((item: string, id: number) => (
@@ -219,7 +223,7 @@ const Header: FC = () => {
                   {deviceWidth > 1155 &&
                      <button onClick={ () => isAuthed ? navigate('/profile/favorites') : setMessage('Пожалуйста, авторизуйтесь') } className="nav__user-action nav__user-action--like" title="Избранное"></button>
                   }
-                  <button onClick={() => setIsProfileOpen(prevVal => !prevVal)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
+                  <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="nav__user-action nav__user-action--profile" title="Войти"></button>
                   {isProfileOpen &&
                      <NavProfile />
                   }

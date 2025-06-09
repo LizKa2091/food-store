@@ -37,6 +37,7 @@ $nav-mobile-cart-text: #fff;
       font-size: 0.5625rem;
       color: $nav-mobile-text;
       text-decoration: none;
+      cursor: pointer;
 
       &--catalog { 
          gap: 7.43px; 
@@ -91,6 +92,7 @@ $nav-mobile-cart-text: #fff;
       background-color: inherit;
       font-size: 0.5625rem;
       color: $nav-mobile-text;
+      cursor: pointer;
 
       &--favorites::before {
          content: '';

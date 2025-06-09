@@ -7,9 +7,15 @@ import CartStep1 from '../../components/UI/Cart/CartStep1';
 import CartStep2 from '../../components/UI/Cart/CartStep2';
 import CartPanel from '../../components/UI/Cart/CartPanel';
 import { ModalsRenderer } from '../../components/UI/ModalsRenderer';
+import MobileLowerNav from '../../components/layout/header/MobileLowerNav';
+import { useModal } from '../../context/ModalContext';
+import NavProfile from '../../components/UI/NavProfile/NavProfile';
 
 const CartPage: FC = () => {
    const [currStep, setCurrStep] = useState<number>(1);
+   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+
+   const { currentModal } = useModal();
 
    const handleStepChange = (step: number) => {
       setCurrStep(step)
@@ -35,7 +41,11 @@ const CartPage: FC = () => {
    return (
       <>
          <Wrapper>
-            <Header />
+            {isProfileOpen &&
+               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+            }
+            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             {renderCartStep()}
             <SalesAndRecommendation type='Рекомендации для вас' />
             <Footer />
