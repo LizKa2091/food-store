@@ -24,7 +24,7 @@ const MobileLowerNav: FC = () => {
             </li>
             <li className="nav-mobile__item">
                <NavLink to='/cart' className="nav-mobile__link nav-mobile__link--cart" aria-label='Корзина'>
-                  Корзина
+                  {!isAuthed ? 'Корзина' : '94.9 руб'}
                </NavLink>
             </li>
             <li className="nav-mobile__item">
