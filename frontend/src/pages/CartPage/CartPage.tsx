@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Wrapper from '../../components/layout/Wrapper';
 import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/Footer';
@@ -14,8 +14,21 @@ import NavProfile from '../../components/UI/NavProfile/NavProfile';
 const CartPage: FC = () => {
    const [currStep, setCurrStep] = useState<number>(1);
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const { currentModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
+
 
    const handleStepChange = (step: number) => {
       setCurrStep(step)
@@ -45,7 +58,7 @@ const CartPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             {renderCartStep()}
             <SalesAndRecommendation type='Рекомендации для вас' />
             <Footer />

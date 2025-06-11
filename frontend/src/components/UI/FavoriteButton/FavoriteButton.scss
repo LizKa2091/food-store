@@ -1,22 +1,29 @@
 .favorite-button {
-    background: url('../../../images/webpImages/favorite-icon.webp') no-repeat center center;
-    background-size: contain;
-    border: 0;
-    width: 22px;
-    height: 19.68px;
-    position: absolute;
-    top: 17px;
-    right: 21px;
-    cursor: pointer;
+   background: url('../../../images/webpImages/favorite-icon.webp') no-repeat center center;
+   background-size: contain;
+   border: 0;
+   width: 22px;
+   height: 19.68px;
+   position: absolute;
+   top: 17px;
+   right: 21px;
+   cursor: pointer;
 
-    &--relative {
+   &--relative {
       position: relative;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-    }
-    &--favorited {
-        background: url('../../../images/webpImages/favorited-icon.webp') no-repeat center center;
-        background-size: contain;
-    }
+   }
+   &--favorited {
+      background: url('../../../images/webpImages/favorited-icon.webp') no-repeat center center;
+      background-size: contain;
+   }
+}
+
+@media (max-width: 768px) {
+   .favorite-button {
+      width: 17.3px;
+      height: 17.11px;
+   }
 }

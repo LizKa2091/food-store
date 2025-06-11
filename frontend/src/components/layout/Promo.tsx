@@ -3,23 +3,15 @@ import './Promo.scss';
 import star from '../../images/webpImages/star.webp';
 import { Link } from 'react-router-dom';
 
-const Promo: FC = () => {
+interface IPromoProps {
+   deviceWidth: number;
+}
+
+const Promo: FC<IPromoProps> = ({ deviceWidth }) => {
    const [currMainSlide, setCurrMainSlide] = useState<number>(0);
    const [isAnimating, setIsAnimating] = useState<boolean>(false);
-   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const promoContainerRef = useRef<HTMLDivElement>(null);
-
-   useEffect(() => {
-      const handleWindowResize = () => {
-         setDeviceWidth(window.innerWidth);
-      };
-
-      window.addEventListener('windowResize', handleWindowResize);
-
-      handleWindowResize();
-      return () => window.removeEventListener('windowResize', handleWindowResize);
-   }, []);
 
    const changeSlide = useCallback((direction: 'next' | 'prev') => {
       setIsAnimating(true);

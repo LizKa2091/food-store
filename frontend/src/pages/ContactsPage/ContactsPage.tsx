@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Header from '../../components/layout/header/Header';
 import Wrapper from '../../components/layout/Wrapper';
 import Footer from '../../components/layout/Footer';
@@ -10,7 +10,21 @@ import './ContactsPage.scss';
 
 const ContactsPage: FC = () => {
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
+
    const { currentModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      console.log(window.innerWidth)
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    return (
       <>
@@ -19,7 +33,7 @@ const ContactsPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <div className="contacts">
                <div className="contacts__top">
                   <div className="contacts__left">

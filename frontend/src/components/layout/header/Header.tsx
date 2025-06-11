@@ -14,33 +14,21 @@ import './Header.scss';
 const NavProfile = lazy(() => import('../../UI/NavProfile/NavProfile'));
 
 interface IHeaderProps {
+   deviceWidth: number;
    isProfileOpen: boolean;
    setIsProfileOpen: (value: boolean) => void;
 }
 
-const Header: FC<IHeaderProps> = ({ isProfileOpen, setIsProfileOpen }) => {
+const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const [currCatalogItem, setCurrCatalogItem] = useState<string>('Супермаркет');
    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
-   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const navigate = useNavigate();
    const { setMessage } = useMessage();
    const { setSelectedCategory } = useCategory();
    const { openModal } = useModal();
-
-   useEffect(() => {
-      const handleWindowResize = () => {
-         setDeviceWidth(window.innerWidth);
-      };
-
-      console.log(window.innerWidth)
-      window.addEventListener('windowResize', handleWindowResize);
-
-      handleWindowResize();
-      return () => window.removeEventListener('windowResize', handleWindowResize);
-   }, []);
 
    const handleCatalogClick = () : void => {
       setIsCatalogOpen(prevVal => !prevVal);
