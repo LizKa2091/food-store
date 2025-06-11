@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Wrapper from '../components/layout/Wrapper';
 import Header from '../components/layout/header/Header';
 import Promo from '../components/layout/Promo';
@@ -16,7 +16,20 @@ import { useModal } from '../context/ModalContext';
 
 const MainPage: FC = () => {
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
+
    const { currentModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    return (
       <>
@@ -25,8 +38,8 @@ const MainPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen}/>
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Promo />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Promo deviceWidth={deviceWidth} />
             <SalesAndRecommendation type='Скидки'/>
             {categoriesList.map((category) => (
                <Categories key={category} category={category} selectedSubcategory='' />

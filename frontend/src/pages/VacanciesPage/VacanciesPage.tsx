@@ -29,9 +29,21 @@ const VacanciesPage: FC = () => {
    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
    const [formData, setFormData] = useState<IFormData>({fio: '', tel: '', date: '', country: ''});
    const [error, setError] = useState<string>('');
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
    
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
    const { currentModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    useEffect(() => {
       const fetchItems = async () => {
@@ -84,7 +96,7 @@ const VacanciesPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <main className='vacancies'>
                <h2 className="vacancies__title">Вакансии</h2>
                <div className="vacancies__inner">

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Wrapper from '../../components/layout/Wrapper';
 import Header from '../../components/layout/header/Header';
 import UserProfileInfo from '../../components/layout/userProfile/UserProfileInfo';
@@ -15,7 +15,21 @@ interface IProfilePageProps {
 
 const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
+
    const { currentModal } = useModal();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      console.log(window.innerWidth)
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    return (
       <>
@@ -24,7 +38,7 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <h2 className='title'>Личный кабинет</h2>
             <UserProfileInfo section={section}/>
             <Footer />

@@ -33,6 +33,7 @@ const CatalogPage: FC = () => {
    const [displayProductsList, setDisplayProductsList] = useState<IItemShortInfo[] | undefined>(undefined);
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
    const [keyWord, setKeyWord] = useState<string>('');
+   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
@@ -47,6 +48,17 @@ const CatalogPage: FC = () => {
    const { initCart, cartItems } = cartContext;
 
    const { setMessage } = useMessage();
+
+   useEffect(() => {
+      const handleWindowResize = () => {
+         setDeviceWidth(window.innerWidth);
+      };
+
+      window.addEventListener('windowResize', handleWindowResize);
+
+      handleWindowResize();
+      return () => window.removeEventListener('windowResize', handleWindowResize);
+   }, []);
 
    useEffect(() => {
       if (params?.keyword) setKeyWord(params.keyword);
@@ -180,7 +192,7 @@ const CatalogPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
-            <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <h2 className='catalog-title'>{selectedCategory}</h2>
             <div className="catalog">
                <aside className="catalog-aside">
