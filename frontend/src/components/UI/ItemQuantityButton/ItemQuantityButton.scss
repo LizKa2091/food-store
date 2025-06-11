@@ -22,7 +22,6 @@ $white: #fff;
       font-weight: 700;
       color: $cart-item-button-text;
       width: 109px;
-      height: 42px;
       padding: 0 16px;
    }
    &-button {
@@ -60,10 +59,25 @@ $white: #fff;
    max-width: 109px;
    height: 42px;
    padding: 0 15px;
+   cursor: pointer;
 
    &:hover {
-       background-color: $red;
-       color: $white;
-       cursor: pointer;
+      background-color: $red;
+      color: $white;
+   }
+}
+
+@media (max-width: 768px) {
+   .main__item {
+      &-cart-button {
+         background-color: $red;
+         border-radius: 9px;
+         color: $white;
+         height: 33.75px;
+         max-width: 131.62px;
+      }
+      &-quantity-control {
+
+      }
    }
 }

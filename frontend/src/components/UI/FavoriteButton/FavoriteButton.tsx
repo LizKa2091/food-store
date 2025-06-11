@@ -61,9 +61,7 @@ const FavoriteButton: FC<IFavoriteButtonProps> = ({ productId, initialFavState, 
    };
 
    return (
-      <>
-         <button onClick={handleClick} className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '') + (position === 'relative' ? ' favorite-button--relative' : '')} />
-      </>
+      <button onClick={handleClick} className={'favorite-button' + (isFavorited ? ' favorite-button--favorited' : '') + (position === 'relative' ? ' favorite-button--relative' : '')} />
    )
 };
 
