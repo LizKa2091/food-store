@@ -603,6 +603,31 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
             background-position: 40px 19px;
             background-size: 79.66px 106.7px;
          }
+
+         &.Пельмени {
+            background-position: 20px 59px;
+            background-size: 119.25px 77.62px;
+         }
+         &.Хинкали {
+            background-position: 0 45px;
+            background-size: 129.37px 87.75px;
+         }
+         &.Полу {
+            background-position: 5px 25px;
+            background-size: 146.25px 124.87px;
+         }
+         &.Замороженные {
+            background-position: 20px 55px;
+            background-size: 110.25px 84.37px;
+         }
+         &.Рыба {
+            background-position: 25px 42px;
+            background-size: 123.19px 97.01px;
+         }
+         &.Мясо {
+            background-position: 25px 25px;
+            background-size: 139.41px 104.35px;
+         }
       }
    }   
 }
