@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCategory } from '../../../context/CategoryContext';
 import { ISubCategory } from '../../../types/products.types';
-import './Categories.scss';
 import { subCategories } from '../../../data/subcategories';
+import './Categories.scss';
 
 export type CategoryType = 'Супермаркет' | 'Кулинария' | 'Заморозка' | 'Другое' | 'Акции';
 
@@ -29,7 +29,7 @@ const Categories: FC<ICategoriesProps> = ({ category, type }) => {
             <h4 className='category__title'>{category}</h4>
             <button className="category__button">Смотреть все</button>
          </div>
-            <ul className={`category__list ${category}`}>
+         <ul className={`category__list ${category}`}>
             {subCategories[category].map((el: ISubCategory) => 
                type === 'extended' ? (
                   <li className={`subcategory__item ${category} extended ${el.name.split(' ').length === 1 ? el.name : el.name.split(' ')[0].replace(',', '')}`} key={el.name}>
