@@ -628,6 +628,23 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
             background-position: 25px 25px;
             background-size: 139.41px 104.35px;
          }
+
+         &.Красота {
+            background-position: 35px 35px;
+            background-size: 111.1px 105.5px;
+         }
+         &.Стирка {
+            background-position: 10px 47px;
+            background-size: 116.26px 116.26px;
+         }
+         &.Полезные {
+            background-position: 5px 30px;
+            background-size: 146.25px 134.87px;
+         }
+         &.Бытовая {
+            background-position: 65px 30px;
+            background-size: 83.25px 99px;
+         }
       }
    }   
 }
