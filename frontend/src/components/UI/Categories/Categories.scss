@@ -499,6 +499,9 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 
 @media (max-width: 768px) {
    .category {
+      &-section {
+         gap: 23.62px;
+      }
       &__title {
          font-size: 1.375rem;
       }
@@ -514,6 +517,12 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       }
    }
    .subcategory {
+      &__title {
+         font-size: 0.84375rem;
+         top: 20.28px;
+         left: 16.83px;
+         max-width: 100px;
+      }
       &__item {
          width: 130.91px;
          height: 130.91px;
@@ -561,13 +570,39 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
             background-position: 20px 49px;
             background-size: 106.58px 75.94px;
          }
+
+         &.Выпечка {
+            background-position: 20px 49px;
+            background-size: 114.54px 71.05px;
+         }
+         &.Пиццы {
+            background-position: 10px 29px;
+            background-size: 153.3px 151.14px;
+         }
+         &.Гриль {
+            background-position: 32px 39px;
+            background-size: 101.19px 117.99px;
+         }
+         &.Свежее {
+            background-position: 20px 20px;
+            background-size: 118.85px 123.15px;
+         }
+         &.Салаты {
+            background-position: 15px 35px;
+            background-size: 118.85px 123.15px;
+         }
+         &.Супы {
+            background-position: 15px 15px;
+            background-size: 130.47px 139.52px;
+         }
+         &.Горячие {
+            background-position: 20px 22px;
+            background-size: 139.52px 141.86px;
+         }
+         &.Десерты {
+            background-position: 40px 19px;
+            background-size: 79.66px 106.7px;
+         }
       }
-      &__title {
-         font-size: 0.84375rem;
-         top: 20.28px;
-         left: 16.83px;
-         max-width: 100px;
-      }
-   }
-   
+   }   
 }
