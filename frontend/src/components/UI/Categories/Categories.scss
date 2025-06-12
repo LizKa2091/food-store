@@ -55,7 +55,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
    }
    &__title {
       font-size: 2rem;
-      font-family: 700;
+      font-weight: 700;
       text-transform: uppercase;
    }
    &__button {
@@ -514,6 +514,12 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       &__list {
          column-gap: 10.33px;
          row-gap: 10.84px;
+
+         &.Акции {
+            flex-wrap: nowrap;
+            overflow: auto;
+            gap: 11.45px;
+         }
       }
    }
    .subcategory {
@@ -522,10 +528,27 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
          top: 20.28px;
          left: 16.83px;
          max-width: 100px;
+
+         &.Акции {
+            font-size: 1.125rem;
+
+            &:hover {
+
+            }
+         }
       }
       &__item {
          width: 130.91px;
          height: 130.91px;
+
+         &:hover .subcategory__title {
+            font-size: 1.2rem;
+         }
+
+         &.Акции {
+            width: 221.76px;
+            height: 321.19px;
+         }
 
          &.Супермаркет {
             border-radius: 25.03px;
@@ -644,6 +667,23 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
          &.Бытовая {
             background-position: 65px 30px;
             background-size: 83.25px 99px;
+         }
+
+         &.Сделай {
+            background-position: -48px 110px;
+            background-size: 315.47px 210.31px;
+         }
+         &.Праздник {
+            background-position: 0 160px;
+            background-size: 271.83px 271.83px;
+         }
+         &.Скидка {
+            background-position: 0 130px;
+            background-size: 216.04px 211.74px;
+         }
+         &.Комбо {
+            background-position: -48px 60px;
+            background-size: 418.15px 364.11px;
          }
       }
    }   
