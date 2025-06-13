@@ -499,6 +499,9 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 
 @media (max-width: 768px) {
    .category {
+      &__info {
+         gap: 18px;
+      }
       &-section {
          gap: 23.62px;
       }
@@ -517,8 +520,8 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 
          &.Акции {
             flex-wrap: nowrap;
-            overflow: auto;
-            gap: 11.45px;
+            overflow-x: scroll;
+            width: 100%;
          }
       }
    }
@@ -531,11 +534,17 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 
          &.Акции {
             font-size: 1.125rem;
-
-            &:hover {
-
-            }
+            top: 20.28px;
+            left: 23.92px;
+            max-width: 150px;
          }
+      }
+      &__extra {
+         font-size: 0.715625rem;
+         padding: 6.91px 7.19px;
+         height: auto;
+         top: 25.91px;
+         left: 23.92px;
       }
       &__item {
          width: 130.91px;
@@ -546,6 +555,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
          }
 
          &.Акции {
+            min-width: 221.76px;
             width: 221.76px;
             height: 321.19px;
          }
