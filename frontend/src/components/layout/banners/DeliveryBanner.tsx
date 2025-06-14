@@ -6,7 +6,7 @@ const DeliveryBanner = () => {
     <div className='delivery-banner'>
       <div className="delivery-banner__container--text">
         <div className="delivery-banner__col">
-          <p className="delivery-banner__title">Бесплатная доставка +</p>
+          <p className="delivery-banner__title">Бесплатная доставка</p>
           <p className="delivery-banner__subtitle">первого заказа</p>
         </div>
         <div className="delivery-banner__col">
