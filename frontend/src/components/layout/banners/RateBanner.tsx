@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC } from 'react';
 import './RateBanner.scss';
 import star from '../../../images/webpImages/star.webp';
 import starEmpty from '../../../images/webpImages/empty-star.webp';
