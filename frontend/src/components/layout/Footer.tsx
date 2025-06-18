@@ -1,5 +1,5 @@
 import React, { FC, FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCategory } from "../../context/CategoryContext";
 import './Footer.scss';
 import visa from '../../images/webpImages/footer/visa.webp';
@@ -52,7 +52,7 @@ const Footer: FC = () => {
                   <Link to='/vacancies' className="footer__link">Вакансии</Link>
                </li>
             </ul>
-            <ul className="footer__list footer__list--upper">
+            <ul className="footer__list footer__list--upper footer__list--iconed">
                <li className="footer__item">
                   <a href="tel:+38000490999" className="footer__link footer__item--tel">
                      +38 (000) 49-09-99
