@@ -1,10 +1,17 @@
 import React, { FC, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useCategory } from "../../context/CategoryContext";
 import './Footer.scss';
 import visa from '../../images/webpImages/footer/visa.webp';
 import mastercard from '../../images/webpImages/footer/mastercard.webp';
 
 const Footer: FC = () => {
+   const { setSelectedCategory } = useCategory();
+
+   const handleCategoryClick = (category: string) => {
+      setSelectedCategory(category);
+   };
+
    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
    };
@@ -14,23 +21,23 @@ const Footer: FC = () => {
          <div className="footer__lists">
             <ul className="footer__list footer__list--upper">
                <li className="footer__item footer__list__title">Ильинский онлайн</li>
-               <li className="footer__item">
-                  <Link to='' className="footer__link">Кулинария</Link>
+               <li onClick={() => handleCategoryClick('Кулинария')} className="footer__item">
+                  <Link to='/catalog' className="footer__link">Кулинария</Link>
                </li>
-               <li className="footer__item">
-                  <Link to='' className="footer__link">Супермаркет</Link>
+               <li onClick={() => handleCategoryClick('Супермаркет')} className="footer__item">
+                  <Link to='/catalog' className="footer__link">Супермаркет</Link>
                </li>
-               <li className="footer__item">
-                  <Link to='' className="footer__link">Заморозка</Link>
+               <li onClick={() => handleCategoryClick('Заморозка')} className="footer__item">
+                  <Link to='/catalog' className="footer__link">Заморозка</Link>
                </li>
-               <li className="footer__item">
-                  <Link to='' className="footer__link">Другое</Link>
+               <li onClick={() => handleCategoryClick('Другое')} className="footer__item">
+                  <Link to='/catalog' className="footer__link">Другое</Link>
                </li>
             </ul>
             <ul className="footer__list footer__list--upper">
                <li className="footer__item footer__list__title">Ильинский клуб</li>
                <li className="footer__item">
-                  <Link to='' className="footer__link">Акции</Link>
+                  <Link to='/sales' className="footer__link">Акции</Link>
                </li>
                <li className="footer__item">
                   <Link to='' className="footer__link">Доствака и оплата</Link>
@@ -42,7 +49,7 @@ const Footer: FC = () => {
                   <Link to='' className="footer__link">Конфиденциальность</Link>
                </li>
                <li className="footer__item">
-                  <Link to='' className="footer__link">Вакансии</Link>
+                  <Link to='/vacancies' className="footer__link">Вакансии</Link>
                </li>
             </ul>
             <ul className="footer__list footer__list--upper">
@@ -52,16 +59,16 @@ const Footer: FC = () => {
                   </a>
                </li>
                <li className="footer__item">
-                  <Link to='' className="footer__link footer__item__extra">Ежедневно c 09:00 до 21:00</Link>
+                  Ежедневно c 09:00 до 21:00
                </li>
                <li className="footer__item">
-                  <Link to='' className="footer__link footer__item--address">Адреса магазинов</Link>
+                  <Link to='/contacts' className="footer__link footer__item--address">Адреса магазинов</Link>
                </li>
                <li className="footer__item">
-                  <Link to='' className="footer__link footer__item--inst">Следите за нами</Link>
+                  <Link to='/contacts' className="footer__link footer__item--inst">Следите за нами</Link>
                </li>
                <li className="footer__item">
-                  <Link to='' className="footer__link footer__item--email">Обратная связь</Link>
+                  <Link to='/contacts' className="footer__link footer__item--email">Обратная связь</Link>
                </li>
             </ul>
             <div className="footer__news">
