@@ -74,13 +74,56 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
                {isCatalogOpen &&
                   <div className="nav__catalog">
                         {!isMobileItemActive ? (
-                           <ul className="nav__catalog__list">
-                              {catalogItems.map(item =>
-                                 <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
-                              )}
-                           </ul>
+                           <>
+                              <ul className="nav__catalog__list--default">
+                                 <li className="nav__catalog__item nav__catalog__title">
+                                    Каталог
+                                 </li>
+                                 {catalogItems.map(item =>
+                                    <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                                 )}
+                              </ul>
+                              <ul className='nav__catalog__list--default nav__catalog__list--extra'>
+                                 <li className="nav__catalog__item nav__catalog__title">
+                                    Профиль
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    {isAuthed ? 'Имя Фамилия' : 'Войти'}
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Заказы
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Бонусы
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Избранное
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Выход
+                                 </li>
+                              </ul>
+                              <ul className='nav__catalog__list--default nav__catalog__list--extra'>
+                                 <li className="nav__catalog__item nav__catalog__title">
+                                    Ильинский клуб
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    <Link to='' className='nav__catalog__item-link'>Доставка и оплата</Link>
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Программа лояльности
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    Политика конфиденциальности
+                                 </li>
+                                 <li className="nav__catalog__item nav__catalog__item--noexpand">
+                                    <Link to='/vacancies' className='nav__catalog__item-link'>Вакансии</Link>
+                                 </li>
+                              </ul>
+                           </>
+                           
                         ) : (
-                           <ul className="nav__catalog__list">
+                           <ul className="nav__catalog__list nav__catalog__list--more">
                               <li className="nav__catalog__item nav__catalog__title">
                                  <button onClick={() => setIsMobileItemActive(false)} className='nav__catalog__item-button'></button>{currCatalogItem}
                               </li>

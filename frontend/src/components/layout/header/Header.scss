@@ -418,6 +418,7 @@ $button-sale-h: 43px;
          white-space: nowrap;
          overflow: hidden;
          text-overflow: ellipsis;
+         color: #000;
 
          &-button {
             border: 0;
@@ -465,6 +466,10 @@ $button-sale-h: 43px;
       }
       &__subitem {
          list-style-type: none;
+         position: relative;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
          cursor: pointer;
 
          &:hover {
@@ -616,13 +621,19 @@ $button-sale-h: 43px;
          }
       }
       &__catalog {
+         flex-direction: column;
          padding: 12.5px 24px;
          top: 59.86px;
          max-width: 100%;
+         height: 100dvh;
+         min-height: 500px;
+         max-height: calc(100dvh - 59.86px - 52px);
+         overflow-y: auto;
+         overflow-x: hidden;
 
          &__item {
             font-size: 1.125rem;
-            width: 110%;
+            width: calc(100% - 50px);
 
             &.nav__catalog__title {
                margin-bottom: 0;
@@ -630,9 +641,39 @@ $button-sale-h: 43px;
             &:not(.nav__catalog__title)::after {
                right: 0;
             }
+            &--noexpand {
+               &::after {
+                  display: none;
+               }
+            }
+            &-link {
+               color: #000;
+               text-decoration: none;
+            }
+         }
+         &__title {
+            text-transform: uppercase;
+            font-weight: 700;
          }
          &__list {
             gap: 17px;
+
+            &--default {
+               display: flex;
+               flex-direction: column;
+               padding: 22.5px 0 22.5px 30px;
+               gap: 9px;
+
+               &:not(:first-of-type) {
+                  border-top: 1px solid #E7EFEE;
+               }
+               &:first-of-type {
+                  padding-top: 0;
+               }
+               &:last-of-type {
+                  padding-bottom: 0;
+               }
+            }
          }
          &__subitem {
             margin-left: 30px;
