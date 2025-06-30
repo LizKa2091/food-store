@@ -23,6 +23,7 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const [currCatalogItem, setCurrCatalogItem] = useState<string>('Супермаркет');
+   const [isMobileItemActive, setIsMobileItemActive] = useState<boolean>(false);
    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
 
    const navigate = useNavigate();
@@ -37,13 +38,14 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
    const handleCategoryClick = (e: React.MouseEvent<HTMLLIElement>) : void => {
       const target = e.target as HTMLLIElement;
       setCurrCatalogItem(target.textContent || '');
+      setIsMobileItemActive(true);
    };
 
    const handleMobileSearch = () => {
       setIsMobileSearchOpen((prev: boolean) => !prev);
    };
 
-   if (deviceWidth < 650) {
+   if (deviceWidth < 769) {
       return (
          <header className="header">
             <nav className='nav'>
@@ -71,22 +73,22 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
                </div>
                {isCatalogOpen &&
                   <div className="nav__catalog">
-                     <div className="nav__catalog__left">
-                        <ul className="nav__catalog__list">
-                           {catalogItems.map(item =>
-                              <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
-                           )}
-                        </ul>
-                     </div>
-                     <div className="nav__catalog__divider"></div>
-                     <div className="nav__catalog__right">
-                        <ul className="nav__catalog__list">
-                           <li className="nav__catalog__item nav__catalog__title">{currCatalogItem}</li>
-                           {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
-                              <li key={subItem} onClick={() => { setSelectedCategory(subItem); navigate('/catalog') }} className="nav__catalog__subitem">{subItem}</li>
-                           ))}
-                        </ul>
-                     </div>
+                        {!isMobileItemActive ? (
+                           <ul className="nav__catalog__list">
+                              {catalogItems.map(item =>
+                                 <li className="nav__catalog__item" key={item.category} onClick={handleCategoryClick}>{item.category}</li>
+                              )}
+                           </ul>
+                        ) : (
+                           <ul className="nav__catalog__list">
+                              <li className="nav__catalog__item nav__catalog__title">
+                                 <button onClick={() => setIsMobileItemActive(false)} className='nav__catalog__item-button'></button>{currCatalogItem}
+                              </li>
+                              {catalogItems.find(item => item.category === currCatalogItem)?.categoryItems.map(subItem => (
+                                 <li key={subItem} onClick={() => { setSelectedCategory(subItem); navigate('/catalog') }} className="nav__catalog__subitem">{subItem}</li>
+                              ))}
+                           </ul>
+                        )}
                   </div>
                }
                <div className="nav__bottom">
