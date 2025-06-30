@@ -504,6 +504,11 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       }
       &-section {
          gap: 23.62px;
+         padding-bottom: 0;
+
+         &.sales {
+            padding-bottom: 5dvh;
+         }
       }
       &__title {
          font-size: 1.375rem;
