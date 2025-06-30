@@ -24,7 +24,7 @@ const Categories: FC<ICategoriesProps> = ({ category, type }) => {
    };
 
    return (
-      <section className={'category-section' + (type === 'extended' ? ' extended' : '')}>
+      <section className={'category-section' + (type === 'extended' ? ' extended' : '') + (category === 'Акции' ? ' sales' : '')}>
          <div className="category__info">
             <h4 className='category__title'>{category}</h4>
             <button className="category__button">Смотреть все</button>
