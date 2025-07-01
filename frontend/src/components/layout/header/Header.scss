@@ -236,8 +236,7 @@ $button-sale-h: 43px;
       width: 25vw;
       max-width: 317px;
       height: 49px;
-      padding-left: 15px;
-      padding-right: 17.73px;
+      padding: 0 17.73px 0 38px;
 
       &-button {
          width: 21.27px;
@@ -625,7 +624,6 @@ $button-sale-h: 43px;
          padding: 12.5px 24px;
          top: 59.86px;
          max-width: 100%;
-         height: 100dvh;
          min-height: 500px;
          max-height: calc(100dvh - 59.86px - 52px);
          overflow-y: auto;
