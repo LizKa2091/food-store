@@ -200,15 +200,15 @@ const CatalogPage: FC = () => {
                <aside className="catalog-aside">
                   <p className="catalog-aside__title">Особенности</p>
                   <ul className="catalog-aside__list">
-                     <li className="catalog-aside__item catalog-aside__item--radio">
+                     <li key='item1' className="catalog-aside__item catalog-aside__item--radio">
                         <input type="radio" className='catalog-aside__item-radio' name="filter" id="sale" />
                         <label htmlFor="sale" className="catalog-aside__item-label catalog-aside__item-label--radio">Со скидкой</label>
                      </li>
-                     <li className="catalog-aside__item catalog-aside__item--radio">
+                     <li key='item2' className="catalog-aside__item catalog-aside__item--radio">
                         <input type="radio" className='catalog-aside__item-radio' name="filter" id="delivery" />
                         <label htmlFor="delivery" className="catalog-aside__item-label catalog-aside__item-label--radio">Доставка сегодня</label>
                      </li>
-                     <li className="catalog-aside__item catalog-aside__item--radio">
+                     <li key='item3' className="catalog-aside__item catalog-aside__item--radio">
                         <input type="radio" className='catalog-aside__item-radio' name="filter" id="iljinsky" />
                         <label htmlFor="iljinsky" className="catalog-aside__item-label catalog-aside__item-label--radio">Продукция от "Ильинского"</label>
                      </li>
