@@ -191,7 +191,9 @@ const CatalogPage: FC = () => {
             {isProfileOpen &&
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
-            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            {deviceWidth <= 768 &&
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <h2 className='catalog-title'>{selectedCategory}</h2>
             <div className="catalog">

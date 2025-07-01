@@ -37,7 +37,9 @@ const MainPage: FC = () => {
             {isProfileOpen &&
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
-            <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen}/>
+            {deviceWidth <= 768 &&
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
             <Promo deviceWidth={deviceWidth} />
             <SalesAndRecommendation type='Скидки'/>
