@@ -16,6 +16,7 @@ import { useModal } from '../context/ModalContext';
 
 const MainPage: FC = () => {
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const { currentModal } = useModal();
@@ -31,6 +32,10 @@ const MainPage: FC = () => {
       return () => window.removeEventListener('windowResize', handleWindowResize);
    }, []);
 
+   const handleCatalogChange = (): void => {
+      setIsCatalogOpen((prev: boolean) => !prev);
+   };
+
    return (
       <>
          <Wrapper>
@@ -38,9 +43,9 @@ const MainPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
             }
-            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <Promo deviceWidth={deviceWidth} />
             <SalesAndRecommendation type='Скидки'/>
             {categoriesList.map((category) => (

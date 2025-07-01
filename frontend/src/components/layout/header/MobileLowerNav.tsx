@@ -8,9 +8,10 @@ import './MobileLowerNav.scss';
 interface IMobileLowerNavProps {
    isProfileOpen: boolean;
    setIsProfileOpen: (value: boolean) => void;
-}
+   handleCatalogChange: () => void;
+};
 
-const MobileLowerNav: FC<IMobileLowerNavProps> = ({ isProfileOpen, setIsProfileOpen }) => {
+const MobileLowerNav: FC<IMobileLowerNavProps> = ({ isProfileOpen, setIsProfileOpen, handleCatalogChange }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const { setMessage } = useMessage();
    const { openModal } = useModal();
@@ -26,9 +27,9 @@ const MobileLowerNav: FC<IMobileLowerNavProps> = ({ isProfileOpen, setIsProfileO
       <nav className='nav-mobile'>
          <ul className="nav-mobile__list">
             <li className="nav-mobile__item">
-               <NavLink to='/catalog' className="nav-mobile__link nav-mobile__link--catalog" aria-label='Каталог'>
+               <button onClick={handleCatalogChange} className="nav-mobile__button nav-mobile__button--catalog" aria-label='Каталог'>
                   Каталог
-               </NavLink>
+               </button>
             </li>
             <li className="nav-mobile__item">
                <NavLink to='/sales' className="nav-mobile__link nav-mobile__link--sales" aria-label="Акции">

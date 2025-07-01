@@ -32,6 +32,7 @@ const VacanciesPage: FC = () => {
    const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
    
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const { currentModal } = useModal();
 
    useEffect(() => {
@@ -70,23 +71,27 @@ const VacanciesPage: FC = () => {
       fetchItems();
    }, []);
 
-   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
       const { name, value } = e.target;
       setFormData(prev => ({ ...prev, [name]: value }));
    };
 
-   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
    };
 
-   const handleItemClick = (e: number) => {
+   const handleItemClick = (e: number): void => {
       const filteredItems = items?.filter(item => item.id === e);
 
       if (filteredItems) setSelectedItem(filteredItems[0]);
    };
 
-   const handleCloseModal = () => {
+   const handleCloseModal = (): void => {
       if (selectedItem) setSelectedItem(null);
+   };
+
+   const handleCatalogChange = (): void => {
+      setIsCatalogOpen((prev: boolean) => !prev);
    };
 
    return (
@@ -96,9 +101,9 @@ const VacanciesPage: FC = () => {
                <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
             }
             {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
             }
-            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} />
+            <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <main className='vacancies'>
                <h2 className="vacancies__title">Вакансии</h2>
                <div className="vacancies__inner">

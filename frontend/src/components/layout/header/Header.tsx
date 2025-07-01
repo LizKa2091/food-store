@@ -17,11 +17,12 @@ interface IHeaderProps {
    deviceWidth: number;
    isProfileOpen: boolean;
    setIsProfileOpen: (value: boolean) => void;
-}
+   isCatalogOpen: boolean;
+   handleCatalogChange: () => void;
+};
 
-const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen }) => {
+const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen, isCatalogOpen, handleCatalogChange }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
-   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
    const [currCatalogItem, setCurrCatalogItem] = useState<string>('Супермаркет');
    const [isMobileItemActive, setIsMobileItemActive] = useState<boolean>(false);
    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState<boolean>(false);
@@ -30,10 +31,6 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
    const { setMessage } = useMessage();
    const { setSelectedCategory } = useCategory();
    const { openModal } = useModal();
-
-   const handleCatalogClick = () : void => {
-      setIsCatalogOpen(prevVal => !prevVal);
-   };
 
    const handleCategoryClick = (e: React.MouseEvent<HTMLLIElement>) : void => {
       const target = e.target as HTMLLIElement;
@@ -51,7 +48,7 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
             <nav className='nav'>
                <div className='nav__top nav__top--mobile'>
                   <div className="nav__top--left">
-                     <button className={`nav__button nav__button--mobile nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
+                     <button className={`nav__button nav__button--mobile nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogChange} title="Каталог" aria-label="Каталог">Каталог</button>
                      <div className="nav__logo">
                         <NavLink to='/'>
                            <img src={logo} alt="Ильинский" className="nav__logo-img" />
@@ -175,7 +172,7 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
                         <img src={logo} alt="Ильинский" className="nav__logo-img" />
                      </NavLink>
                   </div>
-                  <button className={`nav__button nav__button--tablet nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог"></button>
+                  <button className={`nav__button nav__button--tablet nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogChange} title="Каталог" aria-label="Каталог"></button>
                   <div className="nav__search">
                      <SearchBar />
                   </div>
@@ -242,7 +239,7 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
                      <img src={logo} alt="Ильинский" className="nav__logo-img" />
                   </NavLink>
                </div>
-               <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogClick} title="Каталог" aria-label="Каталог">Каталог</button>
+               <button className={`nav__button nav__button--catalog${isCatalogOpen ? ' active' : ''}`} onClick={handleCatalogChange} title="Каталог" aria-label="Каталог">Каталог</button>
                <div className="nav__search">
                   <SearchBar />
                </div>

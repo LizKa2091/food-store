@@ -39,17 +39,6 @@ $nav-mobile-cart-text: #fff;
       text-decoration: none;
       cursor: pointer;
 
-      &--catalog { 
-         gap: 7.43px; 
-         
-         &::before {
-            content: '';
-            background: url('../../../images/webpImages/catalog-icon-mobile-yellow.webp') no-repeat center center;
-            background-size: contain;
-            width: 16.18px;
-            height: 13.95px;
-         }
-      }
       &--sales {
          gap: 3.5px; 
 
@@ -94,6 +83,17 @@ $nav-mobile-cart-text: #fff;
       color: $nav-mobile-text;
       cursor: pointer;
 
+      &--catalog { 
+         gap: 7.43px; 
+         
+         &::before {
+            content: '';
+            background: url('../../../images/webpImages/catalog-icon-mobile-yellow.webp') no-repeat center center;
+            background-size: contain;
+            width: 16.18px;
+            height: 13.95px;
+         }
+      }
       &--favorites::before {
          content: '';
          background: url('../../../images/webpImages/favorite-icon-mobile-yellow.webp') no-repeat center center;
