@@ -132,7 +132,7 @@ $color-gray-close-bg: #F2F3F5;
    background-color: $color-orange-aside-bg;
    padding: 52px 42px 39px 52px;
    height: 453px;
-   gap: 100px;
+   gap: 2.5%;
 
    &__left {
       display: flex;
@@ -340,6 +340,135 @@ $color-gray-close-bg: #F2F3F5;
       }
       &--8 { 
          @include icon-modal('../../images/webpImages/vacancies/vacancy8.webp', 99px, 98px); 
+      }
+   }
+}
+
+@media (max-width: 1023px) {
+   .aside {
+      &__left {
+         &::after {
+            right: 50%;
+            bottom: 0;
+            transform: translateX(50%);
+         }
+      }
+   }
+}
+@media (max-width: 908px) {
+   .aside {
+      &__form {
+         &__row {
+            flex-direction: column;
+            gap: 25px;
+         }
+         &__inputs {
+            gap: 11px;
+         }
+      }
+   }
+}
+@media (max-width: 768px) {
+   .vacancies {
+      padding-bottom: 27px;
+
+      &__inner {
+         padding: 27px 0 60px 0;
+      }
+      &__title {
+         font-size: 1.4rem;
+      }
+      &__list {
+         row-gap: 18px;
+      }
+   }
+   .aside {
+      padding: 26px 24px 41px 24px;
+      &__title {
+         font-size: 1.5rem;
+      }
+      &__left {
+         gap: 50px;
+
+         &::after {
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+         }
+      }
+      &__form {
+         gap: 19px;
+
+         &__row {
+            flex-direction: column;
+            justify-content: center;
+            gap: 25px;
+         }
+         &__label {
+            width: max-content;  
+         }
+      }
+   }
+}
+
+@media (max-width: 728px) {
+   .aside {
+      &__form {
+         max-width: 312px;
+
+         &__label {
+            width: 100%;
+         }
+      }
+   }
+}
+
+@media (max-width: 650px) {
+   .aside {
+      &__left {
+         gap: 10px;
+      }
+   }
+}
+
+@media (max-width: 600px) {
+   .aside {
+      flex-direction: column;
+      height: 100%;
+      gap: 20px;
+
+      &__left {
+         &::after {
+            left: 90%;
+            top: 20px;
+         }
+      }
+      &__title {
+         max-width: 263px;
+      }
+      &__subtitle {
+         max-width: 301px;
+      }
+   }
+}
+
+@media (max-width: 475px) {
+   .aside {
+      &__left {
+         &::after {
+            width: 93px;
+            height: 93px;
+         }
+      }
+   }
+}
+
+@media (max-width: 355px) {
+   .aside {
+      &__left {
+         &::after {
+            display: none;
+         }
       }
    }
 }
