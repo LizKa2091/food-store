@@ -36,7 +36,6 @@ $peach-offer-right-bg: #FFEDE8;
 $yellow-offer-right-bg: #FFFBEF;
 
 $category-section-padding: 7.5dvh 0 5dvh 0;
-$category-section-extended-padding: 2dvh 0 5dvh 0;
 
 .category {
    &-section {
@@ -46,7 +45,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       gap: 43px;
 
       &.extended {
-         padding: $category-section-extended-padding;
+         padding: 66px 0 97px 0;
       }
    }
    &__info {
@@ -101,17 +100,13 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       flex-wrap: wrap;
       row-gap: 22px;
       column-gap: 24px;
-
-      &.Акции {
-         gap: 16px;  
-      }
    }
 }
 
 .subcategory {
    &__item {
       display: inline-block;
-      width: 297px; 
+      min-width: 297px; 
       height: 304px;
       position: relative;
       cursor: pointer;
@@ -119,7 +114,9 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
 
       &.Акции.extended {
          display: flex;
-         width: 632px;
+         width: calc(50% - 22px);
+         min-width: 324px;
+         max-width: 610px;
          border-radius: 30px;
          position: relative;
          z-index: 1;
@@ -134,16 +131,13 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
             background-color: $peach-offer-right-bg;
          }
          &.Комбо {
-            border: 1px solid $yellow-offer-bg;
             background-color: $yellow-offer-right-bg;
          }
       }
       &__left {
          border: 1px solid #fff;
          border-radius: 30px;
-         width: 100%;
-         height: 100%;
-         max-width: 50%;
+         width: 310px;
 
          &.Сделай {
             background-color: $pink-offer-bg;
@@ -183,19 +177,29 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
          justify-content: space-between;
          flex-direction: column;
          padding: 36px 33px 47px 39px;
+         width: 50%;
+         min-width: 0;
 
          &.Сделай {
             background-color: $pink-offer-right-bg;
+            border: 1px solid $pink-offer-right-bg;
+            border-radius: 0 30px 30px 0;
          }
          &.Праздник {
             background-color: $red-offer-right-bg;
+            border: 1px solid $red-offer-right-bg;
+            border-radius: 0 30px 30px 0;
          }
          &.Скидка {
             background-color: $peach-offer-right-bg;
+            border: 1px solid $peach-offer-right-bg;
+            border-radius: 0 30px 30px 0;
          }
          &.Комбо {
             background-color: $yellow-offer-right-bg;
             border: 1px solid $yellow-offer-right-bg;
+            border-bottom: 0;
+            border-radius: 0 30px 30px 0;
          }
       }
       &:hover .subcategory__title {
@@ -463,7 +467,7 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
       right: 0;
       bottom: 0;
       left: 39px;
-      max-width: 234px;
+      max-width: 224px;
       transition: font-size 0.3s ease-in-out;
 
       &.Акции {
@@ -497,209 +501,111 @@ $category-section-extended-padding: 2dvh 0 5dvh 0;
    }
 }
 
-@media (max-width: 768px) {
-   .category {
-      &__info {
-         gap: 18px;
-      }
-      &-section {
-         gap: 23.62px;
-         padding-bottom: 0;
-
-         &.sales {
-            padding-bottom: 5dvh;
-         }
-      }
-      &__title {
-         font-size: 1.375rem;
-      }
-      &__button {
-         font-size: 1rem;
-         width: 154.08px;
-         height: 33.75px;
-         padding: 0 15.04px 0 13px;
-      }
-      &__list {
-         column-gap: 10.33px;
-         row-gap: 10.84px;
-
-         &.Акции {
-            flex-wrap: nowrap;
-            overflow-x: scroll;
-            width: 100%;
-         }
-      }
-   }
+@media (max-width: 1024px) {
    .subcategory {
       &__title {
-         font-size: 0.84375rem;
-         top: 20.28px;
-         left: 16.83px;
-         max-width: 100px;
+         &.Акции {
+            top: 20px;
+            left: 26px;
+         }
+      }
+      &__item__right {
+         padding: 18px 11px 31px 28px;
+      }
+      &__extra {
+         top: 25px;
+      }
+   }
+}
+@media (max-width: 900px) {
+   .subcategory {
+      &__item {
+         &__left {
+            border-radius: 20px 20px 0 0;
+            padding: 23px 28px;
+            width: 100%;
+            height: 176px;
+
+            &.Сделай {
+               background-size: 226px 156px;
+               background-position: 120% 40px;
+            }
+            &.Праздник {
+               background-size: 186px 176px;
+               background-position: 110% 40px;
+            }
+            &.Скидка {
+               background-size: 156px 156px;
+               background-position: 110% 10px;
+            }
+            &.Комбо {
+               background-size: 280px 250px;
+               background-position: 140% -30px;
+            }
+         }
+         &__right {
+            gap: 11px;
+            width: 100%;
+
+            &.Сделай {
+               border-radius: 0 0 20px 20px;
+            }
+            &.Праздник {
+               border-radius: 0 0 20px 20px;
+            }
+            &.Скидка {
+               border-radius: 0 0 20px 20px;
+            }
+            &.Комбо {
+               border-radius: 0 0 20px 20px;
+            }
+         }
+         &__button {
+            font-size: 1.125rem;
+            font-weight: 700;
+            max-width: 165px;
+            height: 46px;
+         }
+         &.Акции {
+            height: 100%;
+
+            &.extended {
+               flex-direction: column;
+            }
+         }
+      }
+      &__order-info {
+         font-size: 1.125rem;
+      }
+      &__title {
+         max-width: 100%;
+         position: static;
 
          &.Акции {
-            font-size: 1.125rem;
-            top: 20.28px;
-            left: 23.92px;
-            max-width: 150px;
+            font-size: 1.375rem;
          }
       }
       &__extra {
-         font-size: 0.715625rem;
-         padding: 6.91px 7.19px;
-         height: auto;
-         top: 25.91px;
-         left: 23.92px;
+         top: 9px;
+         left: 0;
       }
+   }
+   .category {
+      &-section.extended {
+         padding: 0;
+         gap: 13px;
+      }
+   }
+}
+@media (max-width: 704px) {
+   .subcategory {
       &__item {
-         width: 130.91px;
-         height: 130.91px;
-
-         &:hover .subcategory__title {
-            font-size: 1.2rem;
-         }
-
          &.Акции {
-            min-width: 221.76px;
-            width: 221.76px;
-            height: 321.19px;
-         }
-
-         &.Супермаркет {
-            border-radius: 25.03px;
-         }
-         &.Кулинария {
-            border-radius: 25.03px;
-         }
-         &.Другое {
-            border-radius: 25.03px;
-         }
-         &.Заморозка {
-            border-radius: 25.03px;
-         }
-
-         &.Вода {
-            background-position: 15px 53.75px;
-         }
-         &.Молоко {
-            background-position: 15px 50.75px;
-         }
-         &.Снэки {
-            background-position: 35px 60.75px;
-            background-size: 89.32px 75.51px;
-         }
-         &.Кофе {
-            background-position: 10px 63px;
-            background-size: 115.64px 61.27px;
-         }
-         &.Макароны {
-            background-position: 36px 58px;
-            background-size: 131.62px 90px;
-         }
-         &.Хлеб {
-            background-position: 0px 45px;
-            background-size: 130.5px 96.75px;
-         }
-         &.Масло {
-            background-position: 10px 48px;
-            background-size: 124.27px 83.28px;
-         }
-         &.Консервы {
-            background-position: 20px 49px;
-            background-size: 106.58px 75.94px;
-         }
-
-         &.Выпечка {
-            background-position: 20px 49px;
-            background-size: 114.54px 71.05px;
-         }
-         &.Пиццы {
-            background-position: 10px 29px;
-            background-size: 153.3px 151.14px;
-         }
-         &.Гриль {
-            background-position: 32px 39px;
-            background-size: 101.19px 117.99px;
-         }
-         &.Свежее {
-            background-position: 20px 20px;
-            background-size: 118.85px 123.15px;
-         }
-         &.Салаты {
-            background-position: 15px 35px;
-            background-size: 118.85px 123.15px;
-         }
-         &.Супы {
-            background-position: 15px 15px;
-            background-size: 130.47px 139.52px;
-         }
-         &.Горячие {
-            background-position: 20px 22px;
-            background-size: 139.52px 141.86px;
-         }
-         &.Десерты {
-            background-position: 40px 19px;
-            background-size: 79.66px 106.7px;
-         }
-
-         &.Пельмени {
-            background-position: 20px 59px;
-            background-size: 119.25px 77.62px;
-         }
-         &.Хинкали {
-            background-position: 0 45px;
-            background-size: 129.37px 87.75px;
-         }
-         &.Полу {
-            background-position: 5px 25px;
-            background-size: 146.25px 124.87px;
-         }
-         &.Замороженные {
-            background-position: 20px 55px;
-            background-size: 110.25px 84.37px;
-         }
-         &.Рыба {
-            background-position: 25px 42px;
-            background-size: 123.19px 97.01px;
-         }
-         &.Мясо {
-            background-position: 25px 25px;
-            background-size: 139.41px 104.35px;
-         }
-
-         &.Красота {
-            background-position: 35px 35px;
-            background-size: 111.1px 105.5px;
-         }
-         &.Стирка {
-            background-position: 10px 47px;
-            background-size: 116.26px 116.26px;
-         }
-         &.Полезные {
-            background-position: 5px 30px;
-            background-size: 146.25px 134.87px;
-         }
-         &.Бытовая {
-            background-position: 65px 30px;
-            background-size: 83.25px 99px;
-         }
-
-         &.Сделай {
-            background-position: -48px 110px;
-            background-size: 315.47px 210.31px;
-         }
-         &.Праздник {
-            background-position: 0 160px;
-            background-size: 271.83px 271.83px;
-         }
-         &.Скидка {
-            background-position: 0 130px;
-            background-size: 216.04px 211.74px;
-         }
-         &.Комбо {
-            background-position: -48px 60px;
-            background-size: 418.15px 364.11px;
+            &.extended {
+               width: 100%;
+               max-width: 450px;
+            }
          }
       }
-   }   
+   }
 }
