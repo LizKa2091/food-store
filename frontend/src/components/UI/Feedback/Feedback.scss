@@ -17,18 +17,21 @@ $color-gray-placeholder: #C4B4B4;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10%;
-      padding: 32.96px 22px 24.04px 63px;
+      padding: 32.96px 22px 24.04px 22px;
+      width: 100%;
    }
    &__text-info {
       color: $color-black-text;
    }
+   &__text-form {
+      max-width: 465px;
+   }
    &__title {
-      font-size: 2.375rem;
+      font-size: 2rem;
       font-weight: 700;
       text-transform: uppercase;
       width: 50dvw;
-      max-width: 509px;
+      max-width: 435px;
    }
    &__subtitle {
       font-size: 1.25rem;
@@ -106,5 +109,11 @@ $color-gray-placeholder: #C4B4B4;
          height: 56px;
          cursor: pointer;
       }
+   }
+}
+
+@media (max-width: 978px) {
+   .feedback {
+      display: none;
    }
 }
