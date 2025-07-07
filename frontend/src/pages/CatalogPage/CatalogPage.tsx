@@ -33,6 +33,7 @@ const CatalogPage: FC = () => {
    const [displayProductsList, setDisplayProductsList] = useState<IItemShortInfo[] | undefined>(undefined);
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
    const [keyWord, setKeyWord] = useState<string>('');
+   const [isMobCatalogExpanded, setIsMobCatalogExpanded] = useState<boolean>(false);
    const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth);
 
    const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -190,6 +191,91 @@ const CatalogPage: FC = () => {
       Другое: [{ name: 'Красота и гигиена', filters: ['Красота', 'Гигиена'] }, { name: 'Стирка и уборка', filters: ['Стирка', 'Уборка'] }, { name: 'Полезные мелочи', filters: ['Мелочи'] }, { name: 'Бытовая техника', filters: ['Техника'] }],
    };
    
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            <Wrapper>
+               {isProfileOpen &&
+                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+               }
+               {deviceWidth <= 768 &&
+                  <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
+               }
+               <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
+               <h2 className='catalog-title'>{selectedCategory}</h2>
+               <div className="catalog">
+                  <aside className="catalog-aside">
+                     <button onClick={() => setIsMobCatalogExpanded((prev: boolean) => !prev)} className='catalog-aside__button'>Категории</button>
+                  </aside>
+                  <section className='catalog-section'>
+                     <div className="catalog-section__filters">
+                        <ul className="catalog-section__list catalog-section__list--categories">
+                           {Object.keys(subCategories).map((category: string) => (
+                              subCategories[category as CategoryType].filter((item: ISubCategory) => item.name === selectedCategory).map((item) => (
+                                 item.filters && !keyWord && item.filters.map((filterItem) => (
+                                    <li key={filterItem} className="catalog-section__item catalog-section__item--category">      
+                                       <button onClick={() => handleFilterClick(filterItem)} className={'catalog-section__item-button' + (selectedFilters.includes(filterItem) ? ' catalog-section__item-button--selected' : '')}>{filterItem}</button>
+                                    </li>
+                                 ))
+                              ))
+                           ))}
+                           <li key={999} className='catalog-section__item catalog-section__item--clear'>
+                              {!keyWord && <button onClick={clearFilters} className='catalog-section__item-button--clear'>Очистить фильтры</button>}
+                           </li>
+                        </ul>
+                     </div>
+                     <div className="catalog-section__products">
+                        {keyWord && <p>Результаты по поиску: {keyWord}</p>}
+                        <ul className="catalog-section__list catalog-section__list--products">
+                           {displayProductsList?.length === 0 ? (
+                              <p>Продукты не найдены. Попробуйте выбрать другую категорию или ввести другое слово для поиска</p>
+                           ) : (
+                              displayProductsList?.map((product: IItemShortInfo) => (
+                                 <li key={product.productId} className="catalog-section__item catalog-section__item--product">
+                                    <FavoriteButton productId={product.productId} initialFavState={userFavorites ? userFavorites.includes(product.productId) : false} />
+                                    <img src={product.imagePath} alt={product.name} className="catalog-section__item-img" />
+                                    <div className="catalog-section__item-container">
+                                       <p className="catalog-section__item-quantity">В наличии {product.stockQuantity}</p>
+                                       <p className="catalog-section__item-name">{product.name}</p>
+                                       <div className="catalog-section__item-bottom">
+                                          <div className="catalog-section__item-prices">
+                                             <p className={"catalog-section__item-new-price" + (product.newPrice ? ' catalog-section__item-new-price-red' : '')}>{product.price} руб</p>
+                                             {product.newPrice &&
+                                                <p className="catalog-section__item-old-price">{product.price} руб</p>
+                                             }
+                                          </div>
+                                          <ItemQuantityButton itemId={product.productId} storageQuantity={product.stockQuantity} currCart={cartItems}/>
+                                       </div>
+                                    </div>
+                                 </li> 
+                              ))
+                           )}
+                        </ul>
+                     </div>
+                  </section>
+               </div>
+               <SalesAndRecommendation type='Рекомендации для вас' />
+               <Footer />
+               {isMobCatalogExpanded &&
+                  <div className='catalog-section__mobile-container'>
+                     <ul className='catalog-section__mobile-list'>
+                        {Object.keys(subCategories).map((category: string, index: number) => (
+                           subCategories[category as CategoryType].map((item: ISubCategory) =>
+                              <li key={index} onClick={() => { handleCategorySelect(item.name); setIsMobCatalogExpanded(false); }} className='catalog-section__mobile-item'>
+                                 {item.name}
+                              </li>
+                           )
+                        ))}
+                     </ul>
+                     <button onClick={() => setIsMobCatalogExpanded(false)} className='catalog-section__mobile-button' aria-label='Закрыть'></button>
+                  </div>
+               }
+            </Wrapper>
+            <ModalsRenderer />
+         </>
+      )
+   };
+
    return (
       <>
          <Wrapper>
