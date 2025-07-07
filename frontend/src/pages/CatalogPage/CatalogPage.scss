@@ -15,6 +15,9 @@ $catalog-item-quantity: #434343;
 $catalog-item-new-price: #CF0000;
 $catalog-item-buy: #FF0000;
 
+$catalog-button-mobile-border: #DADADA;
+$catalog-button-mobile-text: #0A0A0A;
+
 .catalog {
    display: flex;
    gap: 14px;
@@ -226,6 +229,84 @@ $catalog-item-buy: #FF0000;
             &:hover {
                background-color: $catalog-item-buy;
                color: #fff;
+            }
+         }
+      }
+   }
+}
+
+@media (max-width: 768px) {
+   .catalog {
+      flex-direction: column;
+
+      &-title {
+         font-size: 1.4rem;
+      }
+      &-section {
+         margin-top: 0;
+
+         &__mobile {
+            &-container {
+               display: flex;
+               background-color: #fff;
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100dvw;
+               height: 100dvh;
+            }
+            &-list {
+               display: flex;
+               flex-direction: column;
+               gap: 11px;
+               padding: 39px 31px;
+               position: relative;
+               overflow-x: auto;
+            }
+            &-item {
+               list-style-type: none;
+               font-size: 1.125rem;
+               cursor: pointer;
+            }
+            &-button {
+               background: url('../../images/webpImages/catalog-close-icon-mobile.webp') no-repeat center center;
+               background-size: contain;
+               width: 16.26px;
+               height: 16.26px;
+               border: 0;
+               position: absolute;
+               top: 16.37px;
+               right: 18.74px;
+            }
+         }
+      }
+      &-aside {
+         &__title {
+            margin-top: 0;
+         }
+         &__button {
+            background-color: inherit;
+            border: 1px solid $catalog-button-mobile-border;
+            border-radius: 10px;
+            color: $catalog-button-mobile-text;
+            font-size: 1rem;
+            height: 41px;
+            text-align: left;
+            margin-top: 11px;
+            padding: 0 14px 0 12px;
+            position: relative;
+            cursor: pointer;
+
+            &::after {
+               content: '';
+               background: url('../../images/webpImages/arrow-slide.webp') no-repeat center center;
+               background-size: contain;
+               width: 11.89px;
+               height: 8.96px;
+               position: absolute;
+               top: 50%;
+               right: 0;
+               transform: translate(-50%, -50%) rotate(-180deg);
             }
          }
       }
