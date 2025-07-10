@@ -36,15 +36,33 @@ const MainPage: FC = () => {
       setIsCatalogOpen((prev: boolean) => !prev);
    };
 
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            <Wrapper>
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
+               {isProfileOpen &&
+                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+               }
+               <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
+               <Promo deviceWidth={deviceWidth} />
+               <SalesAndRecommendation type='Скидки'/>
+               {categoriesList.map((category) => (
+                  <Categories key={category} category={category} selectedSubcategory='' />
+               ))}
+               <Delivery />
+               <DeliveryBanner />
+               <RateBanner />
+               <Footer />
+            </Wrapper>
+            <ModalsRenderer />
+         </>
+      );
+   }
+
    return (
       <>
          <Wrapper>
-            {isProfileOpen &&
-               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
-            }
-            {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
-            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <Promo deviceWidth={deviceWidth} />
             <SalesAndRecommendation type='Скидки'/>

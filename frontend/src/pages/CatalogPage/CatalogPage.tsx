@@ -195,11 +195,9 @@ const CatalogPage: FC = () => {
       return (
          <>
             <Wrapper>
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
                {isProfileOpen &&
                   <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
-               }
-               {deviceWidth <= 768 &&
-                  <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
                }
                <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
                <h2 className='catalog-title'>{selectedCategory}</h2>
@@ -279,12 +277,6 @@ const CatalogPage: FC = () => {
    return (
       <>
          <Wrapper>
-            {isProfileOpen &&
-               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
-            }
-            {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
-            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <h2 className='catalog-title'>{selectedCategory}</h2>
             <div className="catalog">

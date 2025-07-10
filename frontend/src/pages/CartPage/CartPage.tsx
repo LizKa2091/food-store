@@ -56,15 +56,27 @@ const CartPage: FC = () => {
       setIsCatalogOpen((prev: boolean) => !prev);
    };
 
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            <Wrapper>
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
+               {isProfileOpen &&
+                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+               }
+               <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
+               {renderCartStep()}
+               <SalesAndRecommendation type='Рекомендации для вас' />
+               <Footer />
+            </Wrapper>
+            <ModalsRenderer />
+         </>   
+      );
+   }
+
    return (
       <>
          <Wrapper>
-            {isProfileOpen &&
-               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
-            }
-            {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
-            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             {renderCartStep()}
             <SalesAndRecommendation type='Рекомендации для вас' />

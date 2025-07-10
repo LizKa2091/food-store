@@ -36,15 +36,27 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
       setIsCatalogOpen((prev: boolean) => !prev);
    };
 
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            <Wrapper>
+               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
+               {isProfileOpen &&
+                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+               }
+               <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
+               <h2 className='title'>Личный кабинет</h2>
+               <UserProfileInfo section={section}/>
+               <Footer />
+            </Wrapper>
+            <ModalsRenderer />
+         </>
+      );
+   }
+
    return (
       <>
          <Wrapper>
-            {isProfileOpen &&
-               <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
-            }
-            {deviceWidth <= 768 &&
-               <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
-            }
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <h2 className='title'>Личный кабинет</h2>
             <UserProfileInfo section={section}/>
