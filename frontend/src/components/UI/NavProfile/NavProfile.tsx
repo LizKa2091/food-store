@@ -11,10 +11,11 @@ import './NavProfile.scss';
 
 interface INavProfileProps {
    isMobile?: boolean;
+   setIsCatalogOpen?: (value: boolean) => void;
    setIsProfileOpen?: (value: boolean) => void;
 }
 
-const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsProfileOpen }) => {
+const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsCatalogOpen, setIsProfileOpen }) => {
    const { isAuthed, loginUser, logoutUser } = useContext(AuthContext) || { isAuthed: false, loginUser: () => {}, logoutUser: () => {} };
    const [currStep, setCurrStep] = useState<number>(1);
    const [currUserTel, setCurrUserTel] = useState<string>('');
@@ -34,6 +35,8 @@ const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsProfileOpen }) => {
    }, [currStep]);
 
    useEffect(() => {
+      if (setIsCatalogOpen) setIsCatalogOpen(false);
+      
       if (isAuthed) loadUserData();
    }, [isAuthed]);
 

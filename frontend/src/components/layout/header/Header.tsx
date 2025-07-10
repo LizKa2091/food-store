@@ -118,7 +118,6 @@ const Header: FC<IHeaderProps> = ({ deviceWidth, isProfileOpen, setIsProfileOpen
                                  </li>
                               </ul>
                            </>
-                           
                         ) : (
                            <ul className="nav__catalog__list nav__catalog__list--more">
                               <li className="nav__catalog__item nav__catalog__title">

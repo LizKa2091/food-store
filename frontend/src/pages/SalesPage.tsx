@@ -38,7 +38,7 @@ const SalesPage: FC = () => {
             <Wrapper>
                <MobileLowerNav isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} handleCatalogChange={handleCatalogChange} />
                {isProfileOpen &&
-                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsProfileOpen={setIsProfileOpen} />
+                  <NavProfile isMobile={currentModal === 'mobileAuth'} setIsCatalogOpen={setIsCatalogOpen} setIsProfileOpen={setIsProfileOpen} />
                }
                <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
                <Categories category='Акции' type='extended'/>
