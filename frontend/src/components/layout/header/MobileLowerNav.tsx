@@ -14,12 +14,17 @@ interface IMobileLowerNavProps {
 const MobileLowerNav: FC<IMobileLowerNavProps> = ({ isProfileOpen, setIsProfileOpen, handleCatalogChange }) => {
    const { isAuthed } = useContext(AuthContext) || { isAuthed: false };
    const { setMessage } = useMessage();
-   const { openModal } = useModal();
+   const { openModal, closeModal } = useModal();
    const navigate = useNavigate();
 
-   const handleOpenProfile = () => {
-      setIsProfileOpen(!isProfileOpen);
+   const handleOpenProfile = (): void => {
+      if (isProfileOpen) {
+         closeModal();
+         setIsProfileOpen(!isProfileOpen);
+         return;
+      };
 
+      setIsProfileOpen(!isProfileOpen);
       if (!isAuthed) openModal('mobileAuth');
    };
 
