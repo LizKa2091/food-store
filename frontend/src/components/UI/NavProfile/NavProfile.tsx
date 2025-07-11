@@ -40,6 +40,12 @@ const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsCatalogOpen, setIsPro
       if (isAuthed) loadUserData();
    }, [isAuthed]);
 
+   useEffect(() => {
+      if (isAuthed && isMobile) {
+         navigate('/profile');
+      }
+   }, [isAuthed, isMobile, navigate]);
+
    const loadUserData = async (): Promise<void> => {
       await loadUserCard();
       await loadUserFavorites();
@@ -248,9 +254,7 @@ const NavProfile: FC<INavProfileProps> = ({ isMobile, setIsCatalogOpen, setIsPro
                </div>
             </div>
          ) : (
-            isAuthed && isMobile ? (
-               navigate('/profile')
-            ) : (
+            !isAuthed && (
                   <>
                      {currStep === 1 && (
                         <div className={'profile profile--guest guest__step1' + ((isMobile ? ' profile--mobile' : ''))}>
