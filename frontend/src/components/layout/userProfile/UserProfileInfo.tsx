@@ -6,9 +6,10 @@ import './UserProfileInfo.scss';
 
 interface IUserProfileInfoProps {
    section: string;
+   deviceWidth: number;
 };
 
-const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section }) => {
+const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) => {
    const [activeNavItem, setActiveNavItem] = useState<string>(section);
 
    useEffect(() => {
@@ -30,16 +31,22 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section }) => {
 
    const mainItems: string[] = ['Личные данные', 'История заказов', 'Избранное'];
 
+   if (deviceWidth <= 768) {
+      return (
+         <main className="main-user">
+            <div className="main__inner">
+               <PersonalData deviceWidth={deviceWidth} />
+            </div>
+         </main>
+      )
+   }
+
    return (
       <main className="main-user">
          <div className='main-user__selection'>
             <ul className="main-user__list">
                {mainItems.map((item, index) => 
-                  <li 
-                     key={index}
-                     onClick={ () => setActiveNavItem(item) }
-                     className={'main-user__item' + (item === activeNavItem ? ' main-user__item--active' : '')}
-                  >
+                  <li key={index} onClick={ () => setActiveNavItem(item) } className={'main-user__item' + (item === activeNavItem ? ' main-user__item--active' : '')}>
                      {item}
                   </li>
                )}
@@ -47,7 +54,7 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section }) => {
          </div>
          <div className="main__inner">
             {activeNavItem === 'Личные данные' && 
-               <PersonalData />
+               <PersonalData deviceWidth={deviceWidth} />
             }
             {activeNavItem === 'История заказов' &&
                <OrderHistory />

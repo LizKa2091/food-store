@@ -6,12 +6,19 @@ import { useMessage } from '../../../context/MessageContext';
 import { IUserInfo } from '../../../types/userData.types';
 import BonusCard from './BonusCard';
 
-const PersonalData: FC = () => {
+type infoLabels = 'personal-data' | 'order-history' | 'favorites' | null;
+
+interface IPersonalDataProps {
+   deviceWidth: number;
+}
+
+const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth }) => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);
+   const [currInfo, setCurrInfo] = useState<infoLabels>(null);
 
    const { setMessage } = useMessage();
 
@@ -107,7 +114,7 @@ const PersonalData: FC = () => {
       }
    };
 
-   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
 
       if (!isInputWrong && isDirty) {
@@ -141,15 +148,35 @@ const PersonalData: FC = () => {
       }
    };
 
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            <BonusCard />
+            <ul className='main-user__list--mobile'>
+               <li onClick={() => setCurrInfo('personal-data')} className="main-user__item--mobile">
+                  Личные данные
+               </li>
+               <li onClick={() => setCurrInfo('order-history')} className="main-user__item--mobile">
+                  История заказов
+               </li>
+               <li onClick={() => setCurrInfo('favorites')} className="main-user__item--mobile">
+                  Избранное
+               </li>
+            </ul>
+            <button onClick={handleLogout} className="main-user__button main-user__button--mobile">Выйти</button>
+         </>
+      )
+   }
+
    return (
       <>
          {isInfoLoading ? (
             <span className='loader'>Загрузка...</span>
          ) : (
-            <form onSubmit={ handleSubmit } className='main-user__form'>
+            <form onSubmit={handleSubmit} className='main-user__form'>
                <div className="main-user__form__item">
                   <label htmlFor="name" className="main-user__form__label">Имя Фамилия</label>
-                  <input onChange={ handleNameChange } type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
+                  <input onChange={handleNameChange} type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
                </div>
                <div className="main-user__form__item">
                   <label htmlFor="tel" className="main-user__form__label">Номер телефона</label>
@@ -161,7 +188,7 @@ const PersonalData: FC = () => {
                </div>
                <div className="main-user__form__item main-user__form__item--mail">
                   <label htmlFor="mail" className="main-user__form__label">Эл. почта</label>
-                  <input onChange={ handleEmailChange } type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
+                  <input onChange={handleEmailChange} type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
                </div>
                <button type='submit' className="main-user__form__button">Сохранить</button>
                   {isFormSaved === true ? (
@@ -169,7 +196,7 @@ const PersonalData: FC = () => {
                   ) : isFormSaved === false ? (
                      <p>Исправьте все ошибки</p>
                   ) : ''}
-               <button onClick={ handleLogout } className='main-user__button'>Выйти</button>
+               <button onClick={handleLogout} className='main-user__button'>Выйти</button>
             </form>
          )}
          <BonusCard />
