@@ -516,7 +516,7 @@ $button-sale-h: 43px;
             font-size: 0;
             width: min-content;
 
-            &::before {
+            &:not(.active)::before {
                left: 50%;
                transform: translate(-50%, -50%);
             }
