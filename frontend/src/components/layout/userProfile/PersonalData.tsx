@@ -6,19 +6,17 @@ import { useMessage } from '../../../context/MessageContext';
 import { IUserInfo } from '../../../types/userData.types';
 import BonusCard from './BonusCard';
 
-type infoLabels = 'personal-data' | 'order-history' | 'favorites' | null;
-
 interface IPersonalDataProps {
    deviceWidth: number;
+   setActiveNavItem?: (value: string) => void;
 }
 
-const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth }) => {
+const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth, setActiveNavItem }) => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);
-   const [currInfo, setCurrInfo] = useState<infoLabels>(null);
 
    const { setMessage } = useMessage();
 
@@ -148,18 +146,18 @@ const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth }) => {
       }
    };
 
-   if (deviceWidth <= 768) {
+   if (deviceWidth <= 768 && setActiveNavItem) {
       return (
          <>
             <BonusCard />
             <ul className='main-user__list--mobile'>
-               <li onClick={() => setCurrInfo('personal-data')} className="main-user__item--mobile">
+               <li onClick={() => setActiveNavItem('Личные данные')} className="main-user__item--mobile">
                   Личные данные
                </li>
-               <li onClick={() => setCurrInfo('order-history')} className="main-user__item--mobile">
+               <li onClick={() => setActiveNavItem('История заказов')} className="main-user__item--mobile">
                   История заказов
                </li>
-               <li onClick={() => setCurrInfo('favorites')} className="main-user__item--mobile">
+               <li onClick={() => setActiveNavItem('Избранное')} className="main-user__item--mobile">
                   Избранное
                </li>
             </ul>

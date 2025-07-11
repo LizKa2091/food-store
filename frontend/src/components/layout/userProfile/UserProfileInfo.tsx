@@ -34,10 +34,18 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) =>
    if (deviceWidth <= 768) {
       return (
          <main className="main-user">
-            <div className="main__inner">
-               <PersonalData deviceWidth={deviceWidth} />
-            </div>
-         </main>
+         <div className="main__inner">
+            {activeNavItem === 'Личные данные' && 
+               <PersonalData deviceWidth={deviceWidth} setActiveNavItem={setActiveNavItem} />
+            }
+            {activeNavItem === 'История заказов' && 
+               <OrderHistory />
+            }
+            {activeNavItem === 'Избранное' && 
+               <Favorites />
+            }
+         </div>
+      </main>
       )
    }
 
@@ -46,7 +54,7 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) =>
          <div className='main-user__selection'>
             <ul className="main-user__list">
                {mainItems.map((item, index) => 
-                  <li key={index} onClick={ () => setActiveNavItem(item) } className={'main-user__item' + (item === activeNavItem ? ' main-user__item--active' : '')}>
+                  <li key={index} onClick={() => setActiveNavItem(item)} className={'main-user__item' + (item === activeNavItem ? ' main-user__item--active' : '')}>
                      {item}
                   </li>
                )}
