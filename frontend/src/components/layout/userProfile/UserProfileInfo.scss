@@ -417,4 +417,18 @@ $mobile-list-item-border: #DADADA;
          }
       }
    }
+   .order {
+      padding: 18px 0 0 0;
+
+      &__inner {
+         padding-top: 32px;
+      }
+      &__item {
+         &--button {
+            &--in-work {
+               font-size: 0.75rem;
+            }
+         }
+      }
+   }
 }
