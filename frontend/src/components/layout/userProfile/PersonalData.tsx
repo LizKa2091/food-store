@@ -1,15 +1,14 @@
 import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/authService';
-import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
+import { fetchUserInfo, updateUserInfo } from '../../../services/userService';
 import { useMessage } from '../../../context/MessageContext';
-import { IUserBonuses, IUserInfo } from '../../../types/userData.types';
+import { IUserInfo } from '../../../types/userData.types';
+import BonusCard from './BonusCard';
 
 const PersonalData: FC = () => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
-   const [isCardLoading, setIsCardLoading] = useState<boolean>(false);
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
-   const [userBonusCard, setUserBonusCard] = useState<IUserBonuses>({ bonuses: '', cardNumber: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);
@@ -18,7 +17,6 @@ const PersonalData: FC = () => {
 
    useEffect(() => {
       loadUserInfo();
-      loadUserCard();
    }, []);
 
    const navigate = useNavigate();
@@ -61,28 +59,6 @@ const PersonalData: FC = () => {
 
             setIsInfoLoading(false);
             setUserInfo(response.user)
-         }
-         catch (e) {
-            setMessage(response.message);
-         }
-      }
-      else {
-         setMessage('пользователь не авторизован');
-      }
-   };
-
-   const loadUserCard = async () => {
-      setIsCardLoading(true);
-      const token = localStorage.getItem('token');
-
-      if (token) {
-         let response;
-
-         try {
-            response = await fetchBonusCard(token);
-
-            setIsCardLoading(false);
-            setUserBonusCard(response.bonusCard);
          }
          catch (e) {
             setMessage(response.message);
@@ -196,22 +172,7 @@ const PersonalData: FC = () => {
                <button onClick={ handleLogout } className='main-user__button'>Выйти</button>
             </form>
          )}
-         <div className='bonus'>
-            {isCardLoading ? (
-               <span className='loader'>Загрузка...</span>
-            ) : (
-               <div className='bonus__inner'>
-                  <div className="bonus__main">
-                     <p className="bonus__text">Получайте кэшбек до 5% с каждого заказа и оплачивайте покупки</p>
-                     <p className="bonus__text">Карта №{userBonusCard.cardNumber}</p>
-                  </div>
-                  <div className="bonus__extra">
-                     <p className="bonus__extra__title">Бонусы</p>
-                     <p className="bonus__extra__amount">{userBonusCard.bonuses}</p>
-                  </div>
-               </div>
-            )}
-         </div>
+         <BonusCard />
       </>
    )
 };
