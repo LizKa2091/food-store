@@ -25,7 +25,6 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
          setDeviceWidth(window.innerWidth);
       };
 
-      console.log(window.innerWidth)
       window.addEventListener('windowResize', handleWindowResize);
 
       handleWindowResize();
@@ -46,7 +45,7 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
                }
                <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
                <h2 className='title'>Личный кабинет</h2>
-               <UserProfileInfo section={section}/>
+               <UserProfileInfo section={section} deviceWidth={deviceWidth} />
                <Footer />
             </Wrapper>
             <ModalsRenderer />
@@ -59,7 +58,7 @@ const ProfilePage: FC<IProfilePageProps> = ({ section }) => {
          <Wrapper>
             <Header deviceWidth={deviceWidth} isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen} isCatalogOpen={isCatalogOpen} handleCatalogChange={handleCatalogChange} />
             <h2 className='title'>Личный кабинет</h2>
-            <UserProfileInfo section={section}/>
+            <UserProfileInfo section={section} deviceWidth={deviceWidth} />
             <Footer />
          </Wrapper>
          <ModalsRenderer />

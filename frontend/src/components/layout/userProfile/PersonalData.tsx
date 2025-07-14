@@ -1,15 +1,17 @@
 import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/authService';
-import { fetchBonusCard, fetchUserInfo, updateUserInfo } from '../../../services/userService';
+import { fetchUserInfo, updateUserInfo } from '../../../services/userService';
 import { useMessage } from '../../../context/MessageContext';
-import { IUserBonuses, IUserInfo } from '../../../types/userData.types';
+import { IUserInfo } from '../../../types/userData.types';
 
-const PersonalData: FC = () => {
+interface IPersonalDataProps {
+   deviceWidth: number;
+}
+
+const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth }) => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
-   const [isCardLoading, setIsCardLoading] = useState<boolean>(false);
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
-   const [userBonusCard, setUserBonusCard] = useState<IUserBonuses>({ bonuses: '', cardNumber: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
    const [isFormSaved, setIsFormSaved] = useState<boolean | null>(null);
    const [isDirty, setIsDirty] = useState<boolean>(false);
@@ -18,7 +20,6 @@ const PersonalData: FC = () => {
 
    useEffect(() => {
       loadUserInfo();
-      loadUserCard();
    }, []);
 
    const navigate = useNavigate();
@@ -71,28 +72,6 @@ const PersonalData: FC = () => {
       }
    };
 
-   const loadUserCard = async () => {
-      setIsCardLoading(true);
-      const token = localStorage.getItem('token');
-
-      if (token) {
-         let response;
-
-         try {
-            response = await fetchBonusCard(token);
-
-            setIsCardLoading(false);
-            setUserBonusCard(response.bonusCard);
-         }
-         catch (e) {
-            setMessage(response.message);
-         }
-      }
-      else {
-         setMessage('пользователь не авторизован');
-      }
-   };
-
    const handleNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
       setUserInfo((prev) => ({
          ...prev,
@@ -131,7 +110,7 @@ const PersonalData: FC = () => {
       }
    };
 
-   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
 
       if (!isInputWrong && isDirty) {
@@ -165,15 +144,51 @@ const PersonalData: FC = () => {
       }
    };
 
+   if (deviceWidth <= 768) {
+      return (
+         <>
+            {isInfoLoading ? (
+               <span className='loader'>Загрузка...</span>
+            ) : (
+               <form onSubmit={handleSubmit} className='main-user__form'>
+                  <div className="main-user__form__item">
+                     <label htmlFor="name" className="main-user__form__label">Имя Фамилия</label>
+                     <input onChange={handleNameChange} type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
+                  </div>
+                  <div className="main-user__form__item">
+                     <label htmlFor="tel" className="main-user__form__label">Номер телефона</label>
+                     <input type="tel" id='tel' className="main-user__form__input main-user__form__input--protected" defaultValue={userInfo.phoneNumber} />
+                  </div>
+                  <div className="main-user__form__item main-user__form__item--birthday">
+                     <label htmlFor="date" className="main-user__form__label">День рождения</label>
+                     <input type="date" id='date' className="main-user__form__input main-user__form__input--protected" defaultValue={userInfo.dateOfBirth}/>
+                  </div>
+                  <div className="main-user__form__item main-user__form__item--mail">
+                     <label htmlFor="mail" className="main-user__form__label">Эл. почта</label>
+                     <input onChange={handleEmailChange} type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
+                  </div>
+                  <button type='submit' className="main-user__form__button">Сохранить</button>
+                     {isFormSaved === true ? (
+                        <p>Данные успешно обновлены</p>
+                     ) : isFormSaved === false ? (
+                        <p>Исправьте все ошибки</p>
+                     ) : ''}
+                  <button onClick={handleLogout} className='main-user__button'>Выйти</button>
+               </form>
+            )}
+         </>
+      )
+   }
+
    return (
       <>
          {isInfoLoading ? (
             <span className='loader'>Загрузка...</span>
          ) : (
-            <form onSubmit={ handleSubmit } className='main-user__form'>
+            <form onSubmit={handleSubmit} className='main-user__form'>
                <div className="main-user__form__item">
                   <label htmlFor="name" className="main-user__form__label">Имя Фамилия</label>
-                  <input onChange={ handleNameChange } type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
+                  <input onChange={handleNameChange} type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
                </div>
                <div className="main-user__form__item">
                   <label htmlFor="tel" className="main-user__form__label">Номер телефона</label>
@@ -185,7 +200,7 @@ const PersonalData: FC = () => {
                </div>
                <div className="main-user__form__item main-user__form__item--mail">
                   <label htmlFor="mail" className="main-user__form__label">Эл. почта</label>
-                  <input onChange={ handleEmailChange } type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
+                  <input onChange={handleEmailChange} type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
                </div>
                <button type='submit' className="main-user__form__button">Сохранить</button>
                   {isFormSaved === true ? (
@@ -193,25 +208,9 @@ const PersonalData: FC = () => {
                   ) : isFormSaved === false ? (
                      <p>Исправьте все ошибки</p>
                   ) : ''}
-               <button onClick={ handleLogout } className='main-user__button'>Выйти</button>
+               <button onClick={handleLogout} className='main-user__button'>Выйти</button>
             </form>
          )}
-         <div className='bonus'>
-            {isCardLoading ? (
-               <span className='loader'>Загрузка...</span>
-            ) : (
-               <div className='bonus__inner'>
-                  <div className="bonus__main">
-                     <p className="bonus__text">Получайте кэшбек до 5% с каждого заказа и оплачивайте покупки</p>
-                     <p className="bonus__text">Карта №{userBonusCard.cardNumber}</p>
-                  </div>
-                  <div className="bonus__extra">
-                     <p className="bonus__extra__title">Бонусы</p>
-                     <p className="bonus__extra__amount">{userBonusCard.bonuses}</p>
-                  </div>
-               </div>
-            )}
-         </div>
       </>
    )
 };
