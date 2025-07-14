@@ -2,6 +2,10 @@ import React, { FC, useState, useEffect } from 'react';
 import PersonalData from './PersonalData';
 import OrderHistory from './OrderHistory';
 import Favorites from './Favorites';
+import BonusCard from './BonusCard';
+import { useMessage } from '../../../context/MessageContext';
+import { logout } from '../../../services/authService';
+import { useNavigate } from 'react-router-dom';
 import './UserProfileInfo.scss';
 
 interface IUserProfileInfoProps {
@@ -11,6 +15,10 @@ interface IUserProfileInfoProps {
 
 const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) => {
    const [activeNavItem, setActiveNavItem] = useState<string>(section);
+   const [isActiveMobileMenu, setIsActiveMobileMenu] = useState<boolean>(deviceWidth <= 768);
+
+   const { setMessage } = useMessage();
+   const navigate = useNavigate();
 
    useEffect(() => {
       switch (section) {
@@ -31,21 +39,70 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) =>
 
    const mainItems: string[] = ['Личные данные', 'История заказов', 'Избранное'];
 
-   if (deviceWidth <= 768) {
+   const handleLogout = async () => {
+      const userToken = localStorage.getItem('token');
+
+      if (userToken) {
+         let response;
+
+         try {
+            response = await logout(userToken);
+
+            if (response.isSuccess) {
+               localStorage.removeItem('token');
+               navigate('/');
+            }
+            else {
+               setMessage('ошибка при выходе');
+            }
+         }
+         catch (e) {
+            setMessage(response.message);
+         }    
+      }
+      else {
+         setMessage('пользователь не авторизован');
+      }
+   };
+
+   if (deviceWidth <= 768 && isActiveMobileMenu) {
       return (
          <main className="main-user">
-         <div className="main__inner">
-            {activeNavItem === 'Личные данные' && 
-               <PersonalData deviceWidth={deviceWidth} setActiveNavItem={setActiveNavItem} />
-            }
-            {activeNavItem === 'История заказов' && 
-               <OrderHistory />
-            }
-            {activeNavItem === 'Избранное' && 
-               <Favorites />
-            }
-         </div>
-      </main>
+            <div className="main__inner">
+               <BonusCard />
+               <ul className='main-user__list--mobile'>
+                  <li onClick={() => { setActiveNavItem('Личные данные'); setIsActiveMobileMenu(false); }} className="main-user__item--mobile">
+                     Личные данные
+                  </li>
+                  <li onClick={() => { setActiveNavItem('История заказов'); setIsActiveMobileMenu(false); }} className="main-user__item--mobile">
+                     История заказов
+                  </li>
+                  <li onClick={() => { setActiveNavItem('Избранное'); setIsActiveMobileMenu(false); }} className="main-user__item--mobile">
+                     Избранное
+                  </li>
+               </ul>
+               <button onClick={handleLogout} className="main-user__button main-user__button--mobile">Выйти</button>
+            </div>
+         </main>
+      )
+   }
+
+   else if (deviceWidth <= 768 && !isActiveMobileMenu) {
+      return (
+         <main className="main-user">
+            <div className="main__inner">
+               <button onClick={() => setIsActiveMobileMenu(true)} className='main__inner__button'>Назад</button>
+               {activeNavItem === 'Личные данные' && 
+                  <PersonalData deviceWidth={deviceWidth} />
+               }
+               {activeNavItem === 'История заказов' &&
+                  <OrderHistory />
+               }
+               {activeNavItem === 'Избранное' &&
+                  <Favorites />
+               }
+            </div>
+         </main>
       )
    }
 
@@ -65,10 +122,10 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) =>
                <PersonalData deviceWidth={deviceWidth} />
             }
             {activeNavItem === 'История заказов' &&
-               <OrderHistory />
+               <OrderHistory deviceWidth={deviceWidth} />
             }
             {activeNavItem === 'Избранное' &&
-               <Favorites />
+               <Favorites deviceWidth={deviceWidth} />
             }
          </div>
       </main>

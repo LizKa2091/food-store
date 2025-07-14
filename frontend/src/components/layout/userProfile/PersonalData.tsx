@@ -4,14 +4,12 @@ import { logout } from '../../../services/authService';
 import { fetchUserInfo, updateUserInfo } from '../../../services/userService';
 import { useMessage } from '../../../context/MessageContext';
 import { IUserInfo } from '../../../types/userData.types';
-import BonusCard from './BonusCard';
 
 interface IPersonalDataProps {
    deviceWidth: number;
-   setActiveNavItem?: (value: string) => void;
 }
 
-const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth, setActiveNavItem }) => {
+const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth }) => {
    const [isInfoLoading, setIsInfoLoading] = useState<boolean>(false);
    const [userInfo, setUserInfo] = useState<IUserInfo>({ nameSurname: '', phoneNumber: '', dateOfBirth: '', email: '' });
    const [isInputWrong, setIsInputWrong] = useState<boolean>(false);
@@ -146,22 +144,38 @@ const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth, setActiveNavItem })
       }
    };
 
-   if (deviceWidth <= 768 && setActiveNavItem) {
+   if (deviceWidth <= 768) {
       return (
          <>
-            <BonusCard />
-            <ul className='main-user__list--mobile'>
-               <li onClick={() => setActiveNavItem('Личные данные')} className="main-user__item--mobile">
-                  Личные данные
-               </li>
-               <li onClick={() => setActiveNavItem('История заказов')} className="main-user__item--mobile">
-                  История заказов
-               </li>
-               <li onClick={() => setActiveNavItem('Избранное')} className="main-user__item--mobile">
-                  Избранное
-               </li>
-            </ul>
-            <button onClick={handleLogout} className="main-user__button main-user__button--mobile">Выйти</button>
+            {isInfoLoading ? (
+               <span className='loader'>Загрузка...</span>
+            ) : (
+               <form onSubmit={handleSubmit} className='main-user__form'>
+                  <div className="main-user__form__item">
+                     <label htmlFor="name" className="main-user__form__label">Имя Фамилия</label>
+                     <input onChange={handleNameChange} type="text" id='name' className="main-user__form__input" value={userInfo.nameSurname}/>
+                  </div>
+                  <div className="main-user__form__item">
+                     <label htmlFor="tel" className="main-user__form__label">Номер телефона</label>
+                     <input type="tel" id='tel' className="main-user__form__input main-user__form__input--protected" defaultValue={userInfo.phoneNumber} />
+                  </div>
+                  <div className="main-user__form__item main-user__form__item--birthday">
+                     <label htmlFor="date" className="main-user__form__label">День рождения</label>
+                     <input type="date" id='date' className="main-user__form__input main-user__form__input--protected" defaultValue={userInfo.dateOfBirth}/>
+                  </div>
+                  <div className="main-user__form__item main-user__form__item--mail">
+                     <label htmlFor="mail" className="main-user__form__label">Эл. почта</label>
+                     <input onChange={handleEmailChange} type="email" id='mail' className="main-user__form__input main-user__form__input" value={userInfo.email}/>
+                  </div>
+                  <button type='submit' className="main-user__form__button">Сохранить</button>
+                     {isFormSaved === true ? (
+                        <p>Данные успешно обновлены</p>
+                     ) : isFormSaved === false ? (
+                        <p>Исправьте все ошибки</p>
+                     ) : ''}
+                  <button onClick={handleLogout} className='main-user__button'>Выйти</button>
+               </form>
+            )}
          </>
       )
    }
@@ -197,7 +211,6 @@ const PersonalData: FC<IPersonalDataProps> = ({ deviceWidth, setActiveNavItem })
                <button onClick={handleLogout} className='main-user__button'>Выйти</button>
             </form>
          )}
-         <BonusCard />
       </>
    )
 };
