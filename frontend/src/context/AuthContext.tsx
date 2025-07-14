@@ -1,5 +1,5 @@
-import React, { createContext, useState, FC, ReactNode } from 'react';
-import { logout, postCode } from '../services/authService';
+import React, { createContext, useState, useEffect, FC, ReactNode } from 'react';
+import { logout, postCode, verifyUser } from '../services/authService';
 
 interface IAuthContext {
    isAuthed: boolean;
@@ -11,6 +11,31 @@ const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
    const [isAuthed, setIsAuthed] = useState<boolean>(false);
+
+   useEffect(() => {
+      const verifyToken = async (): Promise<void> => {
+         const token = localStorage.getItem('token');
+
+         if (token) {
+            try {
+               const result = await verifyUser(token);
+
+               if (result?.isAuthenticated) {
+                  setIsAuthed(true);
+               }
+               else {
+                  setIsAuthed(false);
+               }
+            }
+            catch (e) {
+               console.error(e);
+               setIsAuthed(false);
+            }
+         }
+      };
+
+      verifyToken();
+   }, []);
 
    const loginUser = async (phoneNumber: string, code: string) => {
       let result;
