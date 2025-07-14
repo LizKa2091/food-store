@@ -122,10 +122,10 @@ const UserProfileInfo: FC<IUserProfileInfoProps> = ({ section, deviceWidth }) =>
                <PersonalData deviceWidth={deviceWidth} />
             }
             {activeNavItem === 'История заказов' &&
-               <OrderHistory deviceWidth={deviceWidth} />
+               <OrderHistory />
             }
             {activeNavItem === 'Избранное' &&
-               <Favorites deviceWidth={deviceWidth} />
+               <Favorites />
             }
          </div>
       </main>
