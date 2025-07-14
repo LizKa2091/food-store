@@ -20,6 +20,7 @@ $color-gray-old-price: #434343;
 
 $mobile-list-item-text: #0A0A0A;
 $mobile-list-item-border: #DADADA;
+$mobile-main-inner-button-bg: #FF0000;
 
 .main-user {
    position: relative;
@@ -383,6 +384,22 @@ $mobile-list-item-border: #DADADA;
    .main-user {
       padding: 14px 0 44px 0;
 
+      &__form {
+         padding: 14px 0 0 0;
+
+         &__item {
+            &--birthday::after {
+               position: relative;
+               top: 12px;
+               left: 0;
+            }
+            &--mail::after {
+               position: relative;
+               top: 12px;
+               left: 0;
+            }
+         }
+      }
       &__list--mobile {
          display: flex;
          flex-direction: column;
@@ -411,6 +428,7 @@ $mobile-list-item-border: #DADADA;
       }
       &__button {
          font-size: 1rem;
+         cursor: pointer;
 
          &--mobile {
             margin-top: 27px;
@@ -433,5 +451,18 @@ $mobile-list-item-border: #DADADA;
    }
    .favorites {
       padding: 18px 0 0 0;
+   }
+   .main {
+      &__inner {
+         &__button {
+            border: 1px solid $mobile-main-inner-button-bg;
+            border-radius: 16px;
+            background-color: $mobile-main-inner-button-bg;
+            font-size: 1rem;
+            color: #fff;
+            padding: 5px 15px;
+            position: relative;
+         }
+      }
    }
 }
