@@ -39,7 +39,7 @@ const CartPage: FC = () => {
       switch (currStep) {
          case 1: 
             return (
-               <CartStep1>
+               <CartStep1 deviceWidth={deviceWidth}>
                   <CartPanel handleStepChange={handleStepChange} step={currStep} />
                </CartStep1>
             )

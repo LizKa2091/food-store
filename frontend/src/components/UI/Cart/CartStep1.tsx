@@ -12,9 +12,10 @@ import './CartStep1.scss';
 
 interface ICartStep1Props {
    children: ReactNode;
+   deviceWidth: number;
 };
 
-const CartStep1: FC<ICartStep1Props> = ({ children }) => {
+const CartStep1: FC<ICartStep1Props> = ({ children, deviceWidth }) => {
    const [currTime, setCurrTime] = useState<string | null>(null);
    const [userFavorites, setUserFavorites] = useState<string[] | null>(null);
 
@@ -109,23 +110,60 @@ const CartStep1: FC<ICartStep1Props> = ({ children }) => {
                   }
                   {cartItems?.map((item: ICartItem) => (
                      <li key={item.productId} className="main__item">
-                        <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
-                           <img src={item.imagePath} alt={item.name} className="main__item-img" />
-                        </div>
-                        <div className="main__item-column main__item-column--main">
-                           <p className="main__item-title">{item.name}</p>
-                           <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>
-                        </div>
-                        <div className="main__item-column main__item-column--main">
-                           <p className={"main__item-price" + (!item.newPrice ? ' main__item-price--default' : '')}>{item.newPrice ? item.newPrice : item.price} руб</p>
-                           {item.newPrice &&
-                              <p className="main__item-price-old">{item.price} руб</p>
-                           }
-                        </div>
-                        <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
-                        <div className="main__item-fav-control">
-                           <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} position='relative'/>
-                        </div>
+
+                        {deviceWidth > 900 ? (
+                           <>
+                              <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
+                                 <img src={item.imagePath} alt={item.name} className="main__item-img" />
+                              </div>
+                              <div className="main__item-column main__item-column--main">
+                                 <p className="main__item-title">{item.name}</p>
+                                 <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>
+                              </div>
+                              <div className="main__item-column main__item-column--main">
+                                 <p className={"main__item-price" + (!item.newPrice ? ' main__item-price--default' : '')}>{item.newPrice ? item.newPrice : item.price} руб</p>
+                                 {item.newPrice &&
+                                    <p className="main__item-price-old">{item.price} руб</p>
+                                 }
+                              </div>
+                           </>
+                        ) : (
+                           <>
+                              <div className={"main__item-img-container" + (item.newPrice ? " main__item-img-container--sale" : '') }>
+                                 <img src={item.imagePath} alt={item.name} className="main__item-img" />
+                                 <p className="main__item-quantity">В наличии {item.stockQuantity} шт</p>                              
+                              </div>
+                              <div className="main__item-column main__item-column--main">
+                                 <p className="main__item-title">{item.name}</p>
+                                 <div className="main__item-column main__item-column--prices">
+                                    <p className={"main__item-price" + (!item.newPrice ? ' main__item-price--default' : '')}>{item.newPrice ? item.newPrice : item.price} руб</p>
+                                    {item.newPrice &&
+                                       <p className="main__item-price-old">{item.price} руб</p>
+                                    }
+                                 </div>
+                                 <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
+                              </div>
+                           </>
+                        )}
+
+                        {deviceWidth > 1150 ? (
+                           <>
+                              <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
+                              <div className="main__item-fav-control">
+                                 <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} position='relative'/>
+                              </div>
+                           </>
+                        ) : (
+                           deviceWidth > 900 ? (
+                              <div className='main__item-controls'>
+                                 <ItemQuantityButton itemId={item.productId} storageQuantity={item.stockQuantity} currCart={cartItems} />
+                                 <div className="main__item-fav-control">
+                                    <FavoriteButton productId={item.productId} initialFavState={userFavorites ? userFavorites.includes(item.productId) : false} position='relative'/>
+                                 </div>
+                              </div>
+                           ) : null
+                        )}
+
                         <div className="main__item-column main__item-column--main">
                            <p className="main__item-total">{(item.userQuantity * (item.newPrice || item.price)).toFixed(1)} руб</p>
                            <p className="main__item-amount">{item.userQuantity} шт</p>
