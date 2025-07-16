@@ -9,7 +9,7 @@ $cart-item-button-like-border: #DADADA;
    gap: 20px;
 
    &__left {
-      width: 100%;
+      width: 65%;
    }
    &__top {
       display: flex;
@@ -32,7 +32,6 @@ $cart-item-button-like-border: #DADADA;
       display: flex;
       flex-direction: column;
       border: 0;
-      width: 85dvw;
       max-width: 853px;
       max-height: 580px;
       padding: 0;
@@ -87,7 +86,7 @@ $cart-item-button-like-border: #DADADA;
       &-title {
          font-size: 1.25rem;
          font-weight: 700;
-         max-width: 298px;
+         max-width: 238px;
       }
       &-fav-control {
          position: relative;
@@ -125,6 +124,105 @@ $cart-item-button-like-border: #DADADA;
    }
 
    &__panel {
-      
+      width: 35%;
+   }
+}
+
+@media (max-width: 1150px) {
+   .main {
+      &__item {
+         &-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7.5px;
+         }
+         &-img {
+            max-width: 100px;
+            height: 85px;
+
+            &-container {
+               width: 100px;
+               height: 100px;
+            }
+         }
+         &-title {
+            font-size: 1.125rem;
+         }
+      }
+   }
+}
+
+@media (max-width: 900px) {
+   .main {
+      &__item {
+         height: 172px;
+
+         &-img {
+            &-container {
+               display: flex;
+               flex-direction: column;
+               height: 127px;
+               gap: 11px;
+
+               &--sale::before {
+                  font-size: 1.125rem;
+                  height: 25px;
+               }
+            }
+         }
+         &-quantity {
+            font-size: 0.75rem;
+         }
+         &-column {
+            &--main {
+               display: flex;
+               flex-direction: column;
+               gap: 16px;
+            }
+            &--prices {
+               display: flex;
+               flex-direction: row;
+               gap: 8px;
+            }
+         }
+         &-price {
+            font-size: 1rem;
+            font-weight: 400;
+         }
+         &-title {
+            font-weight: 400;
+         }
+      }
+      &__list {
+         overflow-y: hidden;
+      }
+   }
+}
+
+@media (max-width: 768px) {
+   .main {
+      flex-direction: column;
+
+      &__title {
+         font-size: 1.4rem;
+      }
+      &__left {
+         width: 100%;
+      }
+      &__top {
+         margin-bottom: 21.5px;
+      }
+   }
+}
+
+@media (max-width: 400px) {
+   .main {
+      &__item {
+         &-title {
+            font-size: 0.9rem;
+            max-width: 100%;
+         }
+      }
    }
 }

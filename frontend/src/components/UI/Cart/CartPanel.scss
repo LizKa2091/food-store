@@ -107,6 +107,8 @@ $panel-button-color: #fff;
       padding: 0 119px 0 22px;
       width: 100%;
       height: 54px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &-container {
          display: flex;
@@ -158,5 +160,38 @@ $panel-button-color: #fff;
    &-extra {
       font-size: 0.875rem;
       text-align: center;
+   }
+}
+
+@media (max-width: 1054px) {
+   .main {
+      &__panel {
+         &-input {
+            padding: 0 119px 0 12px;
+         }
+         &.main__right {
+            padding: 18px 20px;
+         }
+      }
+   }
+}
+
+@media (max-width: 768px) {
+   .main {
+      &__panel {
+         width: 100%;
+         max-width: 100%;
+
+         &-title {
+            font-size: 1.125rem;
+         }
+         &-total {
+            font-size: 1.125rem;
+
+            &--bold {
+               font-size: 1.5rem;
+            }
+         }
+      }
    }
 }

@@ -135,3 +135,11 @@ $empty-fio: #FF0000;
       }
    }
 }
+
+@media (max-width: 768px) {
+   .main {
+      &__title {
+         font-size: 1.4rem;
+      }
+   }
+}
