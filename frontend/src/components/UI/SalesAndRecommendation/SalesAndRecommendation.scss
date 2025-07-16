@@ -19,15 +19,15 @@ $red: #FF0000;
    &__top {
       display: flex;
       align-items: center;
-      gap: 29px;
    }
    &__title {
       font-size: 2rem;
       font-weight: 700;
       text-transform: uppercase;
+      margin-right: 15px;
    }
    &__button {
-      font-size: 1.375rem;
+      font-size: 1.2rem;
       font-weight: 500;
       background-color: $orange-button-bg;
       border: 1px solid $orange-button-border;
@@ -38,6 +38,7 @@ $red: #FF0000;
       height: 46px;
       position: relative;
       display: flex;
+      justify-content: center;
       align-items: center;
       padding: 0 23.04px 0 21px   ;
 
@@ -45,7 +46,7 @@ $red: #FF0000;
          content: "";
          background: url('../../../images/webpImages/products/arrow-right-button.webp') no-repeat center center;
          background-size: contain;
-         width: 6.96px;
+         width: 11.89px;
          height: 11.89px;
          position: relative;
          left: 15px;
@@ -152,10 +153,13 @@ $red: #FF0000;
       padding-bottom: 0;
 
       &__title {
-         font-size: 1.375rem;
+         font-size: 1.2rem;
+      }
+      &__list {
+         gap: 12.6px;
       }
       &__button {
-         font-size: 1rem;
+         font-size: 0.75rem;
          width: 154.08px;
          height: 33.75px;
          padding: 0 15.04px 0 13px;
